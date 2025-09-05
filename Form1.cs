@@ -15,6 +15,7 @@ namespace E_shop
         public Form1()
         {
             InitializeComponent();
+
         }
     }
 }
