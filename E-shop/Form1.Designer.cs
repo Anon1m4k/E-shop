@@ -1,6 +1,6 @@
 ﻿namespace E_shop
 {
-    partial class MainForm
+    partial class Form1
     {
         /// <summary>
         /// Обязательная переменная конструктора.
