@@ -152,13 +152,11 @@ namespace E_shopTest
 
         //##########################################
 
-
-
         [TestMethod]
-        public void TestDeleteProductByArticle_Success()
+        public void TestDeleteProductByArticle()
         {
             // Arrange
-            var articleToRemove = "12345"; // Существующий артикул
+            var articleToRemove = "12345"; 
 
             // Act
             var result = _catalog.DeleteProduct(articleToRemove);
@@ -172,42 +170,23 @@ namespace E_shopTest
             Assert.IsNull(productAfterDeletion, "Товар должен быть удален из репозитория");
         }
 
-
-
-        [TestMethod]
-        public void TestDeleteProductByArticle()
-        {
-            // Arrange
-            var articleToRemove = "1";
-
-            _mockRepository.Setup(r => r.DeleteProduct(articleToRemove))
-                          .Returns(true);
-
-            // Act
-            var result = _catalog.DeleteProduct(articleToRemove);
-
-            // Assert
-            Assert.IsTrue(result);
-            _mockRepository.Verify(r => r.DeleteProduct(articleToRemove), Times.Once);
-        }
-
         [TestMethod]
         public void TestRemoveProductByNotFoundArticle()
         {
             // Arrange
-            var nonExistentArticle = "999";
-
-            _mockRepository.Setup(r => r.DeleteProduct(nonExistentArticle))
-                          .Returns(false);
+            var nonExistentArticle = "999"; 
 
             // Act
             var result = _catalog.DeleteProduct(nonExistentArticle);
 
             // Assert
-            Assert.IsFalse(result);
+            Assert.IsFalse(result, "Удаление несуществующего товара должно завершаться неудачей");
             _mockRepository.Verify(r => r.DeleteProduct(nonExistentArticle), Times.Once);
-        }
 
+            // Проверяем, что список товаров не изменился
+            var productsCount = _mockRepository.Object.GetAllProducts().Count;
+            Assert.AreEqual(2, productsCount, "Количество товаров не должно измениться");
+        }
 
         [TestMethod]
         public void TestRemoveProductByArticleWithEmptyCatalog()
@@ -215,15 +194,19 @@ namespace E_shopTest
             // Arrange
             var articleToRemove = "1";
 
-            _mockRepository.Setup(r => r.DeleteProduct(articleToRemove))
-                          .Returns(false);
+            // Очищаем список товаров
+            _mockProducts.Clear();
 
             // Act
             var result = _catalog.DeleteProduct(articleToRemove);
 
             // Assert
-            Assert.IsFalse(result);
+            Assert.IsFalse(result, "Удаление из пустого каталога должно завершаться неудачей");
             _mockRepository.Verify(r => r.DeleteProduct(articleToRemove), Times.Once);
+
+            // Проверяем, что список остается пустым
+            var productsCount = _mockRepository.Object.GetAllProducts().Count;
+            Assert.AreEqual(0, productsCount, "Каталог должен оставаться пустым");
         }
     }
 }
