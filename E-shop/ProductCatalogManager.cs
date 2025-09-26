@@ -24,8 +24,7 @@ namespace E_shop
         {
             if (validator != null)
             {
-                string errorMessage;
-                bool isValid = validator.Validate(product, out errorMessage);
+                bool isValid = validator.Validate(product);
                 if (!isValid)
                 {
                     return false;
@@ -40,6 +39,13 @@ namespace E_shop
                 repository.AddProduct(product);
             }
             return true;
+        }
+
+        public bool DeleteProduct(string article)
+        {
+            if (repository == null)
+                return false;
+            return repository.DeleteProduct(article);
         }
     }
 }
