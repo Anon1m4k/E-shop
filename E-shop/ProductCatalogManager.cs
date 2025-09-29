@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 namespace E_shop
-{   
+{
     public class ProductCatalogManager
     {
         private IProductRepository repository;
@@ -41,10 +41,17 @@ namespace E_shop
             return true;
         }
 
-        public bool DeleteProduct(string article)
+        public string DeleteProduct(string article)
         {
             if (repository == null)
-                return false;
+                return "Репозиторий недоступен";
+
+            var product = repository.GetProductByArticle(article);
+            if (product == null)
+            {
+                return "Товар с указанным артикулом не найден";
+            }
+
             return repository.DeleteProduct(article);
         }
     }
