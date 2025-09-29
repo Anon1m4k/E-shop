@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 namespace E_shop
-{   
+{
     public class ProductCatalogManager
     {
         private IProductRepository repository;
@@ -20,26 +20,38 @@ namespace E_shop
             products = new List<Product>();
         }
 
-        public bool AddProduct(Product product)
+        public string AddProduct(Product product)
         {
+            // Валидация наименования
+            if (string.IsNullOrEmpty(product.Name))
+            {
+                return "Наименование товара не может быть пустым";
+            }
+
+            // Валидация цены
+            if (product.Price <= 0)
+            {
+                return "Цена товара должна быть положительной";
+            }
+
             if (validator != null)
             {
-                string errorMessage;
-                bool isValid = validator.Validate(product, out errorMessage);
+                bool isValid = validator.Validate(product);
                 if (!isValid)
                 {
-                    return false;
+                    return "Ошибка валидации данных товара";
                 }
             }
+
             if (repository != null)
             {
                 if (repository.ArticleExists(product.Article))
                 {
-                    return false;
+                    return $"Товар с артикулом '{product.Article}' уже существует";
                 }
                 repository.AddProduct(product);
             }
-            return true;
+            return string.Empty; // Успешное добавление
         }
     }
 }
