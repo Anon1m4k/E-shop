@@ -12,17 +12,17 @@ namespace E_shopTest
         {
             // Arrange
             var mockRepository = new Mock<IProductRepository>();
-            var mockValidator = new Mock<IProductValidator>();
-            var catalog = new ProductCatalogManager(mockRepository.Object, mockValidator.Object);
+            var catalog = new ProductCatalogManager(mockRepository.Object);
 
             var validProduct = new Product
             {
                 Article = "12345",
                 Name = "Смартфон",
-                Price = 1000
+                Price = 1000,
+                Stock = 10,
+                Unit = "шт"
             };
 
-            mockValidator.Setup(v => v.Validate(validProduct)).Returns(true);
             mockRepository.Setup(r => r.ArticleExists("12345")).Returns(false);
 
             // Act
@@ -38,14 +38,15 @@ namespace E_shopTest
         {
             // Arrange
             var mockRepository = new Mock<IProductRepository>();
-            var mockValidator = new Mock<IProductValidator>();
-            var catalog = new ProductCatalogManager(mockRepository.Object, mockValidator.Object);
+            var catalog = new ProductCatalogManager(mockRepository.Object);
 
             var invalidProduct = new Product
             {
                 Article = "12345",
                 Name = "", // Пустое наименование
-                Price = 1000
+                Price = 1000,
+                Stock = 10,
+                Unit = "шт"
             };
 
             // Act
@@ -61,14 +62,15 @@ namespace E_shopTest
         {
             // Arrange
             var mockRepository = new Mock<IProductRepository>();
-            var mockValidator = new Mock<IProductValidator>();
-            var catalog = new ProductCatalogManager(mockRepository.Object, mockValidator.Object);
+            var catalog = new ProductCatalogManager(mockRepository.Object);
 
             var invalidProduct = new Product
             {
                 Article = "12345",
                 Name = "Смартфон",
-                Price = -1000 // Отрицательная цена
+                Price = -1000, // Отрицательная цена
+                Stock = 10,
+                Unit = "шт"
             };
 
             // Act
@@ -84,17 +86,17 @@ namespace E_shopTest
         {
             // Arrange
             var mockRepository = new Mock<IProductRepository>();
-            var mockValidator = new Mock<IProductValidator>();
-            var catalog = new ProductCatalogManager(mockRepository.Object, mockValidator.Object);
+            var catalog = new ProductCatalogManager(mockRepository.Object);
 
             var newProduct = new Product
             {
                 Article = "12345",
                 Name = "Ноутбук",
-                Price = 5000
+                Price = 5000,
+                Stock = 5,
+                Unit = "шт"
             };
 
-            mockValidator.Setup(v => v.Validate(newProduct)).Returns(true);
             mockRepository.Setup(r => r.ArticleExists("12345")).Returns(true);
 
             // Act
@@ -102,6 +104,78 @@ namespace E_shopTest
 
             // Assert
             Assert.AreEqual("Товар с артикулом '12345' уже существует", result);
+            mockRepository.Verify(r => r.AddProduct(It.IsAny<Product>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void TestAddProductWithEmptyArticle()
+        {
+            // Arrange
+            var mockRepository = new Mock<IProductRepository>();
+            var catalog = new ProductCatalogManager(mockRepository.Object);
+
+            var invalidProduct = new Product
+            {
+                Article = "", // Пустой артикул
+                Name = "Смартфон",
+                Price = 1000,
+                Stock = 10,
+                Unit = "шт"
+            };
+
+            // Act
+            var result = catalog.AddProduct(invalidProduct);
+
+            // Assert
+            Assert.AreEqual("Артикул товара не может быть пустым", result);
+            mockRepository.Verify(r => r.AddProduct(It.IsAny<Product>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void TestAddProductWithNegativeStock()
+        {
+            // Arrange
+            var mockRepository = new Mock<IProductRepository>();
+            var catalog = new ProductCatalogManager(mockRepository.Object);
+
+            var invalidProduct = new Product
+            {
+                Article = "12345",
+                Name = "Смартфон",
+                Price = 1000,
+                Stock = -5, // Отрицательный остаток
+                Unit = "шт"
+            };
+
+            // Act
+            var result = catalog.AddProduct(invalidProduct);
+
+            // Assert
+            Assert.AreEqual("Количество товара не может быть отрицательным", result);
+            mockRepository.Verify(r => r.AddProduct(It.IsAny<Product>()), Times.Never);
+        }
+
+        [TestMethod]
+        public void TestAddProductWithEmptyUnit()
+        {
+            // Arrange
+            var mockRepository = new Mock<IProductRepository>();
+            var catalog = new ProductCatalogManager(mockRepository.Object);
+
+            var invalidProduct = new Product
+            {
+                Article = "12345",
+                Name = "Смартфон",
+                Price = 1000,
+                Stock = 10,
+                Unit = "" // Пустая единица измерения
+            };
+
+            // Act
+            var result = catalog.AddProduct(invalidProduct);
+
+            // Assert
+            Assert.AreEqual("Единица измерения не может быть пустой", result);
             mockRepository.Verify(r => r.AddProduct(It.IsAny<Product>()), Times.Never);
         }
     }
