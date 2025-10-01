@@ -9,97 +9,13 @@ namespace E_shopTest
     [TestClass]
     public class TProductCatalogManager
     {
-        private Mock<IProductRepository> _mockRepository;
-       private Mock<IProductValidator> _mockValidator;
-        private ProductCatalogManager _catalog;
-        private Product _validProduct;
-       private List<Product> _mockProducts;
-
-
-       /*[TestMethod]
-        public void TestAddProductWithValidData()
-        {
-            // Arrange
-            _mockValidator.Setup(v => v.Validate(_validProduct))
-                         .Returns(true);
-            _mockRepository.Setup(r => r.ArticleExists("12345")).Returns(false);
-
-            // Act
-            var result = _catalog.AddProduct(_validProduct);
-
-            // Assert
-            Assert.IsTrue(result);
-            _mockRepository.Verify(r => r.AddProduct(_validProduct), Times.Once);
-        }
-
-       [TestMethod]
-        public void TestAddProductWithInvalidName()
-        {
-            // Arrange
-            var invalidProduct = new Product
-            {
-                Article = "12345",
-                Name = "", // Пустое наименование
-                Price = 1000
-            };
-
-            _mockValidator.Setup(v => v.Validate(invalidProduct))
-                         .Returns(false);
-
-            // Act
-            var result = _catalog.AddProduct(invalidProduct);
-
-            // Assert
-            Assert.IsFalse(result);
-            _mockRepository.Verify(r => r.AddProduct(It.IsAny<Product>()), Times.Never);
-        }
-
-        [TestMethod]
-        public void TestAddProductWithInvalidPrice()
-        {
-            // Arrange
-            var invalidProduct = new Product
-            {
-                Article = "12345",
-                Name = "Смартфон",
-                Price = -1000 // Отрицательная цена
-            };
-
-            _mockValidator.Setup(v => v.Validate(invalidProduct))
-                         .Returns(false);
-
-            // Act
-            var result = _catalog.AddProduct(invalidProduct);
-
-            // Assert
-            Assert.IsFalse(result);
-            _mockRepository.Verify(r => r.AddProduct(It.IsAny<Product>()), Times.Never);
-        }
-
-        [TestMethod]
-        public void TestAddProductWithDuplicateArticle()
-        {
-            // Arrange
-            _mockValidator.Setup(v => v.Validate(_validProduct))
-                         .Returns(true);
-            _mockRepository.Setup(r => r.ArticleExists("12345")).Returns(true);
-
-            // Act
-            var result = _catalog.AddProduct(_validProduct);
-
-            // Assert
-            Assert.IsFalse(result);
-            _mockRepository.Verify(r => r.AddProduct(It.IsAny<Product>()), Times.Never);
-        }*/
-
-        
-
+     
         [TestMethod]
         public void TestDeleteProductByArticle()
         {
             // Arrange
-            _mockRepository = new Mock<IProductRepository>();
-            _catalog = new ProductCatalogManager(_mockRepository.Object, null);
+           var _mockRepository = new Mock<IProductRepository>();
+           var _catalog = new ProductCatalogManager(_mockRepository.Object, null);
 
             var articleToRemove = "12345";
             var existingProduct = new Product { Article = articleToRemove, Name = "Test Product" };
@@ -124,8 +40,8 @@ namespace E_shopTest
         {
             // Arrange
 
-            _mockRepository = new Mock<IProductRepository>();
-            _catalog = new ProductCatalogManager(_mockRepository.Object, null);
+           var _mockRepository = new Mock<IProductRepository>();
+           var _catalog = new ProductCatalogManager(_mockRepository.Object, null);
 
             var nonExistentArticle = "999";
 
@@ -159,19 +75,16 @@ namespace E_shopTest
             var actualProducts = _mockRepository.Object.GetAllProducts().ToList();
 
             // Сравниваем с ожидаемым списком
-            CollectionAssert.AreEqual(
-                expectedProducts.Select(p => p.Article).ToList(),
-                actualProducts.Select(p => p.Article).ToList(),
-                "Списки товаров должны совпадать после попытки удаления несуществующего товара");
-            
+            CollectionAssert.AreEqual( initialProducts, actualProducts,"Списки товаров должны полностью совпадать после попытки удаления несуществующего товара");
+
         }
 
         [TestMethod]
         public void TestRemoveProductByArticleWithEmptyCatalog()
         {
             // Arrange
-            _mockRepository = new Mock<IProductRepository>();
-            _catalog = new ProductCatalogManager(_mockRepository.Object, null);
+           var _mockRepository = new Mock<IProductRepository>();
+           var _catalog = new ProductCatalogManager(_mockRepository.Object, null);
 
             var articleToRemove = "1";
 
