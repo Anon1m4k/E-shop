@@ -5,7 +5,6 @@ namespace E_shop
     public class ProductCatalogManager
     {
         private IProductRepository repository;
-        private IProductValidator validator;
         private List<Product> products;
 
         public ProductCatalogManager()
@@ -13,15 +12,20 @@ namespace E_shop
             products = new List<Product>();
         }
 
-        public ProductCatalogManager(IProductRepository repo, IProductValidator valid)
+        public ProductCatalogManager(IProductRepository repo)
         {
             repository = repo;
-            validator = valid;
             products = new List<Product>();
         }
 
         public string AddProduct(Product product)
         {
+            // Валидация артикула
+            if (string.IsNullOrEmpty(product.Article))
+            {
+                return "Артикул товара не может быть пустым";
+            }
+
             // Валидация наименования
             if (string.IsNullOrEmpty(product.Name))
             {
@@ -34,13 +38,16 @@ namespace E_shop
                 return "Цена товара должна быть положительной";
             }
 
-            if (validator != null)
+            // Валидация остатка
+            if (product.Stock < 0)
             {
-                bool isValid = validator.Validate(product);
-                if (!isValid)
-                {
-                    return "Ошибка валидации данных товара";
-                }
+                return "Количество товара не может быть отрицательным";
+            }
+
+            // Валидация единицы измерения
+            if (string.IsNullOrEmpty(product.Unit))
+            {
+                return "Единица измерения не может быть пустой";
             }
 
             if (repository != null)
@@ -53,5 +60,5 @@ namespace E_shop
             }
             return string.Empty; // Успешное добавление
         }
-    }
+    }   
 }
