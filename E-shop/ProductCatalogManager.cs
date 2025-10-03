@@ -37,7 +37,6 @@ namespace E_shop
             {
                 return "Цена товара должна быть положительной";
             }
-
             // Валидация остатка
             if (product.Stock < 0)
             {
@@ -60,5 +59,19 @@ namespace E_shop
             }
             return string.Empty; // Успешное добавление
         }
-    }   
+
+
+        public string DeleteProduct(string article)
+        {
+            if (repository == null)
+                return "Репозиторий недоступен";
+
+            var product = repository.GetProductByArticle(article);
+            if (product == null)
+            {
+                return "Товар с указанным артикулом не найден";
+            }
+            return repository.DeleteProduct(article);
+        }
+    }
 }
