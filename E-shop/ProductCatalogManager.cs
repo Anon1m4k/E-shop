@@ -5,7 +5,6 @@ namespace E_shop
     public class ProductCatalogManager
     {
         private IProductRepository repository;
-        private IProductValidator validator;
         private List<Product> products;
 
         public ProductCatalogManager()
@@ -13,33 +12,54 @@ namespace E_shop
             products = new List<Product>();
         }
 
-        public ProductCatalogManager(IProductRepository repo, IProductValidator valid)
+        public ProductCatalogManager(IProductRepository repo)
         {
             repository = repo;
-            validator = valid;
             products = new List<Product>();
         }
 
-        public bool AddProduct(Product product)
+        public string AddProduct(Product product)
         {
-            if (validator != null)
+            // Валидация артикула
+            if (string.IsNullOrEmpty(product.Article))
             {
-                bool isValid = validator.Validate(product);
-                if (!isValid)
-                {
-                    return false;
-                }
+                return "Артикул товара не может быть пустым";
             }
+
+            // Валидация наименования
+            if (string.IsNullOrEmpty(product.Name))
+            {
+                return "Наименование товара не может быть пустым";
+            }
+
+            // Валидация цены
+            if (product.Price <= 0)
+            {
+                return "Цена товара должна быть положительной";
+            }
+            // Валидация остатка
+            if (product.Stock < 0)
+            {
+                return "Количество товара не может быть отрицательным";
+            }
+
+            // Валидация единицы измерения
+            if (string.IsNullOrEmpty(product.Unit))
+            {
+                return "Единица измерения не может быть пустой";
+            }
+
             if (repository != null)
             {
                 if (repository.ArticleExists(product.Article))
                 {
-                    return false;
+                    return $"Товар с артикулом '{product.Article}' уже существует";
                 }
                 repository.AddProduct(product);
             }
-            return true;
+            return string.Empty; // Успешное добавление
         }
+
 
         public string DeleteProduct(string article)
         {
@@ -51,7 +71,6 @@ namespace E_shop
             {
                 return "Товар с указанным артикулом не найден";
             }
-
             return repository.DeleteProduct(article);
         }
     }
