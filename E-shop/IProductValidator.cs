@@ -2,6 +2,6 @@
 {
     public interface IProductValidator
     {
-        bool Validate(Product product, out string errorMessage);
+        bool Validate(Product product);
     }
 }

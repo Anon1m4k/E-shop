@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 namespace E_shop
-{   
+{
     public class ProductCatalogManager
     {
         private IProductRepository repository;
@@ -24,8 +24,7 @@ namespace E_shop
         {
             if (validator != null)
             {
-                string errorMessage;
-                bool isValid = validator.Validate(product, out errorMessage);
+                bool isValid = validator.Validate(product);
                 if (!isValid)
                 {
                     return false;
@@ -40,6 +39,20 @@ namespace E_shop
                 repository.AddProduct(product);
             }
             return true;
+        }
+
+        public string DeleteProduct(string article)
+        {
+            if (repository == null)
+                return "Репозиторий недоступен";
+
+            var product = repository.GetProductByArticle(article);
+            if (product == null)
+            {
+                return "Товар с указанным артикулом не найден";
+            }
+
+            return repository.DeleteProduct(article);
         }
     }
 }
