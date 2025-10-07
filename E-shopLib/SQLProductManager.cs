@@ -9,7 +9,7 @@ using MySql.Data.MySqlClient;
 
 namespace E_shopLib
 {
-    public class SQLProductManager
+    public class SQLProductManager : IProductRepository
     {
         MySqlConnection conn;
         string MyConnectionString = "server=127.0.0.1; uid=root;pwd=vertrigo; database=users;";
@@ -44,7 +44,37 @@ namespace E_shopLib
                 //MessageBox.Show(ex.Message);
                 return result;
             }
+            finally
+            {
+                conn?.Close();
+            }
             return result;
+        }
+
+        public void DeleteProduct(string article)
+        {
+            try
+            {
+                conn = new MySqlConnection(MyConnectionString);
+                conn.Open();
+
+                string query = "DELETE FROM товар WHERE article = @Артикул_Товара;";
+                MySqlCommand command = new MySqlCommand(query, conn);
+                command.Parameters.AddWithValue("@Артикул_Товара", article);
+                command.ExecuteNonQuery();
+            }
+            catch (MySqlException ex)
+            {
+                //MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conn?.Close();
+            }
+        }
+        public List<Product> GetAllProducts()
+        {
+            return ReadUsers();
         }
     }
 }
