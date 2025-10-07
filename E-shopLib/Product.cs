@@ -8,5 +8,10 @@
         public decimal Price { get; set; } // Цена продажи
         public int Stock { get; set; } // Текущий остаток
         public string Unit { get; set; } //Ед. измерения
+
+        public Product(string article)
+        {
+            Article = article;
+        }
     }
 }
