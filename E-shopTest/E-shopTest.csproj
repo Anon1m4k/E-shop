@@ -66,9 +66,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\E-shopLib\E-shopLib.csproj">
+      <Project>{2e6efaea-ef36-4b31-85cc-e6b654eed3b1}</Project>
+      <Name>E-shopLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\E-shop\E-shop.csproj">
       <Project>{e080598e-9b9b-43e5-8e01-7f255a0b5b64}</Project>
       <Name>E-shop</Name>

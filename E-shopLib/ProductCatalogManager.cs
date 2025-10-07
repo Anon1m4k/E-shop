@@ -1,21 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using E_shopLib;
+using System.Collections.Generic;
 
 namespace E_shop
 {
     public class ProductCatalogManager
     {
         private IProductRepository repository;
-        private List<Product> products;
-
-        public ProductCatalogManager()
-        {
-            products = new List<Product>();
-        }
 
         public ProductCatalogManager(IProductRepository repo)
         {
             repository = repo;
-            products = new List<Product>();
         }
 
         public string AddProduct(Product product)
@@ -37,6 +31,7 @@ namespace E_shop
             {
                 return "Цена товара должна быть положительной";
             }
+
             // Валидация остатка
             if (product.Stock < 0)
             {
@@ -59,7 +54,6 @@ namespace E_shop
             }
             return string.Empty; // Успешное добавление
         }
-
 
         public string DeleteProduct(string article)
         {

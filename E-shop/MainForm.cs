@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+using E_shopLib;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,15 +14,37 @@ namespace E_shop
 {
     public partial class MainForm : Form
     {
+        private IProductRepository productManager;
+        private List<Product> products;
+
         public MainForm()
         {
             InitializeComponent();
+            productManager = new SQLProductManager();
+            LoadProducts();
+        }
+
+        private void LoadProducts()
+        {
+            products = productManager.GetAllProducts();
+            dataGridView.DataSource = products;
+            ConfigureDataGridView();
+        }
+
+        private void ConfigureDataGridView() //не очень хорошо сделать ручками
+        {
+            dataGridView.AutoGenerateColumns = true;
+            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView.ReadOnly = true;
         }
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
             AddProductForm addForm = new AddProductForm();
-            addForm.ShowDialog();
+            if (addForm.ShowDialog() == DialogResult.OK)
+            {
+                LoadProducts(); // Обновляем список после добавления
+            }
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)
@@ -32,7 +56,24 @@ namespace E_shop
 
                 if (result == DialogResult.Yes)
                 {
-                    // Код удаления
+                    // Получаем артикул из выбранной строки
+                    string article = dataGridView.SelectedRows[0].Cells["Article"].Value.ToString();
+
+                    // Создаем ProductCatalogManager и удаляем товар
+                    ProductCatalogManager catalogManager = new ProductCatalogManager(productManager);
+                    string deleteResult = catalogManager.DeleteProduct(article);
+
+                    if (string.IsNullOrEmpty(deleteResult))
+                    {
+                        MessageBox.Show("Товар успешно удален", "Успех",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LoadProducts(); // Обновляем DataGridView
+                    }
+                    else
+                    {
+                        MessageBox.Show(deleteResult, "Ошибка",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
             else
@@ -40,6 +81,10 @@ namespace E_shop
                 MessageBox.Show("Выберите товар для удаления", "Внимание",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            LoadProducts();
         }
     }
 }

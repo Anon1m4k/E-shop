@@ -1,12 +1,19 @@
-﻿namespace E_shop
+﻿namespace E_shopLib
 {
     public class Product
     {
-        public string Article { get; set; } // Уникальный артикул
-        public string Name { get; set; } // Наименование
-        public string Category { get; set; } // Категория
-        public decimal Price { get; set; } // Цена продажи
-        public int Stock { get; set; } // Текущий остаток
-        public string Unit { get; set; } //Ед. измерения
+        public string Article { get; set; }
+        public string Name { get; set; }
+        public string Category { get; set; }
+        public decimal Price { get; set; }
+        public int Stock { get; set; }
+        public string Unit { get; set; }
+
+        public Product() { }
+
+        public Product(string article)
+        {
+            Article = article;
+        }
     }
 }
