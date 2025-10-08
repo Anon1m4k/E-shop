@@ -1,49 +1,38 @@
-﻿
-using E_shopLib;
+﻿using E_shopLib;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace E_shop
 {
     public partial class MainForm : Form
     {
-        private IProductRepository productManager;
-        private List<Product> products;
-
+        SQLProductManager productManager = new SQLProductManager();
         public MainForm()
         {
             InitializeComponent();
-            productManager = new SQLProductManager();
-            LoadProducts();
         }
 
-        private void LoadProducts()
+        private void MainForm_Load(object sender, EventArgs e)
         {
-            products = productManager.GetAllProducts();
-            dataGridView.DataSource = products;
-            ConfigureDataGridView();
-        }
-
-        private void ConfigureDataGridView() //не очень хорошо сделать ручками
-        {
-            dataGridView.AutoGenerateColumns = true;
-            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView.ReadOnly = true;
+            dataGridView.DataSource = productManager.GetAllProducts();
         }
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            AddProductForm addForm = new AddProductForm();
-            if (addForm.ShowDialog() == DialogResult.OK)
+            try
             {
-                LoadProducts(); // Обновляем список после добавления
+                ProductCatalogManager catalogManager = new ProductCatalogManager(productManager);
+                AddProductForm addForm = new AddProductForm(catalogManager);
+                if (addForm.ShowDialog() == DialogResult.OK)
+                {
+                    // Обновляем таблицу после добавления
+                    dataGridView.DataSource = productManager.GetAllProducts();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при добавлении товара: {ex.Message}", "Ошибка",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -51,40 +40,45 @@ namespace E_shop
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
+                // Получаем артикул из выбранной строки
+                string selectedArticle = dataGridView.SelectedRows[0].Cells["Article"].Value.ToString();
+
+                // Запрашиваем подтверждение удаления
                 var result = MessageBox.Show("Удалить выбранный товар?", "Подтверждение удаления",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
                 {
-                    // Получаем артикул из выбранной строки
-                    string article = dataGridView.SelectedRows[0].Cells["Article"].Value.ToString();
-
-                    // Создаем ProductCatalogManager и удаляем товар
-                    ProductCatalogManager catalogManager = new ProductCatalogManager(productManager);
-                    string deleteResult = catalogManager.DeleteProduct(article);
-
-                    if (string.IsNullOrEmpty(deleteResult))
+                    try
                     {
-                        MessageBox.Show("Товар успешно удален", "Успех",
-                            MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        LoadProducts(); // Обновляем DataGridView
+                        // Удаляем товар через менеджер
+                        string deleteResult = productManager.DeleteProduct(selectedArticle);
+
+                        if (string.IsNullOrEmpty(deleteResult))
+                        {
+                            MessageBox.Show("Товар успешно удален", "Успех",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            // Обновляем таблицу
+                            dataGridView.DataSource = productManager.GetAllProducts();
+                        }
+                        else
+                        {
+                            MessageBox.Show(deleteResult, "Ошибка",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        MessageBox.Show(deleteResult, "Ошибка",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Ошибка при удалении товара: {ex.Message}", "Ошибка",
+                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
             else
             {
-                MessageBox.Show("Выберите товар для удаления", "Внимание",
+                MessageBox.Show("Пожалуйста, выберите товар для удаления.", "Внимание",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-        }
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            LoadProducts();
         }
     }
 }

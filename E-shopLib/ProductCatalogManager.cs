@@ -1,5 +1,4 @@
 ﻿using E_shopLib;
-using System.Collections.Generic;
 
 namespace E_shop
 {
@@ -50,6 +49,7 @@ namespace E_shop
                 {
                     return $"Товар с артикулом '{product.Article}' уже существует";
                 }
+
                 repository.AddProduct(product);
             }
             return string.Empty; // Успешное добавление
