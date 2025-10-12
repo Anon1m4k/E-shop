@@ -77,7 +77,32 @@ namespace E_shopLib
 
         public string DeleteProduct(string article)
         {
-            return "";
+            using (MySqlConnection conn = new MySqlConnection(MyConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    // Сначала проверяем существование товара
+                    if (!ArticleExists(article))
+                    {
+                        return "Товар с указанным артикулом не найден";
+                    }
+
+                    string query = "DELETE FROM товар WHERE Артикул_Товара = @Article";
+                    using (MySqlCommand command = new MySqlCommand(query, conn))
+                    {
+                        command.Parameters.AddWithValue("@Article", article);
+
+                        int rowsAffected = command.ExecuteNonQuery();
+                        return rowsAffected > 0 ? string.Empty : "Не удалось удалить товар";
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    return "Ошибка при удалении товара: " + ex.Message;
+                }
+            }
         }
 
         public Product GetProductByArticle(string article)
