@@ -1,20 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using E_shopLib;
 
 namespace E_shop
 {
     public partial class AddProductForm : Form
     {
-        public AddProductForm()
+        private ProductCatalogManager catalogManager;
+
+        public Product NewProduct { get; private set; }
+
+        public AddProductForm(ProductCatalogManager manager)
         {
             InitializeComponent();
+            catalogManager = manager;
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
     }
 }

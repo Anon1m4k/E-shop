@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using E_shop;
+using E_shopLib;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
