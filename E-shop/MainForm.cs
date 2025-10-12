@@ -1,45 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using E_shopLib;
+using System;
 using System.Windows.Forms;
 
 namespace E_shop
 {
     public partial class MainForm : Form
     {
+        SQLProductManager productManager = new SQLProductManager();
         public MainForm()
         {
             InitializeComponent();
         }
 
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            dataGridView.DataSource = productManager.GetAllProducts();
+        }
+
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            AddProductForm addForm = new AddProductForm();
-            addForm.ShowDialog();
+           
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)
         {
-            if (dataGridView.SelectedRows.Count > 0)
-            {
-                var result = MessageBox.Show("Удалить выбранный товар?", "Подтверждение удаления",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                if (result == DialogResult.Yes)
-                {
-                    // Код удаления
-                }
-            }
-            else
-            {
-                MessageBox.Show("Выберите товар для удаления", "Внимание",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+           
         }
     }
 }

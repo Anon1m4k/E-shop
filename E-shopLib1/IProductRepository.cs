@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace E_shop
+namespace E_shopLib
 {
     public interface IProductRepository
     {
