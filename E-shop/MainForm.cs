@@ -12,8 +12,16 @@ namespace E_shop
             InitializeComponent();
         }
         private void MainForm_Load(object sender, EventArgs e)
-        {
-            dataGridView.DataSource = productManager.GetAllProducts();
+        {   
+            try
+            {
+                dataGridView.DataSource = productManager.GetAllProducts();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки данных: {ex.Message}", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void buttonDelete_Click(object sender, EventArgs e)
