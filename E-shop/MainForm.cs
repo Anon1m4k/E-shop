@@ -29,28 +29,20 @@ namespace E_shop
 
                 if (result == DialogResult.Yes)
                 {
-                    try
-                    {
-                        // Удаляем товар через менеджер
-                        string deleteResult = productManager.DeleteProduct(selectedArticle);
+                    // Удаляем товар через менеджер
+                    string deleteResult = productManager.DeleteProduct(selectedArticle);
 
-                        if (string.IsNullOrEmpty(deleteResult))
-                        {
-                            MessageBox.Show("Товар успешно удален", "Успех",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            // Обновляем таблицу
-                            dataGridView.DataSource = productManager.GetAllProducts();
-                        }
-                        else
-                        {
-                            MessageBox.Show(deleteResult, "Ошибка",
-                                MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
-                    catch (Exception ex)
+                    if (string.IsNullOrEmpty(deleteResult))
                     {
-                        MessageBox.Show($"Ошибка при удалении товара: {ex.Message}", "Ошибка",
-                                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Товар успешно удален", "Успех",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // Обновляем таблицу
+                        dataGridView.DataSource = productManager.GetAllProducts();
+                    }
+                    else
+                    {
+                        MessageBox.Show(deleteResult, "Ошибка",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
