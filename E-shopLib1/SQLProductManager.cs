@@ -9,8 +9,6 @@ namespace E_shopLib
 {
     public class SQLProductManager : IProductRepository
     {
-        MySqlConnection conn;
-        string MyConnectionString = "server=127.0.0.1; uid=root;pwd=vertrigo; database=интернет_магазин_;";
         public List<Product> GetAllProducts()
         {
             List<Product> result = new List<Product>();
@@ -43,17 +41,6 @@ namespace E_shopLib
             }
             return result;
         }
-
-        public void AddProduct(Product product)
-        {
-           
-        }
-
-        public string DeleteProduct(string article)
-        {
-            return "";
-        }
-
         public Product GetProductByArticle(string article)
         {
             using (MySqlConnection conn = new MySqlConnection(MyConnectionString))
@@ -90,7 +77,6 @@ namespace E_shopLib
                 }
             }
         }
-
         public bool ArticleExists(string article)
         {
             using (MySqlConnection conn = new MySqlConnection(MyConnectionString))
