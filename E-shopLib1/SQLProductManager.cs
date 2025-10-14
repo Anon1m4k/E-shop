@@ -9,6 +9,8 @@ namespace E_shopLib
 {
     public class SQLProductManager : IProductRepository
     {
+        MySqlConnection conn;
+        string MyConnectionString = "server=127.0.0.1; uid=root;pwd=vertrigo; database=интернет_магазин_;";
         public List<Product> GetAllProducts()
         {
             List<Product> result = new List<Product>();
@@ -44,7 +46,33 @@ namespace E_shopLib
 
         public void AddProduct(Product product)
         {
-           
+            using (MySqlConnection conn = new MySqlConnection(MyConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    string query = @"INSERT INTO товар 
+                                    (Артикул_Товара, Наименование, Категория, Цена, Остаток, Ед_измерения) 
+                                    VALUES (@Article, @Name, @Category, @Price, @Stock, @Unit)";
+
+                    using (MySqlCommand command = new MySqlCommand(query, conn))
+                    {
+                        command.Parameters.AddWithValue("@Article", product.Article);
+                        command.Parameters.AddWithValue("@Name", product.Name);
+                        command.Parameters.AddWithValue("@Category", product.Category);
+                        command.Parameters.AddWithValue("@Price", product.Price);
+                        command.Parameters.AddWithValue("@Stock", product.Stock);
+                        command.Parameters.AddWithValue("@Unit", product.Unit);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    throw new Exception("Ошибка при добавлении товара: " + ex.Message);
+                }
+            }
         }
 
         public string DeleteProduct(string article)
