@@ -43,7 +43,6 @@ namespace E_shopLib
             }
             return result;
         }
-
         public void AddProduct(Product product)
         {
             using (MySqlConnection conn = new MySqlConnection(MyConnectionString))
@@ -74,7 +73,6 @@ namespace E_shopLib
                 }
             }
         }
-
         public string DeleteProduct(string article)
         {
             using (MySqlConnection conn = new MySqlConnection(MyConnectionString))
