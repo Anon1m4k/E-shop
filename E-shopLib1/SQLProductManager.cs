@@ -9,8 +9,6 @@ namespace E_shopLib
 {
     public class SQLProductManager : IProductRepository
     {
-        MySqlConnection conn;
-        string MyConnectionString = "server=127.0.0.1; uid=root;pwd=vertrigo; database=интернет_магазин_;";
         public List<Product> GetAllProducts()
         {
             List<Product> result = new List<Product>();
@@ -51,32 +49,7 @@ namespace E_shopLib
 
         public string DeleteProduct(string article)
         {
-            using (MySqlConnection conn = new MySqlConnection(MyConnectionString))
-            {
-                try
-                {
-                    conn.Open();
-
-                    // Сначала проверяем существование товара
-                    if (!ArticleExists(article))
-                    {
-                        return "Товар с указанным артикулом не найден";
-                    }
-
-                    string query = "DELETE FROM товар WHERE Артикул_Товара = @Article";
-                    using (MySqlCommand command = new MySqlCommand(query, conn))
-                    {
-                        command.Parameters.AddWithValue("@Article", article);
-
-                        int rowsAffected = command.ExecuteNonQuery();
-                        return rowsAffected > 0 ? string.Empty : "Не удалось удалить товар";
-                    }
-                }
-                catch (MySqlException ex)
-                {
-                    return "Ошибка при удалении товара: " + ex.Message;
-                }
-            }
+            return "";
         }
 
         public Product GetProductByArticle(string article)
@@ -115,7 +88,6 @@ namespace E_shopLib
                 }
             }
         }
-
         public bool ArticleExists(string article)
         {
             using (MySqlConnection conn = new MySqlConnection(MyConnectionString))
