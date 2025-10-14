@@ -10,7 +10,7 @@ namespace E_shopLib
     public class SQLProductManager : IProductRepository
     {
         MySqlConnection conn;
-        string MyConnectionString = "server=127.0.0.1; uid=root;pwd=vertrigo; database=internet_magazine_;";
+        private string MyConnectionString = AppSettings.ConnectionString;
         public List<Product> GetAllProducts()
         {
             List<Product> result = new List<Product>();
