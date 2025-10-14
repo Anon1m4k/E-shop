@@ -77,7 +77,7 @@
             this.buttonDelete.TabIndex = 2;
             this.buttonDelete.Text = "🗑️ Удалить";
             this.buttonDelete.UseVisualStyleBackColor = false;
-            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
+           
             // 
             // panel1
             // 

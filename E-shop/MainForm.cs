@@ -35,10 +35,5 @@ namespace E_shop
                                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-        private void buttonDelete_Click(object sender, EventArgs e)
-        {
-           
-        }
     }
 }
