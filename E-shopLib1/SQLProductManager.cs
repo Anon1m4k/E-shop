@@ -19,8 +19,8 @@ namespace E_shopLib
             {
                 conn = new MySqlConnection(MyConnectionString);
                 conn.Open();
-                const string quary = "SELECT Article, Name, Category, Price, Stock, Unit from Product;";
-                MySqlCommand command = new MySqlCommand(quary, conn);
+                const string query = "SELECT Article, Name, Category, Price, Stock, Unit from Product;";
+                MySqlCommand command = new MySqlCommand(query, conn);
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
