@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using IniParser;
+using IniParser.Model;
+
 
 namespace E_shopLib
 {
@@ -29,32 +32,26 @@ namespace E_shopLib
 
         public static void LoadSettings()
         {
-                string iniPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.ini");
+            string iniPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.ini");
 
-                string[] lines = File.ReadAllLines(iniPath);
+            var parser = new FileIniDataParser();
+            IniData data = parser.ReadFile(iniPath);
 
-                foreach (string line in lines)
-                {
-                    if (line.Contains("="))
-                    {
-                        string[] parts = line.Split('=');
-                        if (parts.Length == 2)
-                        {
-                            string key = parts[0].Trim();
-                            string value = parts[1].Trim();
+            Server = data["Database"]["Server"];
+            Database = data["Database"]["Database"];
+            UserId = data["Database"]["UserId"];
+            Password = data["Database"]["Password"];
+            Port = data["Database"]["Port"];
+            Charset = data["Database"]["Charset"];
+        }
 
-                            switch (key)
-                            {
-                                case "Server": Server = value; break;
-                                case "Database": Database = value; break;
-                                case "UserId": UserId = value; break;
-                                case "Password": Password = value; break;
-                                case "Port": Port = value; break;
-                                case "Charset": Charset = value; break;
-                        }
-                        }
-                    }
-                }         
-        }  
+        public static bool AreSettingsValid()
+        {
+            return !string.IsNullOrWhiteSpace(Server) &&
+                   !string.IsNullOrWhiteSpace(Database) &&
+                   !string.IsNullOrWhiteSpace(UserId) &&
+                   !string.IsNullOrWhiteSpace(Port);
+        }
     }
+
 }

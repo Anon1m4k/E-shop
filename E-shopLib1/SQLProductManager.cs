@@ -10,14 +10,13 @@ namespace E_shopLib
     public class SQLProductManager : IProductRepository
     {
         MySqlConnection conn;
-        private string MyConnectionString = AppSettings.ConnectionString;
         public List<Product> GetAllProducts()
         {
             List<Product> result = new List<Product>();
 
             try
             {
-                conn = new MySqlConnection(MyConnectionString);
+                conn = new MySqlConnection(AppSettings.ConnectionString);
                 conn.Open();
                 const string query = "SELECT Article, Name, Category, Price, Stock, Unit from Product;";
                 MySqlCommand command = new MySqlCommand(query, conn);
@@ -49,7 +48,7 @@ namespace E_shopLib
         }
         public string DeleteProduct(string article)
         {
-            using (MySqlConnection conn = new MySqlConnection(MyConnectionString))
+            using (MySqlConnection conn = new MySqlConnection(AppSettings.ConnectionString))
             {
                 try
                 {
@@ -79,7 +78,7 @@ namespace E_shopLib
 
         public Product GetProductByArticle(string article)
         {
-            using (MySqlConnection conn = new MySqlConnection(MyConnectionString))
+            using (MySqlConnection conn = new MySqlConnection(AppSettings.ConnectionString))
             {
                 try
                 {
@@ -115,7 +114,7 @@ namespace E_shopLib
         }
         public bool ArticleExists(string article)
         {
-            using (MySqlConnection conn = new MySqlConnection(MyConnectionString))
+            using (MySqlConnection conn = new MySqlConnection(AppSettings.ConnectionString))
             {
                 try
                 {
