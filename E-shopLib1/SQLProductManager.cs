@@ -9,28 +9,29 @@ namespace E_shopLib
 {
     public class SQLProductManager : IProductRepository
     {
+        MySqlConnection conn;
         public List<Product> GetAllProducts()
         {
             List<Product> result = new List<Product>();
 
             try
             {
-                conn = new MySqlConnection(MyConnectionString);
+                conn = new MySqlConnection(AppSettings.ConnectionString);
                 conn.Open();
-                const string quary = "SELECT Артикул_Товара, Наименование, Категория, Цена, Остаток, Ед_измерения from товар;";
-                MySqlCommand command = new MySqlCommand(quary, conn);
+                const string query = "SELECT Article, Name, Category, Price, Stock, Unit from Product;";
+                MySqlCommand command = new MySqlCommand(query, conn);
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        string Article = reader.GetString("Артикул_Товара");
+                        string Article = reader.GetString("Article");
 
                         Product product = new Product(Article);
-                        product.Name = reader.GetString("Наименование");
-                        product.Category = reader.GetString("Категория");
-                        product.Price = reader.GetDecimal("Цена");
-                        product.Stock = reader.GetInt32("Остаток");
-                        product.Unit = reader.GetString("Ед_измерения");
+                        product.Name = reader.GetString("Name");
+                        product.Category = reader.GetString("Category");
+                        product.Price = reader.GetDecimal("Price");
+                        product.Stock = reader.GetInt32("Stock");
+                        product.Unit = reader.GetString("Unit");
                         result.Add(product);
                     }
                 }
@@ -41,15 +42,49 @@ namespace E_shopLib
             }
             return result;
         }
-        public Product GetProductByArticle(string article)
+        public void AddProduct(Product product)
         {
-            using (MySqlConnection conn = new MySqlConnection(MyConnectionString))
+           
+        }
+        public string DeleteProduct(string article)
+        {
+            using (MySqlConnection conn = new MySqlConnection(AppSettings.ConnectionString))
             {
                 try
                 {
                     conn.Open();
 
-                    string query = "SELECT Артикул_Товара, Наименование, Категория, Цена, Остаток, Ед_измерения FROM товар WHERE Артикул_Товара = @Article";
+                    // Сначала проверяем существование товара
+                    if (!ArticleExists(article))
+                    {
+                        return "Товар с указанным артикулом не найден";
+                    }
+
+                    string query = "DELETE FROM Product WHERE Article = @Article";
+                    using (MySqlCommand command = new MySqlCommand(query, conn))
+                    {
+                        command.Parameters.AddWithValue("@Article", article);
+
+                        int rowsAffected = command.ExecuteNonQuery();
+                        return rowsAffected > 0 ? string.Empty : "Не удалось удалить товар";
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    return "Ошибка при удалении товара: " + ex.Message;
+                }
+            }
+        }
+
+        public Product GetProductByArticle(string article)
+        {
+            using (MySqlConnection conn = new MySqlConnection(AppSettings.ConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    string query = "SELECT Article,Name, Category, Price, Stock, Unit FROM Product WHERE Article = @Article";
                     using (MySqlCommand command = new MySqlCommand(query, conn))
                     {
                         command.Parameters.AddWithValue("@Article", article);
@@ -58,13 +93,13 @@ namespace E_shopLib
                         {
                             if (reader.Read())
                             {
-                                return new Product(reader.GetString("Артикул_Товара"))
+                                return new Product(reader.GetString("Article"))
                                 {
-                                    Name = reader.GetString("Наименование"),
-                                    Category = reader.GetString("Категория"),
-                                    Price = reader.GetDecimal("Цена"),
-                                    Stock = reader.GetInt32("Остаток"),
-                                    Unit = reader.GetString("Ед_измерения")
+                                    Name = reader.GetString("Name"),
+                                    Category = reader.GetString("Category"),
+                                    Price = reader.GetDecimal("Price"),
+                                    Stock = reader.GetInt32("Stock"),
+                                    Unit = reader.GetString("Unit")
                                 };
                             }
                         }
@@ -79,13 +114,13 @@ namespace E_shopLib
         }
         public bool ArticleExists(string article)
         {
-            using (MySqlConnection conn = new MySqlConnection(MyConnectionString))
+            using (MySqlConnection conn = new MySqlConnection(AppSettings.ConnectionString))
             {
                 try
                 {
                     conn.Open();
 
-                    string query = "SELECT COUNT(*) FROM товар WHERE Артикул_Товара = @Article";
+                    string query = "SELECT COUNT(*) FROM Product WHERE Article = @Article";
                     using (MySqlCommand command = new MySqlCommand(query, conn))
                     {
                         command.Parameters.AddWithValue("@Article", article);

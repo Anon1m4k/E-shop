@@ -144,7 +144,6 @@ namespace E_shop
             this.btnSave.TabIndex = 12;
             this.btnSave.Text = "Сохранить";
             this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
 
             // btnCancel
             this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
@@ -156,7 +155,6 @@ namespace E_shop
             this.btnCancel.TabIndex = 13;
             this.btnCancel.Text = "Отмена";
             this.btnCancel.UseVisualStyleBackColor = false;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 
             // AddProductForm
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
