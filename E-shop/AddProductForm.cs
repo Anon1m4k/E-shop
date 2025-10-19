@@ -18,41 +18,29 @@ namespace E_shop
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            try
+            var product = new Product
             {
-                var product = new Product
-                {
-                    Article = txtArticle.Text.Trim(),
-                    Name = txtName.Text.Trim(),
-                    Category = txtCategory.Text.Trim(),
-                    Price = decimal.Parse(txtPrice.Text),
-                    Stock = (int)numStock.Value,
-                    Unit = txtUnit.Text.Trim()
-                };
+                Article = txtArticle.Text.Trim(),
+                Name = txtName.Text.Trim(),
+                Category = txtCategory.Text.Trim(),
+                Price = decimal.Parse(txtPrice.Text),
+                Stock = (int)numStock.Value,
+                Unit = txtUnit.Text.Trim()
+            };
 
-                string result = catalogManager.AddProduct(product);
+            string result = catalogManager.AddProduct(product);
 
-                if (string.IsNullOrEmpty(result))
-                {
-                    NewProduct = product;
-                    DialogResult = DialogResult.OK;
-                    Close();
-                }
-                else
-                {
-                    MessageBox.Show(result, "Ошибка",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            catch (FormatException)
+            // ProductCatalogManager возвращает пустую строку при успехе
+            // и строку с ошибкой при неудаче
+            if (string.IsNullOrEmpty(result))
             {
-                MessageBox.Show("Проверьте правильность ввода цены", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                NewProduct = product;
+                DialogResult = DialogResult.OK;
+                Close();
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Ошибка: {ex.Message}", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(result, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
