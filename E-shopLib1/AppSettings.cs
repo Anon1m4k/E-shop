@@ -45,12 +45,31 @@ namespace E_shopLib
             Charset = data["Database"]["Charset"];
         }
 
-        public static bool AreSettingsValid()
+        public static (bool isValid, string errorMessage) AreSettingsValidWithDetails()
         {
-            return !string.IsNullOrWhiteSpace(Server) &&
-                   !string.IsNullOrWhiteSpace(Database) &&
-                   !string.IsNullOrWhiteSpace(UserId) &&
-                   !string.IsNullOrWhiteSpace(Port);
+            // Проверка заполненности полей
+            if (string.IsNullOrWhiteSpace(Server))
+                return (false, "Server не указан");
+            if (string.IsNullOrWhiteSpace(Database))
+                return (false, "Database не указан");
+            if (string.IsNullOrWhiteSpace(UserId))
+                return (false, "UserId не указан");
+            if (string.IsNullOrWhiteSpace(Port))
+                return (false, "Port не указан");
+
+            // Проверка подключения к БД
+            try
+            {
+                using (var connection = new MySql.Data.MySqlClient.MySqlConnection(ConnectionString))
+                {
+                    connection.Open();
+                    return (true, "Настройки корректны");
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Ошибка подключения к БД: {ex.Message}");
+            }
         }
     }
 

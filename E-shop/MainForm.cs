@@ -9,12 +9,14 @@ namespace E_shop
         SQLProductManager productManager = new SQLProductManager();
         public MainForm()
         {
-            if (!AppSettings.AreSettingsValid())
+            (bool isValid, string errorMessage) = AppSettings.AreSettingsValidWithDetails();
+            if (!isValid)
             {
-                MessageBox.Show("Ошибка загрузки настроек из config.ini");
+                MessageBox.Show($"Ошибка загрузки настроек: {errorMessage}", "Ошибка конфигурации",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Environment.Exit(1);
                 return;
             }
-
             InitializeComponent();
         }
         private void MainForm_Load(object sender, EventArgs e)
