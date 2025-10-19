@@ -161,6 +161,5 @@ namespace E_shopLib
                 }
             }
         }
-
     }
 }
