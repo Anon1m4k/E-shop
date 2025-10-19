@@ -20,7 +20,7 @@ namespace E_shop
             InitializeComponent();
         }
         private void MainForm_Load(object sender, EventArgs e)
-        {   
+        {
             try
             {
                 dataGridView.DataSource = productManager.GetAllProducts();
@@ -31,8 +31,9 @@ namespace E_shop
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private void buttonAdd_Click(object sender, EventArgs e)
+
+        private void buttonDelete_Click(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count > 0)
             {

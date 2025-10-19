@@ -44,14 +44,14 @@ namespace E_shopLib
         }
         public void AddProduct(Product product)
         {
-            using (MySqlConnection conn = new MySqlConnection(MyConnectionString))
+            using (MySqlConnection conn = new MySqlConnection(AppSettings.ConnectionString))
             {
                 try
                 {
                     conn.Open();
 
-                    string query = @"INSERT INTO товар 
-                                    (Артикул_Товара, Наименование, Категория, Цена, Остаток, Ед_измерения) 
+                    string query = @"INSERT INTO Product 
+                                    (Article, Name, Category, Price, Stock, Unit) 
                                     VALUES (@Article, @Name, @Category, @Price, @Stock, @Unit)";
 
                     using (MySqlCommand command = new MySqlCommand(query, conn))

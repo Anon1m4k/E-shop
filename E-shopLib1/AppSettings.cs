@@ -32,7 +32,8 @@ namespace E_shopLib
 
         public static void LoadSettings()
         {
-            string iniPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.ini");
+            //string iniPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "config.ini");
+            string iniPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\config.ini"));
 
             var parser = new FileIniDataParser();
             IniData data = parser.ReadFile(iniPath);
@@ -72,5 +73,4 @@ namespace E_shopLib
             }
         }
     }
-
 }
