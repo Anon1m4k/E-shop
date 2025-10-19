@@ -8,7 +8,7 @@ namespace E_shop
         private TextBox txtArticle;
         private TextBox txtName;
         private TextBox txtCategory;
-        private TextBox txtPrice;
+        private NumericUpDown numPrice;
         private NumericUpDown numStock;
         private TextBox txtUnit;
         private Button btnSave;
@@ -34,7 +34,7 @@ namespace E_shop
             this.txtArticle = new System.Windows.Forms.TextBox();
             this.txtName = new System.Windows.Forms.TextBox();
             this.txtCategory = new System.Windows.Forms.TextBox();
-            this.txtPrice = new System.Windows.Forms.TextBox();
+            this.numPrice = new System.Windows.Forms.NumericUpDown();
             this.numStock = new System.Windows.Forms.NumericUpDown();
             this.txtUnit = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
@@ -45,6 +45,7 @@ namespace E_shop
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.numPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numStock)).BeginInit();
             this.SuspendLayout();
 
@@ -98,11 +99,16 @@ namespace E_shop
             this.label4.TabIndex = 6;
             this.label4.Text = "Цена:";
 
-            // txtPrice
-            this.txtPrice.Location = new System.Drawing.Point(120, 90);
-            this.txtPrice.Name = "txtPrice";
-            this.txtPrice.Size = new System.Drawing.Size(200, 20);
-            this.txtPrice.TabIndex = 7;
+            // numPrice
+            this.numPrice.DecimalPlaces = 2;
+            this.numPrice.Location = new System.Drawing.Point(120, 90);
+            this.numPrice.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
+            this.numPrice.Minimum = new decimal(new int[] { 0, 0, 0, 0 });
+            this.numPrice.Name = "numPrice";
+            this.numPrice.Size = new System.Drawing.Size(200, 20);
+            this.numPrice.TabIndex = 7;
+            this.numPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.numPrice.ThousandsSeparator = true;
 
             // label5
             this.label5.AutoSize = true;
@@ -144,6 +150,7 @@ namespace E_shop
             this.btnSave.TabIndex = 12;
             this.btnSave.Text = "Сохранить";
             this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
 
             // btnCancel
             this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
@@ -155,6 +162,7 @@ namespace E_shop
             this.btnCancel.TabIndex = 13;
             this.btnCancel.Text = "Отмена";
             this.btnCancel.UseVisualStyleBackColor = false;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 
             // AddProductForm
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -166,7 +174,7 @@ namespace E_shop
             this.Controls.Add(this.label6);
             this.Controls.Add(this.numStock);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.txtPrice);
+            this.Controls.Add(this.numPrice);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtCategory);
             this.Controls.Add(this.label3);
@@ -177,6 +185,7 @@ namespace E_shop
             this.Name = "AddProductForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Добавление товара";
+            ((System.ComponentModel.ISupportInitialize)(this.numPrice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numStock)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

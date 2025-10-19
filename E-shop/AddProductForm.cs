@@ -23,7 +23,7 @@ namespace E_shop
                 Article = txtArticle.Text.Trim(),
                 Name = txtName.Text.Trim(),
                 Category = txtCategory.Text.Trim(),
-                Price = decimal.Parse(txtPrice.Text),
+                Price = numPrice.Value,
                 Stock = (int)numStock.Value,
                 Unit = txtUnit.Text.Trim()
             };
