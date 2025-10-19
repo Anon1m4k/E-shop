@@ -31,7 +31,25 @@ namespace E_shop
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         private void buttonAdd_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ProductCatalogManager catalogManager = new ProductCatalogManager(productManager);
+                AddProductForm addForm = new AddProductForm(catalogManager);
+                if (addForm.ShowDialog() == DialogResult.OK)
+                {
+                    // Обновляем таблицу после добавления
+                    dataGridView.DataSource = productManager.GetAllProducts();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при добавлении товара: {ex.Message}", "Ошибка",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         private void buttonDelete_Click(object sender, EventArgs e)
         {
