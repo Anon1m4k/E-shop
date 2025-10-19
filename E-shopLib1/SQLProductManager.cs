@@ -42,7 +42,7 @@ namespace E_shopLib
             }
             return result;
         }
-        public void AddProduct(Product product)
+        public string AddProduct(Product product)
         {
             using (MySqlConnection conn = new MySqlConnection(AppSettings.ConnectionString))
             {
@@ -65,10 +65,11 @@ namespace E_shopLib
 
                         command.ExecuteNonQuery();
                     }
+                    return $"Товар успешно добавлен.";
                 }
                 catch (MySqlException ex)
                 {
-                    throw new Exception("Ошибка при добавлении товара: " + ex.Message);
+                    return "Ошибка при добавлении товара: " + ex.Message;
                 }
             }
         }
