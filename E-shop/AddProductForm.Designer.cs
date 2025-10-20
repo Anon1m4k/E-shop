@@ -48,99 +48,60 @@ namespace E_shop
             ((System.ComponentModel.ISupportInitialize)(this.numPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numStock)).BeginInit();
             this.SuspendLayout();
-
-            // label1
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(54, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Артикул:";
-
+            // 
             // txtArticle
+            // 
             this.txtArticle.Location = new System.Drawing.Point(120, 12);
             this.txtArticle.Name = "txtArticle";
             this.txtArticle.Size = new System.Drawing.Size(200, 20);
             this.txtArticle.TabIndex = 1;
-
-            // label2
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 41);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(86, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Наименование:";
-
+            // 
             // txtName
+            // 
             this.txtName.Location = new System.Drawing.Point(120, 38);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(200, 20);
             this.txtName.TabIndex = 3;
-
-            // label3
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 67);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(63, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Категория:";
-
+            // 
             // txtCategory
+            // 
             this.txtCategory.Location = new System.Drawing.Point(120, 64);
             this.txtCategory.Name = "txtCategory";
             this.txtCategory.Size = new System.Drawing.Size(200, 20);
             this.txtCategory.TabIndex = 5;
-
-            // label4
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 93);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(36, 13);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "Цена:";
-
+            // 
             // numPrice
+            // 
             this.numPrice.DecimalPlaces = 2;
             this.numPrice.Location = new System.Drawing.Point(120, 90);
-            this.numPrice.Maximum = new decimal(new int[] { 1000000, 0, 0, 0 });
-            this.numPrice.Minimum = new decimal(new int[] { 0, 0, 0, 0 });
+            this.numPrice.Maximum = new decimal(new int[] {
+            1000000,
+            0,
+            0,
+            0});
             this.numPrice.Name = "numPrice";
             this.numPrice.Size = new System.Drawing.Size(200, 20);
             this.numPrice.TabIndex = 7;
             this.numPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.numPrice.ThousandsSeparator = true;
-
-            // label5
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 119);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(52, 13);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "Остаток:";
-
+            // 
             // numStock
+            // 
             this.numStock.Location = new System.Drawing.Point(120, 117);
-            this.numStock.Minimum = new decimal(new int[] { 0, 0, 0, 0 });
             this.numStock.Name = "numStock";
             this.numStock.Size = new System.Drawing.Size(200, 20);
             this.numStock.TabIndex = 9;
-
-            // label6
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 145);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(82, 13);
-            this.label6.TabIndex = 10;
-            this.label6.Text = "Ед. измерения:";
-
+            // 
             // txtUnit
+            // 
             this.txtUnit.Location = new System.Drawing.Point(120, 142);
             this.txtUnit.Name = "txtUnit";
             this.txtUnit.Size = new System.Drawing.Size(200, 20);
             this.txtUnit.TabIndex = 11;
             this.txtUnit.Text = "шт";
-
+            // 
             // btnSave
+            // 
             this.btnSave.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.ForeColor = System.Drawing.Color.White;
@@ -150,8 +111,10 @@ namespace E_shop
             this.btnSave.TabIndex = 12;
             this.btnSave.Text = "Сохранить";
             this.btnSave.UseVisualStyleBackColor = false;
-
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
             // btnCancel
+            // 
             this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.ForeColor = System.Drawing.Color.White;
@@ -161,8 +124,64 @@ namespace E_shop
             this.btnCancel.TabIndex = 13;
             this.btnCancel.Text = "Отмена";
             this.btnCancel.UseVisualStyleBackColor = false;
-
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 15);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(51, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Артикул:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 41);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(86, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Наименование:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 67);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(63, 13);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Категория:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 93);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(36, 13);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "Цена:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 119);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(52, 13);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "Остаток:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(12, 145);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(85, 13);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Ед. измерения:";
+            // 
             // AddProductForm
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 221);
@@ -187,6 +206,7 @@ namespace E_shop
             ((System.ComponentModel.ISupportInitialize)(this.numStock)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
     }
 }

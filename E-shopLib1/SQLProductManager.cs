@@ -73,6 +73,7 @@ namespace E_shopLib
                     return "Ошибка при добавлении товара: " + ex.Message;
                 }
             }
+        }
 
         public string DeleteProduct(string article)
         {
