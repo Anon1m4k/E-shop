@@ -53,7 +53,6 @@
             this.dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView.Size = new System.Drawing.Size(1005, 361);
             this.dataGridView.TabIndex = 0;
-           
             // 
             // buttonAdd
             // 
@@ -67,6 +66,7 @@
             this.buttonAdd.TabIndex = 1;
             this.buttonAdd.Text = "➕ Добавить товар";
             this.buttonAdd.UseVisualStyleBackColor = false;
+            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
             // 
             // buttonDelete
             // 
@@ -80,7 +80,7 @@
             this.buttonDelete.TabIndex = 2;
             this.buttonDelete.Text = "🗑️ Удалить";
             this.buttonDelete.UseVisualStyleBackColor = false;
-           
+            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
             // 
             // panel1
             // 
@@ -96,7 +96,7 @@
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1031, 425);
