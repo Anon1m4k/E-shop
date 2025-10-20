@@ -16,7 +16,6 @@ namespace E_shopLib
         public static string Port { get; set; }
         public static string Charset { get; set; }
 
-
         public static string ConnectionString
         {
             get

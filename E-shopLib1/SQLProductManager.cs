@@ -42,6 +42,7 @@ namespace E_shopLib
             }
             return result;
         }
+
         public string AddProduct(Product product)
         {
             using (MySqlConnection conn = new MySqlConnection(AppSettings.ConnectionString))
@@ -72,7 +73,7 @@ namespace E_shopLib
                     return "Ошибка при добавлении товара: " + ex.Message;
                 }
             }
-        }
+
         public string DeleteProduct(string article)
         {
             using (MySqlConnection conn = new MySqlConnection(AppSettings.ConnectionString))

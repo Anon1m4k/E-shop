@@ -20,7 +20,7 @@ namespace E_shop
             InitializeComponent();
         }
         private void MainForm_Load(object sender, EventArgs e)
-        {
+        {   
             try
             {
                 dataGridView.DataSource = productManager.GetAllProducts();
