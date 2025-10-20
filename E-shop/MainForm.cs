@@ -32,6 +32,17 @@ namespace E_shop
             }
         }
 
+        private void buttonAdd_Click(object sender, EventArgs e)
+        {
+            ProductCatalogManager catalogManager = new ProductCatalogManager(productManager);
+            AddProductForm addForm = new AddProductForm(catalogManager);
+            if (addForm.ShowDialog() == DialogResult.OK)
+            {
+                // Обновляем таблицу после добавления
+                dataGridView.DataSource = productManager.GetAllProducts();
+            }
+        }
+
         private void buttonDelete_Click(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count > 0)

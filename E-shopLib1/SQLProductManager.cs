@@ -42,10 +42,38 @@ namespace E_shopLib
             }
             return result;
         }
-        public void AddProduct(Product product)
+
+        public string AddProduct(Product product)
         {
-           
-        }
+            using (MySqlConnection conn = new MySqlConnection(AppSettings.ConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    string query = @"INSERT INTO Product 
+                                    (Article, Name, Category, Price, Stock, Unit) 
+                                    VALUES (@Article, @Name, @Category, @Price, @Stock, @Unit)";
+
+                    using (MySqlCommand command = new MySqlCommand(query, conn))
+                    {
+                        command.Parameters.AddWithValue("@Article", product.Article);
+                        command.Parameters.AddWithValue("@Name", product.Name);
+                        command.Parameters.AddWithValue("@Category", product.Category);
+                        command.Parameters.AddWithValue("@Price", product.Price);
+                        command.Parameters.AddWithValue("@Stock", product.Stock);
+                        command.Parameters.AddWithValue("@Unit", product.Unit);
+
+                        command.ExecuteNonQuery();
+                    }
+                    return $"Товар успешно добавлен.";
+                }
+                catch (MySqlException ex)
+                {
+                    return "Ошибка при добавлении товара: " + ex.Message;
+                }
+            }
+
         public string DeleteProduct(string article)
         {
             using (MySqlConnection conn = new MySqlConnection(AppSettings.ConnectionString))
@@ -135,6 +163,5 @@ namespace E_shopLib
                 }
             }
         }
-
     }
 }
