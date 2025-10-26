@@ -105,6 +105,11 @@ namespace E_shopLib
             }
         }
 
+        public string UpdateProduct(Product product)
+        {
+            return $"Товар успешно обновлён.";
+        }
+
         public Product GetProductByArticle(string article)
         {
             using (MySqlConnection conn = new MySqlConnection(AppSettings.ConnectionString))
