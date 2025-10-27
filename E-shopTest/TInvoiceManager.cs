@@ -98,5 +98,34 @@ namespace E_shopTest
             Assert.AreEqual("Количество товара не может быть отрицательным", result);
             mockRepository.Verify(r => r.AddInvoice(It.IsAny<Invoice>()), Times.Never);
         }
+        [TestMethod]
+        public void TestAddInvoiceWithEmptyArticle()
+        {
+            var mockRepository = new Mock<IInvoiceRepository>();
+            var manager = new InvoiceManager(mockRepository.Object);
+
+            var invalidInvoice = new Invoice
+            {
+                ID_Invoice = 4,
+                Date = new DateTime(2025, 10, 26),
+                Items = new List<InvoiceItem>
+            {
+            new InvoiceItem
+            {
+                Article = "",
+                Name = "Мышка",
+                Category = "Техника",
+                Price = 1000,
+                Quantity = 10,
+                Unit = "шт"
+            }
+            }
+            };
+ 
+            var result = manager.AddInvoice(invalidInvoice);
+
+            Assert.AreEqual("Артикул товара не может быть пустым", result);
+            mockRepository.Verify(r => r.AddInvoice(It.IsAny<Invoice>()), Times.Never);
+        }
     }
 }
