@@ -225,5 +225,37 @@ namespace E_shopTest
             Assert.AreEqual("Категория должна быть заполнена", result);
             mockRepository.Verify(r => r.AddInvoice(It.IsAny<Invoice>()), Times.Never);
         }
+        [TestMethod]
+        public void TestAddInvoiceWithEmptyUnit()
+        {
+            // Arrange
+            var mockRepository = new Mock<IInvoiceRepository>();
+            var manager = new InvoiceManager(mockRepository.Object);
+
+            var invalidInvoice = new Invoice
+            {
+                ID_Invoice = 8,
+                Date = new DateTime(2025, 10, 26),
+                Items = new List<InvoiceItem>
+            {
+            new InvoiceItem
+            {
+                Article = "657",
+                Name = "Ноутбук",
+                Category = "Техника",
+                Price = 1000,
+                Quantity = 10,
+                Unit = ""
+            }
+            }
+            };
+
+            // Act
+            var result = manager.AddInvoice(invalidInvoice);
+
+            // Assert
+            Assert.AreEqual("Единица измерения должна быть заполнена", result);
+            mockRepository.Verify(r => r.AddInvoice(It.IsAny<Invoice>()), Times.Never);
+        }
     }
 }
