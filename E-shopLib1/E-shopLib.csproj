@@ -101,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppSettings.cs" />
+    <Compile Include="Invoice.cs" />
     <Compile Include="IProductRepository.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="ProductCatalogManager.cs" />
