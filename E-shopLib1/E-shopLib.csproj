@@ -104,6 +104,7 @@
     <Compile Include="IInvoiceRepository.cs" />
     <Compile Include="Invoice.cs" />
     <Compile Include="InvoiceItem.cs" />
+    <Compile Include="InvoiceManager.cs" />
     <Compile Include="IProductRepository.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="ProductCatalogManager.cs" />
