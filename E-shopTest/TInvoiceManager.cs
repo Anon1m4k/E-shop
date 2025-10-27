@@ -196,5 +196,34 @@ namespace E_shopTest
             Assert.AreEqual("Наименование товара не может быть пустым", result);
             mockRepository.Verify(r => r.AddInvoice(It.IsAny<Invoice>()), Times.Never);
         }
+        [TestMethod]
+        public void TestAddInvoiceWithEmptyCategory()
+        {
+            var mockRepository = new Mock<IInvoiceRepository>();
+            var manager = new InvoiceManager(mockRepository.Object);
+
+            var invalidInvoice = new Invoice
+            {
+                ID_Invoice = 7,
+                Date = new DateTime(2025, 10, 26),
+                Items = new List<InvoiceItem>
+            {
+            new InvoiceItem
+            {
+                Article = "567",
+                Name = "Клавиатура",
+                Category = "",
+                Price = 1000,
+                Quantity = 10,
+                Unit = "шт"
+            }
+            }
+            };
+
+            var result = manager.AddInvoice(invalidInvoice);
+
+            Assert.AreEqual("Категория должна быть заполнена", result);
+            mockRepository.Verify(r => r.AddInvoice(It.IsAny<Invoice>()), Times.Never);
+        }
     }
 }
