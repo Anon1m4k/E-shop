@@ -167,5 +167,34 @@ namespace E_shopTest
             Assert.AreEqual("Приходная накладная успешно добавлена", result);
             mockRepository.Verify(r => r.AddInvoice(validInvoice), Times.Once);
         }
+        [TestMethod]
+        public void TestAddInvoiceWithEmptyName()
+        {
+            var mockRepository = new Mock<IInvoiceRepository>();
+            var manager = new InvoiceManager(mockRepository.Object);
+
+            var invalidInvoice = new Invoice
+            {
+                ID_Invoice = 6,
+                Date = new DateTime(2025, 10, 26),
+                Items = new List<InvoiceItem>
+            {
+            new InvoiceItem
+            {
+                Article = "567",
+                Name = "",
+                Category = "Техника",
+                Price = 1000,
+                Quantity = 10,
+                Unit = "шт"
+            }
+            }
+            };
+
+            var result = manager.AddInvoice(invalidInvoice);
+
+            Assert.AreEqual("Наименование товара не может быть пустым", result);
+            mockRepository.Verify(r => r.AddInvoice(It.IsAny<Invoice>()), Times.Never);
+        }
     }
 }
