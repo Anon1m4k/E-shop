@@ -1,21 +1,26 @@
 ﻿using E_shopLib;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 
 namespace E_shopLib1
 {
     public class Invoice
     {
-        private int IdInvoice_;
-        public int IdInvoice
+        private int _idInvoice;
+
+        public int ID_Invoice
         {
-            get { return IdInvoice_; }
-           
+            get { return _idInvoice; }
         }
+
         public DateTime Date { get; set; }
         public List<Product> Items { get; set; }
+
+        public Invoice(int id)
+        {
+            _idInvoice = id;
+            Date = DateTime.Now;
+            Items = new List<Product>();
+        }
     }
 }
