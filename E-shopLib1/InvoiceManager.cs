@@ -8,10 +8,10 @@ namespace E_shopLib1
 {
     public class InvoiceManager
     {
-        private IInvoiceRepository repository;
-        public InvoiceManager(IInvoiceRepository repоsitori_)
+        private IInvoiceRepository repository_;
+        public InvoiceManager(IInvoiceRepository repоsitori)
         {
-            repository = repоsitori_;
+            repository_ = repоsitori;
         }
         public string AddInvoice(Invoice invoice)
         {
