@@ -1,4 +1,5 @@
-﻿using System;
+﻿using E_shopLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,6 @@ namespace E_shopLib1
            
         }
         public DateTime Date { get; set; }
-        public List<InvoiceItem> Items { get; set; }
+        public List<Product> Items { get; set; }
     }
 }
