@@ -60,6 +60,38 @@ namespace E_shopTest
             Assert.AreEqual("Приходная накладная успешно добавлена", result);
             mockRepository.Verify(r => r.AddInvoice(validInvoice), Times.Once);
         }
+        [TestMethod]
+        [DataRow("123", "Компьютер", "Техника", "шт", -1000.0, 10, "Цена товара должна быть положительной")] // невалидная цена
+        [DataRow("12", "Монитор", "Техника", "шт", 1000.0, -10, "Количество товара не может быть отрицательным")] // невалидное количество 
+        [DataRow("", "Мышка", "Техника", "шт", 1000.0, 10, "Артикул товара не может быть пустым")] // отсутствие артикула
+        [DataRow("567", "", "Техника", "шт", 1000.0, 10, "Наименование товара не может быть пустым")] // отсутствие наименования
+        [DataRow("568", "Клавиатура", "", "шт", 1000.0, 10, "Категория должна быть заполнена")] // отсутствие категории
+        [DataRow("657", "Ноутбук", "Техника", "", 1000.0, 10, "Единица измерения должна быть заполнена")] // отсутствие единицы измерения
+        public void TestAddInvoiceWithInvalidData(string article, string name, string category, string unit, double price, int stock, string expectedErrorMessage)
+        {
+            var mockRepository = new Mock<IInvoiceRepository>();
+            var manager = new InvoiceManager(mockRepository.Object);
+
+            var invalidInvoice = new Invoice(1);
+            invalidInvoice.Date = new DateTime(2025, 10, 26);
+            invalidInvoice.Items = new List<Product>
+            {
+                new Product
+                {
+                    Article = article,
+                    Name = name,
+                    Category = category,
+                    Price = (decimal)price,
+                    Stock = stock,
+                    Unit = unit
+                }
+            };
+
+            string result = manager.AddInvoice(invalidInvoice);
+
+            Assert.AreEqual(expectedErrorMessage, result);
+            mockRepository.Verify(r => r.AddInvoice(It.IsAny<Invoice>()), Times.Never);
+        }
 
     }
 }
