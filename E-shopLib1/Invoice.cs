@@ -8,7 +8,12 @@ namespace E_shopLib1
 {
     public class Invoice
     {
-        public int ID_Invoice { get; set; }
+        private int IdInvoice_;
+        public int IdInvoice
+        {
+            get { return IdInvoice_; }
+           
+        }
         public DateTime Date { get; set; }
         public List<InvoiceItem> Items { get; set; }
     }
