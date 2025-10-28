@@ -291,12 +291,14 @@ namespace E_shopTest
                 Stock = 8,
                 Unit = "шт"
             };
+            mockRepository.Setup(r => r.UpdateProduct(validProduct)).Returns(string.Empty);
 
             // Act
             var result = catalog.UpdateProduct(validProduct);
 
             // Assert
             Assert.AreEqual(string.Empty, result, "При успешном обновлении должна возвращаться пустая строка");
+            mockRepository.Verify(r => r.UpdateProduct(validProduct), Times.Once);
         }
 
         [TestMethod]
