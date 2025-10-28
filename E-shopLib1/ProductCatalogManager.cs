@@ -85,8 +85,7 @@ namespace E_shop
             {
                 return "Единица измерения не может быть пустой";
             }
-            repository.UpdateProduct(product);
-            return string.Empty;
+            return repository.UpdateProduct(product);
         }
     }
 }
