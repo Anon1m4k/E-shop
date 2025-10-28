@@ -1,6 +1,7 @@
 ﻿using E_shopLib;
 using E_shopLib1;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,21 +18,19 @@ namespace E_shopTest
             var mockRepository = new Mock<IInvoiceRepository>();
             var manager = new InvoiceManager(mockRepository.Object);
 
-            var validInvoice = new Invoice
-            {
-                
-                Date = new DateTime(2025, 10, 26),
-                Items = new List<Product>
+            // Используем конструктор - программа сама задает ID
+            var validInvoice = new Invoice(1); // ID задается здесь
+            validInvoice.Date = new DateTime(2025, 10, 26);
+            validInvoice.Items = new List<Product>
             {
             new Product
             {
-                Article = "12345",
-                Name = "Смартфон",
-                Category = "Техника",
-                Price = 1000,
-                Stock = 10,
-                Unit = "шт"
-            }
+            Article = "12345",
+            Name = "Смартфон",
+            Category = "Техника",
+            Price = 1000,
+            Stock = 10,
+            Unit = "шт"
             }
             };
 
@@ -49,12 +48,11 @@ namespace E_shopTest
             var mockRepository = new Mock<IInvoiceRepository>();
             var manager = new InvoiceManager(mockRepository.Object);
 
-            var invalidInvoice = new Invoice
-            {
-               
-                Date = new DateTime(2025, 10, 26),
-                Items = new List<Product>
-            {
+
+            var invalidInvoice = new Invoice(1); // ID задается здесь
+            invalidInvoice.Date = new DateTime(2025, 10, 26);
+            invalidInvoice.Items = new List<Product>
+            {        
             new Product
             {
                 Article = "123",
@@ -63,8 +61,7 @@ namespace E_shopTest
                 Price = -1000,
                 Stock = 10,
                 Unit = "шт"
-            }
-            }
+            }           
             };
 
             var result = manager.AddInvoice(invalidInvoice);
@@ -78,12 +75,10 @@ namespace E_shopTest
             var mockRepository = new Mock<IInvoiceRepository>();
             var manager = new InvoiceManager(mockRepository.Object);
 
-            var invalidInvoice = new Invoice
-            {
-                
-                Date = new DateTime(2025, 10, 26),
-                Items = new List<Product>
-            {
+            var invalidInvoice = new Invoice(1); // ID задается здесь
+            invalidInvoice.Date = new DateTime(2025, 10, 26);
+            invalidInvoice.Items = new List<Product>
+            { 
             new Product
             {
                 Article = "12",
@@ -92,8 +87,7 @@ namespace E_shopTest
                 Price = 1000,
                 Stock = -10,
                 Unit = "шт"
-            }
-            }
+            }            
             };
 
             var result = manager.AddInvoice(invalidInvoice);
@@ -107,12 +101,10 @@ namespace E_shopTest
             var mockRepository = new Mock<IInvoiceRepository>();
             var manager = new InvoiceManager(mockRepository.Object);
 
-            var invalidInvoice = new Invoice
-            {
-                
-                Date = new DateTime(2025, 10, 26),
-                Items = new List<Product>
-            {
+            var invalidInvoice = new Invoice(1); // ID задается здесь
+            invalidInvoice.Date = new DateTime(2025, 10, 26);
+            invalidInvoice.Items = new List<Product>
+            {            
             new Product
             {
                 Article = "",
@@ -121,8 +113,7 @@ namespace E_shopTest
                 Price = 1000,
                 Stock = 10,
                 Unit = "шт"
-            }
-            }
+            }            
             };
  
             var result = manager.AddInvoice(invalidInvoice);
@@ -136,11 +127,9 @@ namespace E_shopTest
             var mockRepository = new Mock<IInvoiceRepository>();
             var manager = new InvoiceManager(mockRepository.Object);
 
-            var validInvoice = new Invoice
-            {
-                
-                Date = new DateTime(2025, 10, 26),
-                Items = new List<Product>
+            var validInvoice = new Invoice(1); // ID задается здесь
+            validInvoice.Date = new DateTime(2025, 10, 26);
+            validInvoice.Items = new List<Product>
             {
             new Product
             {
@@ -159,8 +148,7 @@ namespace E_shopTest
                 Price = 1000,
                 Stock = 10,
                 Unit = "шт"
-            }
-            }
+            }       
             };
 
             mockRepository.Setup(r => r.AddInvoice(validInvoice)).Returns("Приходная накладная успешно добавлена");
@@ -176,11 +164,9 @@ namespace E_shopTest
             var mockRepository = new Mock<IInvoiceRepository>();
             var manager = new InvoiceManager(mockRepository.Object);
 
-            var invalidInvoice = new Invoice
-            {
-               
-                Date = new DateTime(2025, 10, 26),
-                Items = new List<Product>
+            var invalidInvoice = new Invoice(1); // ID задается здесь
+            invalidInvoice.Date = new DateTime(2025, 10, 26);
+            invalidInvoice.Items = new List<Product>
             {
             new Product
             {
@@ -190,8 +176,7 @@ namespace E_shopTest
                 Price = 1000,
                 Stock = 10,
                 Unit = "шт"
-            }
-            }
+            }           
             };
 
             var result = manager.AddInvoice(invalidInvoice);
@@ -205,11 +190,9 @@ namespace E_shopTest
             var mockRepository = new Mock<IInvoiceRepository>();
             var manager = new InvoiceManager(mockRepository.Object);
 
-            var invalidInvoice = new Invoice
-            {
-               
-                Date = new DateTime(2025, 10, 26),
-                Items = new List<Product>
+            var invalidInvoice = new Invoice(1); // ID задается здесь
+            invalidInvoice.Date = new DateTime(2025, 10, 26);
+            invalidInvoice.Items = new List<Product>
             {
             new Product
             {
@@ -219,8 +202,7 @@ namespace E_shopTest
                 Price = 1000,
                 Stock = 10,
                 Unit = "шт"
-            }
-            }
+            }           
             };
 
             var result = manager.AddInvoice(invalidInvoice);
@@ -235,11 +217,9 @@ namespace E_shopTest
             var mockRepository = new Mock<IInvoiceRepository>();
             var manager = new InvoiceManager(mockRepository.Object);
 
-            var invalidInvoice = new Invoice
-            {
-                
-                Date = new DateTime(2025, 10, 26),
-                Items = new List<Product>
+            var invalidInvoice = new Invoice(1); // ID задается здесь
+            invalidInvoice.Date = new DateTime(2025, 10, 26);
+            invalidInvoice.Items = new List<Product>
             {
             new Product
             {
@@ -249,8 +229,7 @@ namespace E_shopTest
                 Price = 1000,
                 Stock = 10,
                 Unit = ""
-            }
-            }
+            }         
             };
 
             // Act
