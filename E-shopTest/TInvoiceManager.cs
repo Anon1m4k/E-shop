@@ -19,7 +19,7 @@ namespace E_shopTest
 
             var validInvoice = new Invoice
             {
-                ID_Invoice = 1,
+                
                 Date = new DateTime(2025, 10, 26),
                 Items = new List<Product>
             {
@@ -51,7 +51,7 @@ namespace E_shopTest
 
             var invalidInvoice = new Invoice
             {
-                ID_Invoice = 2,
+               
                 Date = new DateTime(2025, 10, 26),
                 Items = new List<Product>
             {
@@ -80,7 +80,7 @@ namespace E_shopTest
 
             var invalidInvoice = new Invoice
             {
-                ID_Invoice = 3,
+                
                 Date = new DateTime(2025, 10, 26),
                 Items = new List<Product>
             {
@@ -109,7 +109,7 @@ namespace E_shopTest
 
             var invalidInvoice = new Invoice
             {
-                ID_Invoice = 4,
+                
                 Date = new DateTime(2025, 10, 26),
                 Items = new List<Product>
             {
@@ -138,7 +138,7 @@ namespace E_shopTest
 
             var validInvoice = new Invoice
             {
-                ID_Invoice = 5,
+                
                 Date = new DateTime(2025, 10, 26),
                 Items = new List<Product>
             {
@@ -178,7 +178,7 @@ namespace E_shopTest
 
             var invalidInvoice = new Invoice
             {
-                ID_Invoice = 6,
+               
                 Date = new DateTime(2025, 10, 26),
                 Items = new List<Product>
             {
@@ -207,7 +207,7 @@ namespace E_shopTest
 
             var invalidInvoice = new Invoice
             {
-                ID_Invoice = 7,
+               
                 Date = new DateTime(2025, 10, 26),
                 Items = new List<Product>
             {
@@ -237,7 +237,7 @@ namespace E_shopTest
 
             var invalidInvoice = new Invoice
             {
-                ID_Invoice = 8,
+                
                 Date = new DateTime(2025, 10, 26),
                 Items = new List<Product>
             {
