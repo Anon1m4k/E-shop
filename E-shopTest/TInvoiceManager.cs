@@ -1,4 +1,7 @@
-﻿using System;
+﻿using E_shopLib;
+using E_shopLib1;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,15 +21,15 @@ namespace E_shopTest
             {
                 ID_Invoice = 1,
                 Date = new DateTime(2025, 10, 26),
-                Items = new List<InvoiceItem>
+                Items = new List<Product>
             {
-            new InvoiceItem
+            new Product
             {
                 Article = "12345",
                 Name = "Смартфон",
                 Category = "Техника",
                 Price = 1000,
-                Quantity = 10,
+                Stock = 10,
                 Unit = "шт"
             }
             }
@@ -50,15 +53,15 @@ namespace E_shopTest
             {
                 ID_Invoice = 2,
                 Date = new DateTime(2025, 10, 26),
-                Items = new List<InvoiceItem>
+                Items = new List<Product>
             {
-            new InvoiceItem
+            new Product
             {
                 Article = "123",
                 Name = "Компьютер",
                 Category = "Техника",
                 Price = -1000,
-                Quantity = 10,
+                Stock = 10,
                 Unit = "шт"
             }
             }
@@ -79,15 +82,15 @@ namespace E_shopTest
             {
                 ID_Invoice = 3,
                 Date = new DateTime(2025, 10, 26),
-                Items = new List<InvoiceItem>
+                Items = new List<Product>
             {
-            new InvoiceItem
+            new Product
             {
                 Article = "12",
                 Name = "Монитор",
                 Category = "Техника",
                 Price = 1000,
-                Quantity = -10,
+                Stock = -10,
                 Unit = "шт"
             }
             }
@@ -108,15 +111,15 @@ namespace E_shopTest
             {
                 ID_Invoice = 4,
                 Date = new DateTime(2025, 10, 26),
-                Items = new List<InvoiceItem>
+                Items = new List<Product>
             {
-            new InvoiceItem
+            new Product
             {
                 Article = "",
                 Name = "Мышка",
                 Category = "Техника",
                 Price = 1000,
-                Quantity = 10,
+                Stock = 10,
                 Unit = "шт"
             }
             }
@@ -137,24 +140,24 @@ namespace E_shopTest
             {
                 ID_Invoice = 5,
                 Date = new DateTime(2025, 10, 26),
-                Items = new List<InvoiceItem>
+                Items = new List<Product>
             {
-            new InvoiceItem
+            new Product
             {
                 Article = "22",
                 Name = "Мышка компьютерная",
                 Category = "Техника",
                 Price = 1000,
-                Quantity = 10,
+                Stock = 10,
                 Unit = "шт"
             },
-            new InvoiceItem
+            new Product
             {
                 Article = "33",
                 Name = "Коврик для мышки",
                 Category = "Аксессуары",
                 Price = 1000,
-                Quantity = 10,
+                Stock = 10,
                 Unit = "шт"
             }
             }
@@ -177,15 +180,15 @@ namespace E_shopTest
             {
                 ID_Invoice = 6,
                 Date = new DateTime(2025, 10, 26),
-                Items = new List<InvoiceItem>
+                Items = new List<Product>
             {
-            new InvoiceItem
+            new Product
             {
                 Article = "567",
                 Name = "",
                 Category = "Техника",
                 Price = 1000,
-                Quantity = 10,
+                Stock = 10,
                 Unit = "шт"
             }
             }
@@ -206,15 +209,15 @@ namespace E_shopTest
             {
                 ID_Invoice = 7,
                 Date = new DateTime(2025, 10, 26),
-                Items = new List<InvoiceItem>
+                Items = new List<Product>
             {
-            new InvoiceItem
+            new Product
             {
                 Article = "567",
                 Name = "Клавиатура",
                 Category = "",
                 Price = 1000,
-                Quantity = 10,
+                Stock = 10,
                 Unit = "шт"
             }
             }
@@ -236,15 +239,15 @@ namespace E_shopTest
             {
                 ID_Invoice = 8,
                 Date = new DateTime(2025, 10, 26),
-                Items = new List<InvoiceItem>
+                Items = new List<Product>
             {
-            new InvoiceItem
+            new Product
             {
                 Article = "657",
                 Name = "Ноутбук",
                 Category = "Техника",
                 Price = 1000,
-                Quantity = 10,
+                Stock = 10,
                 Unit = ""
             }
             }
