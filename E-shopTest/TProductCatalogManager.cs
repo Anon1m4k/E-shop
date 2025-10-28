@@ -275,5 +275,119 @@ namespace E_shopTest
             var products = _mockRepository.Object.GetAllProducts();
             Assert.AreEqual(0, products.Count, "Каталог должен оставаться пустым");
         }
+
+        [TestMethod]
+        public void TestUpdateProductWithValidData()
+        {
+            // Arrange
+            var mockRepository = new Mock<IProductRepository>();
+            var catalog = new ProductCatalogManager(mockRepository.Object);
+
+            var validProduct = new Product
+            {
+                Article = "12345",
+                Name = "Новый Смартфон",
+                Price = 1200,
+                Stock = 8,
+                Unit = "шт"
+            };
+
+            // Act
+            var result = catalog.UpdateProduct(validProduct);
+
+            // Assert
+            Assert.AreEqual(string.Empty, result, "При успешном обновлении должна возвращаться пустая строка");
+        }
+
+        [TestMethod]
+        public void TestUpdateProductWithInvalidName()
+        {
+            // Arrange
+            var mockRepository = new Mock<IProductRepository>();
+            var catalog = new ProductCatalogManager(mockRepository.Object);
+
+            var invalidProduct = new Product
+            {
+                Article = "12345",
+                Name = "",
+                Price = 1000,
+                Stock = 10,
+                Unit = "шт"
+            };
+
+            // Act
+            var result = catalog.UpdateProduct(invalidProduct);
+
+            // Assert
+            Assert.AreEqual("Наименование товара не может быть пустым", result);
+        }
+
+        public void TestUpdateProductWithInvalidPrice()
+        {
+            // Arrange
+            var mockRepository = new Mock<IProductRepository>();
+            var catalog = new ProductCatalogManager(mockRepository.Object);
+
+            var invalidProduct = new Product
+            {
+                Article = "12345",
+                Name = "Смартфон",
+                Price = -500,
+                Stock = 10,
+                Unit = "шт"
+            };
+
+            // Act
+            var result = catalog.UpdateProduct(invalidProduct);
+
+            // Assert
+            Assert.AreEqual("Цена товара должна быть положительной", result);
+        }
+
+        [TestMethod]
+        public void TestUpdateProductWithNegativeStock()
+        {
+            // Arrange
+            var mockRepository = new Mock<IProductRepository>();
+            var catalog = new ProductCatalogManager(mockRepository.Object);
+
+            var invalidProduct = new Product
+            {
+                Article = "12345",
+                Name = "Смартфон",
+                Price = 1000,
+                Stock = -5,
+                Unit = "шт"
+            };
+
+            // Act
+            var result = catalog.UpdateProduct(invalidProduct);
+
+            // Assert
+            Assert.AreEqual("Количество товара не может быть отрицательным", result);
+        }
+
+        [TestMethod]
+        public void TestUpdateProductWithEmptyUnit()
+        {
+            // Arrange
+            var mockRepository = new Mock<IProductRepository>();
+            var catalog = new ProductCatalogManager(mockRepository.Object);
+
+            var invalidProduct = new Product
+            {
+                Article = "12345",
+                Name = "Смартфон",
+                Price = 1000,
+                Stock = 10,
+                Unit = ""
+            };
+
+            // Act
+            var result = catalog.UpdateProduct(invalidProduct);
+
+            // Assert
+            Assert.AreEqual("Единица измерения не может быть пустой", result);
+        }
     }
 }
