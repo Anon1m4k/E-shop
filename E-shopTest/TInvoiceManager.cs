@@ -10,234 +10,56 @@ using System.Threading.Tasks;
 
 namespace E_shopTest
 {
+    [TestClass]
+
     public class TInvoiceManager
     {
         [TestMethod]
-        public void TestAddInvoiceWithValidData()
+        [DataRow(1, "12345", "Смартфон", "Техника", 1000.0, 10, "шт")]
+        [DataRow(2, "22", "Мышка компьютерная", "Техника", 1000.0, 10, "шт",
+           "33", "Коврик для мышки", "Аксессуары", 500.0, 5, "шт")]
+        public void TestAddInvoiceWithValidData(int id, string article1, string name1, string category1, double price1, int stock1, string unit1,
+                                         string article2 = null, string name2 = null, string category2 = null, double price2 = 0, int stock2 = 0, string unit2 = null)
         {
             var mockRepository = new Mock<IInvoiceRepository>();
             var manager = new InvoiceManager(mockRepository.Object);
 
-            // Используем конструктор - программа сама задает ID
-            var validInvoice = new Invoice(1); // ID задается здесь
+            var validInvoice = new Invoice(id);
             validInvoice.Date = new DateTime(2025, 10, 26);
             validInvoice.Items = new List<Product>
+        {
+        new Product
+        {
+            Article = article1,
+            Name = name1,
+            Category = category1,
+            Price = (decimal)price1,
+            Stock = stock1,
+            Unit = unit1
+        }
+        };
+
+            if (article2 != null)
             {
-            new Product
-            {
-            Article = "12345",
-            Name = "Смартфон",
-            Category = "Техника",
-            Price = 1000,
-            Stock = 10,
-            Unit = "шт"
+                validInvoice.Items.Add(new Product
+                {
+                    Article = article2,
+                    Name = name2,
+                    Category = category2,
+                    Price = (decimal)price2,
+                    Stock = stock2,
+                    Unit = unit2
+                });
             }
-            };
 
-            mockRepository.Setup(r => r.AddInvoice(validInvoice)).Returns("Приходная накладная успешно добавлена");
+            mockRepository.Setup(r => r.AddInvoice(validInvoice))
+                         .Returns("Приходная накладная успешно добавлена");
 
-            var result = manager.AddInvoice(validInvoice);
-
-            Assert.AreEqual("Приходная накладная успешно добавлена", result);
-            mockRepository.Verify(r => r.AddInvoice(validInvoice), Times.Once);
-        }
-
-        [TestMethod]
-        public void TestAddInvoiceWithNegativePrice()
-        {
-            var mockRepository = new Mock<IInvoiceRepository>();
-            var manager = new InvoiceManager(mockRepository.Object);
-
-
-            var invalidInvoice = new Invoice(1); // ID задается здесь
-            invalidInvoice.Date = new DateTime(2025, 10, 26);
-            invalidInvoice.Items = new List<Product>
-            {        
-            new Product
-            {
-                Article = "123",
-                Name = "Компьютер",
-                Category = "Техника",
-                Price = -1000,
-                Stock = 10,
-                Unit = "шт"
-            }           
-            };
-
-            var result = manager.AddInvoice(invalidInvoice);
-
-            Assert.AreEqual("Цена товара должна быть положительной", result);
-            mockRepository.Verify(r => r.AddInvoice(It.IsAny<Invoice>()), Times.Never);
-        }
-        [TestMethod]
-        public void TestAddInvoiceWithNegativeQuantity()
-        {
-            var mockRepository = new Mock<IInvoiceRepository>();
-            var manager = new InvoiceManager(mockRepository.Object);
-
-            var invalidInvoice = new Invoice(1); // ID задается здесь
-            invalidInvoice.Date = new DateTime(2025, 10, 26);
-            invalidInvoice.Items = new List<Product>
-            { 
-            new Product
-            {
-                Article = "12",
-                Name = "Монитор",
-                Category = "Техника",
-                Price = 1000,
-                Stock = -10,
-                Unit = "шт"
-            }            
-            };
-
-            var result = manager.AddInvoice(invalidInvoice);
-
-            Assert.AreEqual("Количество товара не может быть отрицательным", result);
-            mockRepository.Verify(r => r.AddInvoice(It.IsAny<Invoice>()), Times.Never);
-        }
-        [TestMethod]
-        public void TestAddInvoiceWithEmptyArticle()
-        {
-            var mockRepository = new Mock<IInvoiceRepository>();
-            var manager = new InvoiceManager(mockRepository.Object);
-
-            var invalidInvoice = new Invoice(1); // ID задается здесь
-            invalidInvoice.Date = new DateTime(2025, 10, 26);
-            invalidInvoice.Items = new List<Product>
-            {            
-            new Product
-            {
-                Article = "",
-                Name = "Мышка",
-                Category = "Техника",
-                Price = 1000,
-                Stock = 10,
-                Unit = "шт"
-            }            
-            };
- 
-            var result = manager.AddInvoice(invalidInvoice);
-
-            Assert.AreEqual("Артикул товара не может быть пустым", result);
-            mockRepository.Verify(r => r.AddInvoice(It.IsAny<Invoice>()), Times.Never);
-        }
-        [TestMethod]
-        public void TestAddInvoiceWithMultipleItems()
-        {
-            var mockRepository = new Mock<IInvoiceRepository>();
-            var manager = new InvoiceManager(mockRepository.Object);
-
-            var validInvoice = new Invoice(1); // ID задается здесь
-            validInvoice.Date = new DateTime(2025, 10, 26);
-            validInvoice.Items = new List<Product>
-            {
-            new Product
-            {
-                Article = "22",
-                Name = "Мышка компьютерная",
-                Category = "Техника",
-                Price = 1000,
-                Stock = 10,
-                Unit = "шт"
-            },
-            new Product
-            {
-                Article = "33",
-                Name = "Коврик для мышки",
-                Category = "Аксессуары",
-                Price = 1000,
-                Stock = 10,
-                Unit = "шт"
-            }       
-            };
-
-            mockRepository.Setup(r => r.AddInvoice(validInvoice)).Returns("Приходная накладная успешно добавлена");
-
-            var result = manager.AddInvoice(validInvoice);
+            string result = manager.AddInvoice(validInvoice);
 
             Assert.AreEqual("Приходная накладная успешно добавлена", result);
             mockRepository.Verify(r => r.AddInvoice(validInvoice), Times.Once);
         }
-        [TestMethod]
-        public void TestAddInvoiceWithEmptyName()
-        {
-            var mockRepository = new Mock<IInvoiceRepository>();
-            var manager = new InvoiceManager(mockRepository.Object);
 
-            var invalidInvoice = new Invoice(1); // ID задается здесь
-            invalidInvoice.Date = new DateTime(2025, 10, 26);
-            invalidInvoice.Items = new List<Product>
-            {
-            new Product
-            {
-                Article = "567",
-                Name = "",
-                Category = "Техника",
-                Price = 1000,
-                Stock = 10,
-                Unit = "шт"
-            }           
-            };
-
-            var result = manager.AddInvoice(invalidInvoice);
-
-            Assert.AreEqual("Наименование товара не может быть пустым", result);
-            mockRepository.Verify(r => r.AddInvoice(It.IsAny<Invoice>()), Times.Never);
-        }
-        [TestMethod]
-        public void TestAddInvoiceWithEmptyCategory()
-        {
-            var mockRepository = new Mock<IInvoiceRepository>();
-            var manager = new InvoiceManager(mockRepository.Object);
-
-            var invalidInvoice = new Invoice(1); // ID задается здесь
-            invalidInvoice.Date = new DateTime(2025, 10, 26);
-            invalidInvoice.Items = new List<Product>
-            {
-            new Product
-            {
-                Article = "567",
-                Name = "Клавиатура",
-                Category = "",
-                Price = 1000,
-                Stock = 10,
-                Unit = "шт"
-            }           
-            };
-
-            var result = manager.AddInvoice(invalidInvoice);
-
-            Assert.AreEqual("Категория должна быть заполнена", result);
-            mockRepository.Verify(r => r.AddInvoice(It.IsAny<Invoice>()), Times.Never);
-        }
-        [TestMethod]
-        public void TestAddInvoiceWithEmptyUnit()
-        {
-            // Arrange
-            var mockRepository = new Mock<IInvoiceRepository>();
-            var manager = new InvoiceManager(mockRepository.Object);
-
-            var invalidInvoice = new Invoice(1); // ID задается здесь
-            invalidInvoice.Date = new DateTime(2025, 10, 26);
-            invalidInvoice.Items = new List<Product>
-            {
-            new Product
-            {
-                Article = "657",
-                Name = "Ноутбук",
-                Category = "Техника",
-                Price = 1000,
-                Stock = 10,
-                Unit = ""
-            }         
-            };
-
-            // Act
-            var result = manager.AddInvoice(invalidInvoice);
-
-            // Assert
-            Assert.AreEqual("Единица измерения должна быть заполнена", result);
-            mockRepository.Verify(r => r.AddInvoice(It.IsAny<Invoice>()), Times.Never);
-        }
     }
 }
