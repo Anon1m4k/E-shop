@@ -3,5 +3,6 @@
     public interface IInvoiceRepository
     {
         string AddInvoice(Invoice invoice);
+        int GetNextInvoiceId();
     }
 }

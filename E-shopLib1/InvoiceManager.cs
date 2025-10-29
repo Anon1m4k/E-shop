@@ -16,7 +16,12 @@ namespace E_shopLib1
         public string AddInvoice(Invoice invoice)
         {
 
-            return "Все отлично";
+            int id = repository_.GetNextInvoiceId();
+            invoice.SetId(id);
+            string result = repository_.AddInvoice(invoice);
+            return result;
+            
         }
+
     }
 }

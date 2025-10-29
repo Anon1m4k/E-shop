@@ -52,13 +52,17 @@ namespace E_shopTest
                 });
             }
 
-            mockRepository.Setup(r => r.AddInvoice(validInvoice))
+            int expectedId = 1;
+            mockRepository.Setup(r => r.GetNextInvoiceId()).Returns(expectedId);
+            mockRepository.Setup(r => r.AddInvoice(It.IsAny<Invoice>()))
                          .Returns("Приходная накладная успешно добавлена");
 
             string result = manager.AddInvoice(validInvoice);
 
             Assert.AreEqual("Приходная накладная успешно добавлена", result);
-            mockRepository.Verify(r => r.AddInvoice(validInvoice), Times.Once);
+            mockRepository.Verify(r => r.GetNextInvoiceId(), Times.Once);
+            mockRepository.Verify(r => r.AddInvoice(It.IsAny<Invoice>()), Times.Once);
+            Assert.AreEqual(expectedId, validInvoice.ID_Invoice);
         }
         [TestMethod]
         [DataRow("123", "Компьютер", "Техника", "шт", -1000.0, 10, "Цена товара должна быть положительной")] // невалидная цена
@@ -90,6 +94,7 @@ namespace E_shopTest
             string result = manager.AddInvoice(invalidInvoice);
 
             Assert.AreEqual(expectedErrorMessage, result);
+            mockRepository.Verify(r => r.GetNextInvoiceId(), Times.Never);
             mockRepository.Verify(r => r.AddInvoice(It.IsAny<Invoice>()), Times.Never);
         }
 
