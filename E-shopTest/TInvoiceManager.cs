@@ -15,17 +15,17 @@ namespace E_shopTest
     public class TInvoiceManager
     {
         [TestMethod]
-        [DataRow(1, "12345", "Смартфон", "Техника", 1000.0, 10, "шт")]
-        [DataRow(2, "22", "Мышка компьютерная", "Техника", 1000.0, 10, "шт",
+        [DataRow("12345", "Смартфон", "Техника", 1000.0, 10, "шт")]
+        [DataRow("22", "Мышка компьютерная", "Техника", 1000.0, 10, "шт",
            "33", "Коврик для мышки", "Аксессуары", 500.0, 5, "шт")]
-        public void TestAddInvoiceWithValidData(int id, string article1, string name1, string category1, double price1, int stock1, string unit1,
+        public void TestAddInvoiceWithValidData(string article1, string name1, string category1, double price1, int stock1, string unit1,
                                          string article2 = null, string name2 = null, string category2 = null, double price2 = 0, int stock2 = 0, string unit2 = null)
         {
             var mockRepository = new Mock<IInvoiceRepository>();
             var manager = new InvoiceManager(mockRepository.Object);
 
-            var validInvoice = new Invoice(id);
-            validInvoice.Date = new DateTime(2025, 10, 26);
+            var validInvoice = new Invoice();
+            validInvoice.Date = DateTime.Now.Date;
             validInvoice.Items = new List<Product>
         {
         new Product
@@ -72,8 +72,8 @@ namespace E_shopTest
             var mockRepository = new Mock<IInvoiceRepository>();
             var manager = new InvoiceManager(mockRepository.Object);
 
-            var invalidInvoice = new Invoice(1);
-            invalidInvoice.Date = new DateTime(2025, 10, 26);
+            var invalidInvoice = new Invoice();
+            invalidInvoice.Date = DateTime.Now.Date;
             invalidInvoice.Items = new List<Product>
             {
                 new Product
