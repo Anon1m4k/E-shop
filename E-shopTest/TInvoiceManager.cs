@@ -57,6 +57,12 @@ namespace E_shopTest
             mockRepository.Setup(r => r.AddInvoice(It.IsAny<Invoice>()))
                          .Returns("Приходная накладная успешно добавлена");
 
+            var savedInvoice = new Invoice();
+            savedInvoice.SetId(expectedId);
+            savedInvoice.Date = validInvoice.Date;
+            savedInvoice.Items = validInvoice.Items.ToList();
+            mockRepository.Setup(r => r.GetInvoiceById(expectedId)).Returns(savedInvoice);
+
             string result = manager.AddInvoice(validInvoice);
 
             Assert.AreEqual("Приходная накладная успешно добавлена", result);

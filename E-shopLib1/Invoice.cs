@@ -21,7 +21,7 @@ namespace E_shopLib1
             Date = DateTime.Now;
             Items = new List<Product>();
         }
-        internal void SetId(int id)
+        public void SetId(int id)
         {
             _idInvoice = id;
         }

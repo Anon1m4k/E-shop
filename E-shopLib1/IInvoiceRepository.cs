@@ -4,5 +4,6 @@
     {
         string AddInvoice(Invoice invoice);
         int GetNextInvoiceId();
+        Invoice GetInvoiceById(int id);
     }
 }
