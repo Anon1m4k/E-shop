@@ -6,6 +6,7 @@ namespace E_shopLib1
 {
     public class Invoice
     {
+        private static int _nextId = 1;
         private int _idInvoice;
 
         public int ID_Invoice
@@ -16,9 +17,9 @@ namespace E_shopLib1
         public DateTime Date { get; set; }
         public List<Product> Items { get; set; }
 
-        public Invoice(int id)
+        public Invoice()
         {
-            _idInvoice = id;
+            _idInvoice = _nextId++;
             Date = DateTime.Now;
             Items = new List<Product>();
         }
