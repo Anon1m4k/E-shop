@@ -275,7 +275,7 @@ namespace E_shopTest
             var products = _mockRepository.Object.GetAllProducts();
             Assert.AreEqual(0, products.Count, "Каталог должен оставаться пустым");
         }
-
+        
         [TestMethod]
         public void TestUpdateProductWithValidData()
         {
@@ -283,22 +283,43 @@ namespace E_shopTest
             var mockRepository = new Mock<IProductRepository>();
             var catalog = new ProductCatalogManager(mockRepository.Object);
 
-            var validProduct = new Product
+            Product storedProduct = new Product
             {
                 Article = "12345",
-                Name = "Новый Смартфон",
-                Price = 1200,
-                Stock = 8,
+                Name = "Исходное название",
+                Price = 1000,
+                Stock = 5,
                 Unit = "шт"
             };
-            mockRepository.Setup(r => r.UpdateProduct(validProduct)).Returns(string.Empty);
+
+            mockRepository.Setup(r => r.UpdateProduct(It.IsAny<Product>()))
+                          .Callback<Product>(newProductData => storedProduct = newProductData)
+                          .Returns(string.Empty);
+
+            mockRepository.Setup(r => r.GetProductByArticle("12345"))
+                          .Returns(() => storedProduct);
 
             // Act
-            var result = catalog.UpdateProduct(validProduct);
+            var updateRequest = new Product
+            {
+                Article = "12345",
+                Name = "Обновленное название",
+                Price = 1200,
+                Stock = 8,
+                Unit = "коробка"
+            };
+
+            var operationResult = catalog.UpdateProduct(updateRequest);
 
             // Assert
-            Assert.AreEqual(string.Empty, result, "При успешном обновлении должна возвращаться пустая строка");
-            mockRepository.Verify(r => r.UpdateProduct(validProduct), Times.Once);
+            Assert.AreEqual(string.Empty, operationResult);
+
+            var actualProductInDb = mockRepository.Object.GetProductByArticle("12345");
+
+            Assert.AreEqual(updateRequest.Name, actualProductInDb.Name);
+            Assert.AreEqual(updateRequest.Price, actualProductInDb.Price);
+            Assert.AreEqual(updateRequest.Stock, actualProductInDb.Stock);
+            Assert.AreEqual(updateRequest.Unit, actualProductInDb.Unit);
         }
 
         [TestMethod]
