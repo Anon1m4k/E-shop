@@ -20,12 +20,6 @@ namespace E_shopLib1
             invoice.SetId(id);
             string result = repository_.AddInvoice(invoice);
 
-            var savedInvoice = repository_.GetInvoiceById(id);
-            if (savedInvoice == null || savedInvoice.ID_Invoice != id)
-            {
-                return "Ошибка при сохранении накладной";
-            }
-
             return result;
             
         }
