@@ -275,5 +275,79 @@ namespace E_shopTest
             var products = _mockRepository.Object.GetAllProducts();
             Assert.AreEqual(0, products.Count, "Каталог должен оставаться пустым");
         }
+        
+        [TestMethod]
+        public void TestUpdateProductWithValidData()
+        {
+            // Arrange
+            var mockRepository = new Mock<IProductRepository>();
+            var catalog = new ProductCatalogManager(mockRepository.Object);
+
+            Product storedProduct = new Product
+            {
+                Article = "12345",
+                Name = "Исходное название",
+                Price = 1000,
+                Stock = 5,
+                Unit = "шт"
+            };
+
+            mockRepository.Setup(r => r.UpdateProduct(It.IsAny<Product>()))
+                          .Callback<Product>(newProductData => storedProduct = newProductData)
+                          .Returns(string.Empty);
+
+            mockRepository.Setup(r => r.GetProductByArticle("12345"))
+                          .Returns(() => storedProduct);
+
+            // Act
+            var updateRequest = new Product
+            {
+                Article = "12345",
+                Name = "Обновленное название",
+                Price = 1200,
+                Stock = 8,
+                Unit = "коробка"
+            };
+
+            var operationResult = catalog.UpdateProduct(updateRequest);
+
+            // Assert
+            Assert.AreEqual(string.Empty, operationResult);
+
+            var actualProductInDb = mockRepository.Object.GetProductByArticle("12345");
+
+            Assert.AreEqual(updateRequest.Name, actualProductInDb.Name);
+            Assert.AreEqual(updateRequest.Price, actualProductInDb.Price);
+            Assert.AreEqual(updateRequest.Stock, actualProductInDb.Stock);
+            Assert.AreEqual(updateRequest.Unit, actualProductInDb.Unit);
+        }
+
+        [TestMethod]
+        [DataRow("12345", "", 1000, 10, "шт", "Наименование товара не может быть пустым")]
+        [DataRow("12345", "Смартфон", -500, 10, "шт", "Цена товара должна быть положительной")]
+        [DataRow("12345", "Смартфон", 1000, -5, "шт", "Количество товара не может быть отрицательным")]
+        [DataRow("12345", "Смартфон", 1000, 10, "", "Единица измерения не может быть пустой")]
+        public void TestUpdateProduct_WithInvalidData(string article, string name, int price, int stock, string unit, string expectedError)
+        {
+            // Arrange
+            var mockRepository = new Mock<IProductRepository>();
+            var catalog = new ProductCatalogManager(mockRepository.Object);
+
+            var invalidProduct = new Product
+            {
+                Article = article,
+                Name = name,
+                Price = price,
+                Stock = stock,
+                Unit = unit
+            };
+
+            // Act
+            var result = catalog.UpdateProduct(invalidProduct);
+
+            // Assert
+            Assert.AreEqual(expectedError, result);
+            mockRepository.Verify(r => r.UpdateProduct(It.IsAny<Product>()), Times.Never);
+        }
     }
 }

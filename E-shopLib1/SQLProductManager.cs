@@ -164,5 +164,10 @@ namespace E_shopLib
                 }
             }
         }
+
+        public string UpdateProduct(Product product)
+        {
+            return $"Товар успешно обновлён.";
+        }
     }
 }

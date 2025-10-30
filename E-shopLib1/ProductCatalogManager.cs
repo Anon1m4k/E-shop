@@ -67,5 +67,25 @@ namespace E_shop
             }
             return repository.DeleteProduct(article);
         }
+        public string UpdateProduct(Product product)
+        {
+            if (string.IsNullOrEmpty(product.Name))
+            {
+                return "Наименование товара не может быть пустым";
+            }
+            if (product.Price <= 0)
+            {
+                return "Цена товара должна быть положительной";
+            }
+            if (product.Stock < 0)
+            {
+                return "Количество товара не может быть отрицательным";
+            }
+            if (string.IsNullOrEmpty(product.Unit))
+            {
+                return "Единица измерения не может быть пустой";
+            }
+            return repository.UpdateProduct(product);
+        }
     }
 }

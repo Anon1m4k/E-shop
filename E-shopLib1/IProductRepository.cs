@@ -6,6 +6,7 @@ namespace E_shopLib
     {
         string AddProduct(Product product);
         string DeleteProduct(string article);
+        string UpdateProduct(Product product);
         Product GetProductByArticle(string article);
         List<Product> GetAllProducts();
         bool ArticleExists(string article);
