@@ -79,5 +79,37 @@ namespace E_shop
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+        private void buttonEdit_Click(object sender, EventArgs e)
+        {
+            if (dataGridView.SelectedRows.Count > 0)
+            {
+                // Получаем артикул из выбранной строки
+                string selectedArticle = dataGridView.SelectedRows[0].Cells["Article"].Value.ToString();
+
+                // Получаем товар из базы данных по артикулу
+                Product productToEdit = productManager.GetProductByArticle(selectedArticle);
+
+                if (productToEdit != null)
+                {
+                    ProductCatalogManager catalogManager = new ProductCatalogManager(productManager);
+                    EditProductForm editForm = new EditProductForm(catalogManager, productToEdit);
+                    if (editForm.ShowDialog() == DialogResult.OK)
+                    {
+                        // Обновляем таблицу после редактирования
+                        dataGridView.DataSource = productManager.GetAllProducts();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Товар не найден", "Ошибка",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Пожалуйста, выберите товар для редактирования.", "Внимание",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
     }
 }
