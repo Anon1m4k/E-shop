@@ -167,7 +167,39 @@ namespace E_shopLib
 
         public string UpdateProduct(Product product)
         {
-            return $"Товар успешно обновлён.";
+            using (MySqlConnection conn = new MySqlConnection(AppSettings.ConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    string query = @"UPDATE Product 
+                            SET Name = @Name, Category = @Category, Price = @Price, 
+                                Stock = @Stock, Unit = @Unit 
+                            WHERE Article = @Article";
+
+                    using (MySqlCommand command = new MySqlCommand(query, conn))
+                    {
+                        command.Parameters.AddWithValue("@Article", product.Article);
+                        command.Parameters.AddWithValue("@Name", product.Name);
+                        command.Parameters.AddWithValue("@Category", product.Category);
+                        command.Parameters.AddWithValue("@Price", product.Price);
+                        command.Parameters.AddWithValue("@Stock", product.Stock);
+                        command.Parameters.AddWithValue("@Unit", product.Unit);
+
+                        int rowsAffected = command.ExecuteNonQuery();
+                        if (rowsAffected == 0)
+                        {
+                            return "Товар с указанным артикулом не найден";
+                        }
+                    }
+                    return string.Empty; // Успешное обновление
+                }
+                catch (MySqlException ex)
+                {
+                    return "Ошибка при обновлении товара: " + ex.Message;
+                }
+            }
         }
     }
 }
