@@ -75,5 +75,15 @@ namespace E_shopLib1
                 }
             }
         }
+        private bool ProductExists(MySqlConnection conn, MySqlTransaction transaction, string article)
+        {
+            string query = "SELECT COUNT(*) FROM Product WHERE Article = @Article";
+            using (MySqlCommand command = new MySqlCommand(query, conn, transaction))
+            {
+                command.Parameters.AddWithValue("@Article", article);
+                long count = (long)command.ExecuteScalar();
+                return count > 0;
+            }
+        }
     }
 }
