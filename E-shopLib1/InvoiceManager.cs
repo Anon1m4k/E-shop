@@ -13,14 +13,18 @@ namespace E_shopLib1
         {
             repository_ = repоsitori;
         }
+        public Invoice CreateNewInvoice()
+        {
+            Invoice invoice = new Invoice();
+            int Id = repository_.GetNextInvoiceId();
+            invoice.SetId(Id);
+            invoice.Date = DateTime.Now;
+            return invoice;
+        }
         public string AddInvoice(Invoice invoice)
         {
 
-            int id = repository_.GetNextInvoiceId();
-            invoice.SetId(id);
-            string result = repository_.AddInvoice(invoice);
-
-            return result;
+            return "";
             
         }
 
