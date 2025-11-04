@@ -85,5 +85,24 @@ namespace E_shopLib1
                 return count > 0;
             }
         }
+        private void CreateProductFromInvoice(MySqlConnection conn, MySqlTransaction transaction, Product product)
+        {
+            string createProductQuery = @"INSERT INTO Product 
+                                        (Article, Name, Category, Price, Stock, Unit) 
+                                        VALUES (@Article, @Name, @Category, @Price, @Stock, @Unit)";
+
+            using (MySqlCommand createCommand = new MySqlCommand(createProductQuery, conn, transaction))
+            {
+                createCommand.Parameters.AddWithValue("@Article", product.Article);
+                createCommand.Parameters.AddWithValue("@Name", product.Name);
+
+                createCommand.Parameters.AddWithValue("@Category", "Техника"); 
+                createCommand.Parameters.AddWithValue("@Price", product.Price); 
+                createCommand.Parameters.AddWithValue("@Stock", 0); 
+                createCommand.Parameters.AddWithValue("@Unit", "шт"); 
+
+                createCommand.ExecuteNonQuery();
+            }
+        }
     }
 }
