@@ -104,5 +104,24 @@ namespace E_shopLib1
                 createCommand.ExecuteNonQuery();
             }
         }
+        public int GetNextInvoiceId()
+        {
+            using (MySqlConnection conn = new MySqlConnection(E_shopLib.AppSettings.ConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = "SELECT COALESCE(MAX(ID_Invoice), 0) + 1 FROM Invoice";
+                    using (MySqlCommand command = new MySqlCommand(query, conn))
+                    {
+                        return Convert.ToInt32(command.ExecuteScalar());
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    throw new Exception($"Ошибка при получении следующего ID накладной: {ex.Message}");
+                }
+            }
+        }
     }
 }
