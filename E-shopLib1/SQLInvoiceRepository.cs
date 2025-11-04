@@ -123,5 +123,9 @@ namespace E_shopLib1
                 }
             }
         }
+        public Invoice GetInvoiceById(int id)
+        {
+            return null;
+        }
     }
 }
