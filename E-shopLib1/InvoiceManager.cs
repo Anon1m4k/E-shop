@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using E_shopLib;
 
 namespace E_shopLib1
 {
@@ -29,7 +30,7 @@ namespace E_shopLib1
             if (invoice.Items == null || invoice.Items.Count == 0)
                 return "Накладная должна содержать хотя бы одну позицию";
 
-            foreach (var product in invoice.Items)
+            foreach (Product product in invoice.Items)
             {
                 if (string.IsNullOrWhiteSpace(product.Article))
                     return "Артикул товара не может быть пустым";
