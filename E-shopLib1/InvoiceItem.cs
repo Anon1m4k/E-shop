@@ -13,6 +13,10 @@ namespace E_shopLib1
         public string Article { get; set; }
         [DisplayName("Наименование")]
         public string Name { get; set; }
+        [DisplayName("Категория")]
+        public string Category { get; set; }
+        [DisplayName("Единица измерения")]
+        public string Unit { get; set; }
         [DisplayName("Количество")]
         public int Quantity { get; set; }
         [DisplayName("Цена")]

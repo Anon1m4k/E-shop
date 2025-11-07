@@ -96,10 +96,10 @@ namespace E_shopLib1
                 createCommand.Parameters.AddWithValue("@Article", product.Article);
                 createCommand.Parameters.AddWithValue("@Name", product.Name);
 
-                createCommand.Parameters.AddWithValue("@Category", "Техника"); 
+                createCommand.Parameters.AddWithValue("@Category", product.Category); 
                 createCommand.Parameters.AddWithValue("@Price", product.Price); 
                 createCommand.Parameters.AddWithValue("@Stock", 0); 
-                createCommand.Parameters.AddWithValue("@Unit", "шт"); 
+                createCommand.Parameters.AddWithValue("@Unit", product.Unit); 
 
                 createCommand.ExecuteNonQuery();
             }
