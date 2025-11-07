@@ -201,5 +201,36 @@ namespace E_shopLib
                 }
             }
         }
+        public List<string> GetCategories()
+        {
+            List<string> categories = new List<string>();
+
+            using (MySqlConnection conn = new MySqlConnection(AppSettings.ConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    // Получаем уникальные категории из базы данных
+                    const string query = "SELECT DISTINCT Category FROM Product WHERE Category IS NOT NULL AND Category <> '' ORDER BY Category;";
+
+                    using (MySqlCommand command = new MySqlCommand(query, conn))
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string category = reader.GetString("Category");
+                            categories.Add(category);
+                        }
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    throw new Exception("Ошибка при загрузке категорий: " + ex.Message);
+                }
+            }
+
+            return categories;
+        }
     }
 }

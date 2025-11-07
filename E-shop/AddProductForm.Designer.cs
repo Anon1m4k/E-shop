@@ -7,10 +7,10 @@ namespace E_shop
         private System.ComponentModel.IContainer components = null;
         private TextBox txtArticle;
         private TextBox txtName;
-        private TextBox txtCategory;
+        private ComboBox cmbCategory;
         private NumericUpDown numPrice;
         private NumericUpDown numStock;
-        private TextBox txtUnit;
+        private ComboBox cmbUnit;
         private Button btnSave;
         private Button btnCancel;
         private Label label1;
@@ -33,10 +33,10 @@ namespace E_shop
         {
             this.txtArticle = new System.Windows.Forms.TextBox();
             this.txtName = new System.Windows.Forms.TextBox();
-            this.txtCategory = new System.Windows.Forms.TextBox();
+            this.cmbCategory = new System.Windows.Forms.ComboBox();
             this.numPrice = new System.Windows.Forms.NumericUpDown();
             this.numStock = new System.Windows.Forms.NumericUpDown();
-            this.txtUnit = new System.Windows.Forms.TextBox();
+            this.cmbUnit = new System.Windows.Forms.ComboBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -61,19 +61,21 @@ namespace E_shop
             this.txtName.Location = new System.Drawing.Point(120, 38);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(200, 20);
-            this.txtName.TabIndex = 3;
+            this.txtName.TabIndex = 2;
             // 
-            // txtCategory
+            // cmbCategory
             // 
-            this.txtCategory.Location = new System.Drawing.Point(120, 64);
-            this.txtCategory.Name = "txtCategory";
-            this.txtCategory.Size = new System.Drawing.Size(200, 20);
-            this.txtCategory.TabIndex = 5;
+            this.cmbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCategory.FormattingEnabled = true;
+            this.cmbCategory.Location = new System.Drawing.Point(120, 64);
+            this.cmbCategory.Name = "cmbCategory";
+            this.cmbCategory.Size = new System.Drawing.Size(200, 21);
+            this.cmbCategory.TabIndex = 3;
             // 
             // numPrice
             // 
             this.numPrice.DecimalPlaces = 2;
-            this.numPrice.Location = new System.Drawing.Point(120, 90);
+            this.numPrice.Location = new System.Drawing.Point(120, 91);
             this.numPrice.Maximum = new decimal(new int[] {
             1000000,
             0,
@@ -81,7 +83,7 @@ namespace E_shop
             0});
             this.numPrice.Name = "numPrice";
             this.numPrice.Size = new System.Drawing.Size(200, 20);
-            this.numPrice.TabIndex = 7;
+            this.numPrice.TabIndex = 4;
             this.numPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.numPrice.ThousandsSeparator = true;
             // 
@@ -90,15 +92,16 @@ namespace E_shop
             this.numStock.Location = new System.Drawing.Point(120, 117);
             this.numStock.Name = "numStock";
             this.numStock.Size = new System.Drawing.Size(200, 20);
-            this.numStock.TabIndex = 9;
+            this.numStock.TabIndex = 5;
             // 
-            // txtUnit
+            // cmbUnit
             // 
-            this.txtUnit.Location = new System.Drawing.Point(120, 142);
-            this.txtUnit.Name = "txtUnit";
-            this.txtUnit.Size = new System.Drawing.Size(200, 20);
-            this.txtUnit.TabIndex = 11;
-            this.txtUnit.Text = "шт";
+            this.cmbUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbUnit.FormattingEnabled = true;
+            this.cmbUnit.Location = new System.Drawing.Point(120, 143);
+            this.cmbUnit.Name = "cmbUnit";
+            this.cmbUnit.Size = new System.Drawing.Size(200, 21);
+            this.cmbUnit.TabIndex = 6;
             // 
             // btnSave
             // 
@@ -108,7 +111,7 @@ namespace E_shop
             this.btnSave.Location = new System.Drawing.Point(120, 180);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(95, 30);
-            this.btnSave.TabIndex = 12;
+            this.btnSave.TabIndex = 7;
             this.btnSave.Text = "Сохранить";
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -121,7 +124,7 @@ namespace E_shop
             this.btnCancel.Location = new System.Drawing.Point(225, 180);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(95, 30);
-            this.btnCancel.TabIndex = 13;
+            this.btnCancel.TabIndex = 8;
             this.btnCancel.Text = "Отмена";
             this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -141,7 +144,7 @@ namespace E_shop
             this.label2.Location = new System.Drawing.Point(12, 41);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(86, 13);
-            this.label2.TabIndex = 2;
+            this.label2.TabIndex = 9;
             this.label2.Text = "Наименование:";
             // 
             // label3
@@ -150,7 +153,7 @@ namespace E_shop
             this.label3.Location = new System.Drawing.Point(12, 67);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(63, 13);
-            this.label3.TabIndex = 4;
+            this.label3.TabIndex = 10;
             this.label3.Text = "Категория:";
             // 
             // label4
@@ -159,7 +162,7 @@ namespace E_shop
             this.label4.Location = new System.Drawing.Point(12, 93);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(36, 13);
-            this.label4.TabIndex = 6;
+            this.label4.TabIndex = 11;
             this.label4.Text = "Цена:";
             // 
             // label5
@@ -168,16 +171,16 @@ namespace E_shop
             this.label5.Location = new System.Drawing.Point(12, 119);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(52, 13);
-            this.label5.TabIndex = 8;
+            this.label5.TabIndex = 12;
             this.label5.Text = "Остаток:";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 145);
+            this.label6.Location = new System.Drawing.Point(12, 146);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(85, 13);
-            this.label6.TabIndex = 10;
+            this.label6.TabIndex = 13;
             this.label6.Text = "Ед. измерения:";
             // 
             // AddProductForm
@@ -185,18 +188,18 @@ namespace E_shop
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 221);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.txtUnit);
-            this.Controls.Add(this.label6);
+            this.Controls.Add(this.cmbUnit);
             this.Controls.Add(this.numStock);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.numPrice);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.txtCategory);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.cmbCategory);
             this.Controls.Add(this.txtName);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.txtArticle);
             this.Controls.Add(this.label1);
             this.Name = "AddProductForm";

@@ -1,4 +1,5 @@
 ﻿using E_shopLib;
+using System.Collections.Generic;
 
 namespace E_shop
 {
@@ -86,6 +87,14 @@ namespace E_shop
                 return "Единица измерения не может быть пустой";
             }
             return repository.UpdateProduct(product);
+        }
+        public List<string> GetCategories()
+        {
+            if (repository != null)
+            {
+                return repository.GetCategories();
+            }
+            return new List<string>();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using E_shopLib;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
@@ -12,7 +13,6 @@ namespace E_shop
 
         // Списки для ComboBox
         private string[] units = { "шт", "кг", "г", "л", "м", "упак", "пар" };
-        private string[] categories = { "Одежда", "Обувь", "Аксессуары", "Электроника", "Книги", "Игрушки", "Продукты" };
 
         public EditProductForm(ProductCatalogManager manager, Product product)
         {
@@ -27,8 +27,17 @@ namespace E_shop
             // Заполняем ComboBox для единиц измерения
             cmbUnit.Items.AddRange(units);
 
-            // Заполняем ComboBox для категорий
-            cmbCategory.Items.AddRange(categories);
+            // Заполняем ComboBox для категорий из базы данных
+            try
+            {
+                List<string> categories = catalogManager.GetCategories();
+                cmbCategory.Items.AddRange(categories.ToArray());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки категорий: {ex.Message}", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         private void FillFormData()
         {
@@ -48,17 +57,14 @@ namespace E_shop
        
         private void btnSave_Click(object sender, EventArgs e)
         {
-            var updatedProduct = new Product
-            {
-                Article = txtArticle.Text.Trim(), // Артикул остается прежним
-                Name = txtName.Text.Trim(),
-                Category = cmbCategory.Text.Trim(),
-                Price = numPrice.Value,
-                Stock = (int)numStock.Value,
-                Unit = cmbUnit.Text.Trim()
-            };
+            // Обновляем объект товара новыми значениями
+            productToEdit.Name = txtName.Text.Trim();
+            productToEdit.Category = cmbCategory.Text.Trim();
+            productToEdit.Price = numPrice.Value;
+            productToEdit.Stock = (int)numStock.Value;
+            productToEdit.Unit = cmbUnit.Text.Trim();
 
-            string result = catalogManager.UpdateProduct(updatedProduct);
+            string result = catalogManager.UpdateProduct(productToEdit);
 
             if (string.IsNullOrEmpty(result))
             {
