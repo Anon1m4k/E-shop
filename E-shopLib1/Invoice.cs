@@ -12,6 +12,7 @@ namespace E_shopLib1
         {
             get { return _idInvoice; }
         }
+        public string SerialNumber { get; set; }
 
         public DateTime Date { get; set; }
         public List<Product> Items { get; set; }

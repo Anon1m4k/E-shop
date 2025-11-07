@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using E_shopLib;
 
 namespace E_shopLib1
 {
@@ -13,15 +14,46 @@ namespace E_shopLib1
         {
             repository_ = repоsitori;
         }
+        public Invoice CreateNewInvoice()
+        {
+            Invoice invoice = new Invoice();
+            int Id = repository_.GetNextInvoiceId();
+            invoice.SetId(Id);
+            invoice.Date = DateTime.Now;
+            return invoice;
+        }
         public string AddInvoice(Invoice invoice)
         {
+            if (invoice == null)
+                return "Накладная не может быть null";
 
-            int id = repository_.GetNextInvoiceId();
-            invoice.SetId(id);
-            string result = repository_.AddInvoice(invoice);
+            if (invoice.Items == null || invoice.Items.Count == 0)
+                return "Накладная должна содержать хотя бы одну позицию";
 
-            return result;
-            
+            foreach (Product product in invoice.Items)
+            {
+                if (string.IsNullOrWhiteSpace(product.Article))
+                    return "Артикул товара не может быть пустым";
+
+                if (string.IsNullOrWhiteSpace(product.Name))
+                    return $"Наименование товара с артикулом '{product.Article}' не может быть пустым";
+
+                if (product.Stock <= 0)
+                    return $"Количество товара '{product.Article}' должно быть больше 0";
+
+                if (product.Price <= 0)
+                    return $"Цена товара '{product.Article}' должна быть больше 0";
+            }
+
+            try
+            {
+                return repository_.AddInvoice(invoice);
+            }
+            catch (Exception ex)
+            {
+                return $"Ошибка при сохранении накладной: {ex.Message}";
+            }
+
         }
 
     }
