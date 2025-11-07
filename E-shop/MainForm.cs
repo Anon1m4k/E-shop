@@ -118,5 +118,10 @@ namespace E_shop
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
+        private void buttonEdit_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }
