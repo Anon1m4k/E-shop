@@ -83,11 +83,8 @@ namespace E_shop
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
-                // Получаем артикул из выбранной строки
-                string selectedArticle = dataGridView.SelectedRows[0].Cells["Article"].Value.ToString();
-
-                // Получаем товар из базы данных по артикулу
-                Product productToEdit = productManager.GetProductByArticle(selectedArticle);
+                // Получаем объект товара из выбранной строки
+                Product productToEdit = dataGridView.SelectedRows[0].DataBoundItem as Product;
 
                 if (productToEdit != null)
                 {
