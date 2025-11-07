@@ -167,7 +167,70 @@ namespace E_shopLib
 
         public string UpdateProduct(Product product)
         {
-            return $"Товар успешно обновлён.";
+            using (MySqlConnection conn = new MySqlConnection(AppSettings.ConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    string query = @"UPDATE Product 
+                            SET Name = @Name, Category = @Category, Price = @Price, 
+                                Stock = @Stock, Unit = @Unit 
+                            WHERE Article = @Article";
+
+                    using (MySqlCommand command = new MySqlCommand(query, conn))
+                    {
+                        command.Parameters.AddWithValue("@Article", product.Article);
+                        command.Parameters.AddWithValue("@Name", product.Name);
+                        command.Parameters.AddWithValue("@Category", product.Category);
+                        command.Parameters.AddWithValue("@Price", product.Price);
+                        command.Parameters.AddWithValue("@Stock", product.Stock);
+                        command.Parameters.AddWithValue("@Unit", product.Unit);
+
+                        int rowsAffected = command.ExecuteNonQuery();
+                        if (rowsAffected == 0)
+                        {
+                            return "Товар с указанным артикулом не найден";
+                        }
+                    }
+                    return string.Empty; // Успешное обновление
+                }
+                catch (MySqlException ex)
+                {
+                    return "Ошибка при обновлении товара: " + ex.Message;
+                }
+            }
+        }
+        public List<string> GetCategories()
+        {
+            List<string> categories = new List<string>();
+
+            using (MySqlConnection conn = new MySqlConnection(AppSettings.ConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    // Получаем уникальные категории из базы данных
+                    const string query = "SELECT DISTINCT Category FROM Product WHERE Category IS NOT NULL AND Category <> '' ORDER BY Category;";
+
+                    using (MySqlCommand command = new MySqlCommand(query, conn))
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string category = reader.GetString("Category");
+                            categories.Add(category);
+                        }
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    throw new Exception("Ошибка при загрузке категорий: " + ex.Message);
+                }
+            }
+
+            return categories;
         }
     }
 }

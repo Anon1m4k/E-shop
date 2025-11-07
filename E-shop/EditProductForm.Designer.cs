@@ -1,24 +1,22 @@
-﻿using System.Windows.Forms;
-
-namespace E_shop
+﻿namespace E_shop
 {
-    partial class AddProductForm
+    partial class EditProductForm
     {
         private System.ComponentModel.IContainer components = null;
-        private TextBox txtArticle;
-        private TextBox txtName;
-        private ComboBox cmbCategory;
-        private NumericUpDown numPrice;
-        private NumericUpDown numStock;
-        private ComboBox cmbUnit;
-        private Button btnSave;
-        private Button btnCancel;
-        private Label label1;
-        private Label label2;
-        private Label label3;
-        private Label label4;
-        private Label label5;
-        private Label label6;
+        private System.Windows.Forms.TextBox txtArticle;
+        private System.Windows.Forms.TextBox txtName;
+        private System.Windows.Forms.ComboBox cmbCategory;
+        private System.Windows.Forms.NumericUpDown numPrice;
+        private System.Windows.Forms.NumericUpDown numStock;
+        private System.Windows.Forms.ComboBox cmbUnit;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
 
         protected override void Dispose(bool disposing)
         {
@@ -53,6 +51,7 @@ namespace E_shop
             // 
             this.txtArticle.Location = new System.Drawing.Point(120, 12);
             this.txtArticle.Name = "txtArticle";
+            this.txtArticle.ReadOnly = true;
             this.txtArticle.Size = new System.Drawing.Size(200, 20);
             this.txtArticle.TabIndex = 1;
             // 
@@ -183,7 +182,7 @@ namespace E_shop
             this.label6.TabIndex = 13;
             this.label6.Text = "Ед. измерения:";
             // 
-            // AddProductForm
+            // EditProductForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -202,9 +201,9 @@ namespace E_shop
             this.Controls.Add(this.txtName);
             this.Controls.Add(this.txtArticle);
             this.Controls.Add(this.label1);
-            this.Name = "AddProductForm";
+            this.Name = "EditProductForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Добавление товара";
+            this.Text = "Редактирование товара";
             ((System.ComponentModel.ISupportInitialize)(this.numPrice)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numStock)).EndInit();
             this.ResumeLayout(false);

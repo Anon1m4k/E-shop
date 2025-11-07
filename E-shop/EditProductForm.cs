@@ -1,26 +1,27 @@
-﻿using System;
+﻿using E_shopLib;
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using E_shopLib;
+using System.Xml.Linq;
 
 namespace E_shop
 {
-    public partial class AddProductForm : Form
+    public partial class EditProductForm : Form
     {
         private ProductCatalogManager catalogManager;
+        private Product productToEdit;
 
-        public Product NewProduct { get; private set; }
-
-        // Список для единиц измерения
+        // Списки для ComboBox
         private string[] units = { "шт", "кг", "г", "л", "м", "упак", "пар" };
 
-        public AddProductForm(ProductCatalogManager manager)
+        public EditProductForm(ProductCatalogManager manager, Product product)
         {
             InitializeComponent();
             catalogManager = manager;
+            productToEdit = product;
             InitializeComboBoxes();
+            FillFormData();
         }
-
         private void InitializeComboBoxes()
         {
             // Заполняем ComboBox для единиц измерения
@@ -37,32 +38,36 @@ namespace E_shop
                 MessageBox.Show($"Ошибка загрузки категорий: {ex.Message}", "Ошибка",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            // Установим значения по умолчанию
-            if (cmbUnit.Items.Count > 0)
-                cmbUnit.SelectedIndex = 0;
-
-            if (cmbCategory.Items.Count > 0)
-                cmbCategory.SelectedIndex = 0;
         }
+        private void FillFormData()
+        {
+            // Заполняем поля формы данными товара
+            txtArticle.Text = productToEdit.Article;
+            txtName.Text = productToEdit.Name;
+            numPrice.Value = productToEdit.Price;
+            numStock.Value = productToEdit.Stock;
 
+            // Устанавливаем выбранные значения в ComboBox
+            cmbUnit.Text = productToEdit.Unit;
+            cmbCategory.Text = productToEdit.Category;
+
+            // Артикул нельзя редактировать - он является ключом
+            txtArticle.ReadOnly = true;
+        }
+       
         private void btnSave_Click(object sender, EventArgs e)
         {
-            var product = new Product
-            {
-                Article = txtArticle.Text.Trim(),
-                Name = txtName.Text.Trim(),
-                Category = cmbCategory.Text.Trim(),
-                Price = numPrice.Value,
-                Stock = (int)numStock.Value,
-                Unit = cmbUnit.Text.Trim()
-            };
+            // Обновляем объект товара новыми значениями
+            productToEdit.Name = txtName.Text.Trim();
+            productToEdit.Category = cmbCategory.Text.Trim();
+            productToEdit.Price = numPrice.Value;
+            productToEdit.Stock = (int)numStock.Value;
+            productToEdit.Unit = cmbUnit.Text.Trim();
 
-            string result = catalogManager.AddProduct(product);
+            string result = catalogManager.UpdateProduct(productToEdit);
 
             if (string.IsNullOrEmpty(result))
             {
-                NewProduct = product;
                 DialogResult = DialogResult.OK;
                 Close();
             }
