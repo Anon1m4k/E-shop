@@ -29,7 +29,7 @@ namespace E_shopLib1
                                 invoiceId = (int)invoiceCommand.LastInsertedId;
                             }
 
-                            foreach (var product in invoice.Items)
+                            foreach (Product product in invoice.Items)
                             {
                                 if (!ProductExists(conn, transaction, product.Article))
                                 {
