@@ -84,16 +84,26 @@ namespace E_shop
             if (dataGridView.SelectedRows.Count > 0)
             {
                 // Получаем объект товара из выбранной строки
-                Product productToEdit = dataGridView.SelectedRows[0].DataBoundItem as Product;
+                Product selectedProduct = dataGridView.SelectedRows[0].DataBoundItem as Product;
 
-                if (productToEdit != null)
+                if (selectedProduct != null)
                 {
+                    // Создаем копию товара для редактирования
+                    Product productToEdit = selectedProduct.Clone();
+
                     ProductCatalogManager catalogManager = new ProductCatalogManager(productManager);
                     EditProductForm editForm = new EditProductForm(catalogManager, productToEdit);
                     if (editForm.ShowDialog() == DialogResult.OK)
                     {
-                        // Обновляем таблицу после редактирования
-                        dataGridView.DataSource = productManager.GetAllProducts();
+                        // Обновляем оригинальный товар в списке свойствами из копии
+                        selectedProduct.Name = productToEdit.Name;
+                        selectedProduct.Category = productToEdit.Category;
+                        selectedProduct.Price = productToEdit.Price;
+                        selectedProduct.Stock = productToEdit.Stock;
+                        selectedProduct.Unit = productToEdit.Unit;
+
+                        // Теперь selectedProduct изменился, и так как он в BindingList, то DataGridView обновится
+                        // НЕ перезагружаем всю таблицу из базы!
                     }
                 }
                 else
