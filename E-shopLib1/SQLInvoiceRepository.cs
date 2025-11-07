@@ -19,11 +19,12 @@ namespace E_shopLib1
                     {
                         try
                         {
-                            string invoiceQuery = @"INSERT INTO Invoice (Date) VALUES (@Date)";
+                            string invoiceQuery = @"INSERT INTO Invoice (SerialNumber,Date) VALUES (@SerialNumber,@Date)";
                             int invoiceId;
 
                             using (MySqlCommand invoiceCommand = new MySqlCommand(invoiceQuery, conn, transaction))
                             {
+                                invoiceCommand.Parameters.AddWithValue("@SerialNumber", invoice.SerialNumber);
                                 invoiceCommand.Parameters.AddWithValue("@Date", invoice.Date);
                                 invoiceCommand.ExecuteNonQuery();
                                 invoiceId = (int)invoiceCommand.LastInsertedId;
