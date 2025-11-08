@@ -44,5 +44,11 @@ namespace E_shop
 
             UpdateTotalAmount();
         }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
     }
 }
