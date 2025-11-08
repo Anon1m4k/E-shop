@@ -108,5 +108,10 @@ namespace E_shop
                 UpdateTotalAmount();
             }
         }
+        private void UpdateTotalAmount()
+        {
+            decimal total = invoiceItems.Sum(item => item.Price * item.Quantity);
+            lblTotalValue.Text = total.ToString("N2");
+        }
     }
 }
