@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using E_shopLib;
 using E_shopLib1;
 
 namespace E_shop
@@ -49,6 +50,41 @@ namespace E_shop
         {
             DialogResult = DialogResult.Cancel;
             Close();
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (invoiceItems.Count == 0)
+            {
+                MessageBox.Show("Накладная должна содержать хотя бы один товар", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            currentInvoice.SerialNumber = SerialNumberInvoice.Text?.Trim(); 
+            currentInvoice.Items = invoiceItems.Select(item => new Product
+            {
+                Article = item.Article?.Trim() ?? "",
+                Name = item.Name?.Trim() ?? "",
+                Category = item.Category?.Trim() ?? "", 
+                Price = item.Price,
+                Stock = item.Quantity,
+                Unit = item.Unit?.Trim() ?? "" 
+            }).ToList();
+
+            var result = invoiceManager.AddInvoice(currentInvoice);
+
+            if (string.IsNullOrEmpty(result))
+            {
+                MessageBox.Show("Накладная успешно добавлена", "Успех",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            else
+            {
+                MessageBox.Show(result, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
