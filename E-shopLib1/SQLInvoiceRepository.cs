@@ -37,14 +37,16 @@ namespace E_shopLib1
                                     CreateProductFromInvoice(conn, transaction, product);
                                 }
 
-                                string itemQuery = @"INSERT INTO InvoiceItems (ID_Invoice, Article, Name, Quantity, Price) 
-                                                   VALUES (@ID_Invoice, @Article, @Name, @Quantity, @Price)";
+                                string itemQuery = @"INSERT INTO InvoiceItems (ID_Invoice, Article, Name,Category,Unit, Quantity, Price) 
+                                                   VALUES (@ID_Invoice, @Article, @Name,@Category,@Unit, @Quantity, @Price)";
 
                                 using (MySqlCommand itemCommand = new MySqlCommand(itemQuery, conn, transaction))
                                 {
                                     itemCommand.Parameters.AddWithValue("@ID_Invoice", invoiceId);
                                     itemCommand.Parameters.AddWithValue("@Article", product.Article);
                                     itemCommand.Parameters.AddWithValue("@Name", product.Name);
+                                    itemCommand.Parameters.AddWithValue("@Category", product.Category);
+                                    itemCommand.Parameters.AddWithValue("@Unit", product.Unit);
                                     itemCommand.Parameters.AddWithValue("@Quantity", product.Stock);
                                     itemCommand.Parameters.AddWithValue("@Price", product.Price);
                                     itemCommand.ExecuteNonQuery();
