@@ -35,5 +35,14 @@ namespace E_shop
 
             UpdateTotalAmount();
         }
+        private void dataGridViewItems_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            var item = dataGridViewItems.Rows[e.RowIndex].DataBoundItem as InvoiceItem;
+            if (item == null) return;
+
+            UpdateTotalAmount();
+        }
     }
 }
