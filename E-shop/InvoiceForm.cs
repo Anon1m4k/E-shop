@@ -86,5 +86,27 @@ namespace E_shop
                 MessageBox.Show(result, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewItems.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Выберите строку для удаления", "Информация",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            var itemToRemove = dataGridViewItems.SelectedRows[0].DataBoundItem as InvoiceItem;
+            if (itemToRemove == null) return;
+
+            var result = MessageBox.Show($"Удалить товар '{itemToRemove.Name}'?", "Подтверждение",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                invoiceItems.Remove(itemToRemove);
+                UpdateTotalAmount();
+            }
+        }
     }
 }
