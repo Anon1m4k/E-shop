@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace E_shop
         private InvoiceManager invoiceManager;
         private Invoice currentInvoice;
         private BindingList<InvoiceItem> invoiceItems;
+        private List<string> availableUnits;
         public InvoiceForm()
         {
             InitializeComponent();
@@ -24,6 +26,12 @@ namespace E_shop
             currentInvoice = invoiceManager.CreateNewInvoice();
 
             lblDate.Text = currentInvoice.Date.ToString("dd.MM.yyyy");
+            availableUnits = new List<string> { "шт", "кг", "г", "л", "мл", "м", "см", "упак", "пар" };
+
+            // Настраиваем комбобокс колонку
+            unitColumn.DataSource = availableUnits;
+            unitColumn.DisplayStyle = DataGridViewComboBoxDisplayStyle.ComboBox;
+            unitColumn.FlatStyle = FlatStyle.Flat;
 
             invoiceItems = new BindingList<InvoiceItem>();
             invoiceItems.ListChanged += InvoiceItems_ListChanged;
@@ -32,6 +40,7 @@ namespace E_shop
             dataGridViewItems.CellEndEdit += dataGridViewItems_CellEndEdit;
 
         }
+        
         private void InvoiceItems_ListChanged(object sender, ListChangedEventArgs e)
         {
             UpdateTotalAmount();

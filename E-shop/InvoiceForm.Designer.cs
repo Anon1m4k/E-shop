@@ -15,6 +15,17 @@ namespace E_shop
         private Label lblTotalValue;
         private Panel panel1;
         private Panel panel2;
+        private Button btnDelete;
+        private TextBox SerialNumberInvoice;
+
+        // Колонки DataGridView
+        private DataGridViewTextBoxColumn articleColumn;
+        private DataGridViewTextBoxColumn nameColumn;
+        private DataGridViewTextBoxColumn categoryColumn;
+        private DataGridViewTextBoxColumn quantityColumn;
+        private DataGridViewComboBoxColumn unitColumn;
+        private DataGridViewTextBoxColumn priceColumn;
+        private DataGridViewTextBoxColumn totalColumn;
 
         protected override void Dispose(bool disposing)
         {
@@ -30,6 +41,13 @@ namespace E_shop
             this.labelInvoiceNumber = new System.Windows.Forms.Label();
             this.labelDate = new System.Windows.Forms.Label();
             this.dataGridViewItems = new System.Windows.Forms.DataGridView();
+            this.articleColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.categoryColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.quantityColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.unitColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.priceColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.totalColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.lblDate = new System.Windows.Forms.Label();
@@ -66,17 +84,83 @@ namespace E_shop
             // 
             // dataGridViewItems
             // 
-            this.dataGridViewItems.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.dataGridViewItems.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewItems.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewItems.AutoGenerateColumns = false;
             this.dataGridViewItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewItems.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.articleColumn,
+            this.nameColumn,
+            this.categoryColumn,
+            this.quantityColumn,
+            this.unitColumn,
+            this.priceColumn,
+            this.totalColumn});
             this.dataGridViewItems.Location = new System.Drawing.Point(12, 94);
             this.dataGridViewItems.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridViewItems.Name = "dataGridViewItems";
             this.dataGridViewItems.RowHeadersWidth = 51;
             this.dataGridViewItems.Size = new System.Drawing.Size(760, 366);
             this.dataGridViewItems.TabIndex = 1;
+            this.dataGridViewItems.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewItems_CellEndEdit);
+            // 
+            // articleColumn
+            // 
+            this.articleColumn.DataPropertyName = "Article";
+            this.articleColumn.HeaderText = "Артикул";
+            this.articleColumn.MinimumWidth = 6;
+            this.articleColumn.Name = "articleColumn";
+            this.articleColumn.Width = 125;
+            // 
+            // nameColumn
+            // 
+            this.nameColumn.DataPropertyName = "Name";
+            this.nameColumn.HeaderText = "Наименование";
+            this.nameColumn.MinimumWidth = 6;
+            this.nameColumn.Name = "nameColumn";
+            this.nameColumn.Width = 200;
+            // 
+            // categoryColumn
+            // 
+            this.categoryColumn.DataPropertyName = "Category";
+            this.categoryColumn.HeaderText = "Категория";
+            this.categoryColumn.MinimumWidth = 6;
+            this.categoryColumn.Name = "categoryColumn";
+            this.categoryColumn.Width = 150;
+            // 
+            // quantityColumn
+            // 
+            this.quantityColumn.DataPropertyName = "Quantity";
+            this.quantityColumn.HeaderText = "Количество";
+            this.quantityColumn.MinimumWidth = 6;
+            this.quantityColumn.Name = "quantityColumn";
+            this.quantityColumn.Width = 80;
+            // 
+            // unitColumn
+            // 
+            this.unitColumn.DataPropertyName = "Unit";
+            this.unitColumn.HeaderText = "Единица измерения";
+            this.unitColumn.MinimumWidth = 6;
+            this.unitColumn.Name = "unitColumn";
+            this.unitColumn.Width = 120;
+            // 
+            // priceColumn
+            // 
+            this.priceColumn.DataPropertyName = "Price";
+            this.priceColumn.HeaderText = "Цена";
+            this.priceColumn.MinimumWidth = 6;
+            this.priceColumn.Name = "priceColumn";
+            this.priceColumn.Width = 80;
+            // 
+            // totalColumn
+            // 
+            this.totalColumn.DataPropertyName = "Total";
+            this.totalColumn.HeaderText = "Сумма";
+            this.totalColumn.MinimumWidth = 6;
+            this.totalColumn.Name = "totalColumn";
+            this.totalColumn.ReadOnly = true;
+            this.totalColumn.Width = 80;
             // 
             // btnSave
             // 
@@ -139,7 +223,7 @@ namespace E_shop
             // 
             // panel1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
             this.panel1.Controls.Add(this.SerialNumberInvoice);
@@ -155,14 +239,14 @@ namespace E_shop
             // SerialNumberInvoice
             // 
             this.SerialNumberInvoice.Location = new System.Drawing.Point(221, 7);
-            this.SerialNumberInvoice.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.SerialNumberInvoice.Margin = new System.Windows.Forms.Padding(4);
             this.SerialNumberInvoice.Name = "SerialNumberInvoice";
             this.SerialNumberInvoice.Size = new System.Drawing.Size(151, 22);
             this.SerialNumberInvoice.TabIndex = 4;
             // 
             // panel2
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.BackColor = System.Drawing.SystemColors.Control;
             this.panel2.Controls.Add(this.lblTotalValue);
@@ -210,10 +294,6 @@ namespace E_shop
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.ResumeLayout(false);
-
         }
-
-        private Button btnDelete;
-        private TextBox SerialNumberInvoice;
     }
 }
