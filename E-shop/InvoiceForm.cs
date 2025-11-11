@@ -43,8 +43,7 @@ namespace E_shop
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
-        {
-            DialogResult = DialogResult.Cancel;
+        {            
             Close();
         }
 
