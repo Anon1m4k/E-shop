@@ -35,21 +35,10 @@ namespace E_shop
             invoiceItems.ListChanged += InvoiceItems_ListChanged;
             dataGridViewItems.DataSource = invoiceItems;
 
-            dataGridViewItems.CellEndEdit += dataGridViewItems_CellEndEdit;
-
         }
         
         private void InvoiceItems_ListChanged(object sender, ListChangedEventArgs e)
         {
-            UpdateTotalAmount();
-        }
-        private void dataGridViewItems_CellEndEdit(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0) return;
-
-            InvoiceItem item = dataGridViewItems.Rows[e.RowIndex].DataBoundItem as InvoiceItem;
-            if (item == null) return;
-
             UpdateTotalAmount();
         }
 

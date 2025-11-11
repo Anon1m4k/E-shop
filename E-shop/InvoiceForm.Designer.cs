@@ -103,7 +103,7 @@ namespace E_shop
             this.dataGridViewItems.RowHeadersWidth = 51;
             this.dataGridViewItems.Size = new System.Drawing.Size(760, 366);
             this.dataGridViewItems.TabIndex = 1;
-            this.dataGridViewItems.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewItems_CellEndEdit);
+           
             // 
             // articleColumn
             // 
