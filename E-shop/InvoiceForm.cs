@@ -26,10 +26,14 @@ namespace E_shop
             lblDate.Text = currentInvoice.Date.ToString("dd.MM.yyyy");
 
             invoiceItems = new BindingList<InvoiceItem>();
+            invoiceItems.ListChanged += InvoiceItems_ListChanged;
             dataGridViewItems.DataSource = invoiceItems;
 
             dataGridViewItems.CellEndEdit += dataGridViewItems_CellEndEdit;
 
+        }
+        private void InvoiceItems_ListChanged(object sender, ListChangedEventArgs e)
+        {
             UpdateTotalAmount();
         }
         private void dataGridViewItems_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -100,7 +104,6 @@ namespace E_shop
             if (result == DialogResult.Yes)
             {
                 invoiceItems.Remove(itemToRemove);
-                UpdateTotalAmount();
             }
         }
         private void UpdateTotalAmount()
