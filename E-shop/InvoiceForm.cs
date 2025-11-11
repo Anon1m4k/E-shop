@@ -26,10 +26,8 @@ namespace E_shop
             currentInvoice = invoiceManager.CreateNewInvoice();
 
             lblDate.Text = currentInvoice.Date.ToString("dd.MM.yyyy");
-            availableUnits = new List<string> { "шт", "кг", "г", "л", "мл", "м", "см", "упак", "пар" };
 
-            // Настраиваем комбобокс колонку
-            unitColumn.DataSource = availableUnits;
+            unitColumn.DataSource = Product.AvailableUnits;
             unitColumn.DisplayStyle = DataGridViewComboBoxDisplayStyle.ComboBox;
             unitColumn.FlatStyle = FlatStyle.Flat;
 

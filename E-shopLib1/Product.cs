@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace E_shopLib
@@ -11,6 +12,11 @@ namespace E_shopLib
         private decimal price;
         private int stock;
         private string unit;
+
+        public static List<string> AvailableUnits { get; } = new List<string>
+        {
+            "шт", "кг", "г", "л", "мл", "м", "см", "упак", "пар"
+        };
 
         [DisplayName("Артикул")]
         public string Article
