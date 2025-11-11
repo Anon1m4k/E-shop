@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using E_shopLib;
 using E_shopLib1;
@@ -40,7 +36,7 @@ namespace E_shop
         {
             if (e.RowIndex < 0) return;
 
-            var item = dataGridViewItems.Rows[e.RowIndex].DataBoundItem as InvoiceItem;
+            InvoiceItem item = dataGridViewItems.Rows[e.RowIndex].DataBoundItem as InvoiceItem;
             if (item == null) return;
 
             UpdateTotalAmount();
@@ -72,7 +68,7 @@ namespace E_shop
                 Unit = item.Unit?.Trim() ?? "" 
             }).ToList();
 
-            var result = invoiceManager.AddInvoice(currentInvoice);
+            string result = invoiceManager.AddInvoice(currentInvoice);
 
             if (string.IsNullOrEmpty(result))
             {
@@ -96,10 +92,10 @@ namespace E_shop
                 return;
             }
 
-            var itemToRemove = dataGridViewItems.SelectedRows[0].DataBoundItem as InvoiceItem;
+            InvoiceItem itemToRemove = dataGridViewItems.SelectedRows[0].DataBoundItem as InvoiceItem;
             if (itemToRemove == null) return;
 
-            var result = MessageBox.Show($"Удалить товар '{itemToRemove.Name}'?", "Подтверждение",
+            DialogResult result = MessageBox.Show($"Удалить товар '{itemToRemove.Name}'?", "Подтверждение",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
