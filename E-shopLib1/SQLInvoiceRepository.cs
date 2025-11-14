@@ -193,6 +193,43 @@ namespace E_shopLib1
                     throw new Exception($"Ошибка при загрузке накладной: {ex.Message}");
                 }
             }
+
+        }
+        public List<Invoice> GetAllInvoices()
+        {
+            List<Invoice> invoices = new List<Invoice>();
+
+            using (MySqlConnection conn = new MySqlConnection(E_shopLib.AppSettings.ConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    string query = @"SELECT i.ID_Invoice, i.SerialNumber, i.Date 
+                           FROM Invoice i 
+                           ORDER BY i.Date DESC, i.ID_Invoice DESC";
+
+                    using (MySqlCommand command = new MySqlCommand(query, conn))
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Invoice invoice = new Invoice();
+                            invoice.SetId(reader.GetInt32("ID_Invoice"));
+                            invoice.SerialNumber = reader.GetString("SerialNumber");
+                            invoice.Date = reader.GetDateTime("Date");
+
+                            invoices.Add(invoice);
+                        }
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    throw new Exception($"Ошибка при загрузке накладных: {ex.Message}");
+                }
+            }
+
+            return invoices;
         }
     }
 }
