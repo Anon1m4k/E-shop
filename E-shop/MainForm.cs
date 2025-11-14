@@ -132,10 +132,12 @@ namespace E_shop
             try
             {
                 InvoiceForm invoiceForm = new InvoiceForm();
-                invoiceForm.ShowDialog();
+                if (invoiceForm.ShowDialog() == DialogResult.OK)
+                {
+                    LoadInvoices();
 
-
-                dataGridView.DataSource = productManager.GetAllProducts();
+                    dataGridView.DataSource = productManager.GetAllProducts();
+                }
             }
             catch (Exception ex)
             {
