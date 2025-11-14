@@ -38,6 +38,12 @@ namespace E_shopLib1
                 if (string.IsNullOrWhiteSpace(product.Name))
                     return $"Наименование товара с артикулом '{product.Article}' не может быть пустым";
 
+                if (string.IsNullOrWhiteSpace(product.Category))
+                    return "Категория не может быть пустой";
+
+                if (string.IsNullOrWhiteSpace(product.Unit))
+                    return "Единица измерения не может быть пустой";
+
                 if (product.Stock <= 0)
                     return $"Количество товара '{product.Article}' должно быть больше 0";
 

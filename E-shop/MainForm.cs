@@ -118,5 +118,27 @@ namespace E_shop
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
+        private void buttonEdit_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void AddInvoice_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                InvoiceForm invoiceForm = new InvoiceForm();
+                invoiceForm.ShowDialog();
+
+
+                dataGridView.DataSource = productManager.GetAllProducts();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при открытии формы накладной: {ex.Message}", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
