@@ -1,12 +1,14 @@
-﻿using E_shopLib;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using E_shopLib;
+using E_shopLib1;
 
 namespace E_shop
 {
     public partial class MainForm : Form
     {
         SQLProductManager productManager = new SQLProductManager();
+        SQLInvoiceRepository invoiceRepository = new SQLInvoiceRepository();
         public MainForm()
         {
             (bool isValid, string errorMessage) = AppSettings.AreSettingsValidWithDetails();
@@ -24,6 +26,7 @@ namespace E_shop
             try
             {
                 dataGridView.DataSource = productManager.GetAllProducts();
+                LoadInvoices();
             }
             catch (Exception ex)
             {
