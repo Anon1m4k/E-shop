@@ -143,5 +143,20 @@ namespace E_shop
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void LoadInvoices()
+        {
+            try
+            {
+                System.Collections.Generic.List<E_shopLib1.Invoice> invoices = invoiceRepository.GetAllInvoices();
+                dataGridViewInvoices.DataSource = invoices;
+
+                dataGridViewInvoices.Refresh();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки накладных: {ex.Message}", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
