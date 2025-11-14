@@ -160,5 +160,15 @@ namespace E_shop
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void dataGridViewInvoices_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.RowIndex < dataGridViewInvoices.Rows.Count)
+            {
+                int invoiceId = (int)dataGridViewInvoices.Rows[e.RowIndex].Cells["ID_Invoice"].Value;
+
+                InvoiceForm invoiceForm = new InvoiceForm(invoiceId);
+                invoiceForm.ShowDialog();
+            }
+        }
     }
 }
