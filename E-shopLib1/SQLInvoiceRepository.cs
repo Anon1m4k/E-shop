@@ -128,7 +128,71 @@ namespace E_shopLib1
         }
         public Invoice GetInvoiceById(int id)
         {
-            return null;
+            using (MySqlConnection conn = new MySqlConnection(E_shopLib.AppSettings.ConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    string invoiceQuery = @"SELECT ID_Invoice, SerialNumber, Date 
+                                  FROM Invoice 
+                                  WHERE ID_Invoice = @ID_Invoice";
+
+                    Invoice invoice = null;
+
+                    using (MySqlCommand command = new MySqlCommand(invoiceQuery, conn))
+                    {
+                        command.Parameters.AddWithValue("@ID_Invoice", id);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                invoice = new Invoice();
+                                invoice.SetId(reader.GetInt32("ID_Invoice"));
+                                invoice.SerialNumber = reader.GetString("SerialNumber");
+                                invoice.Date = reader.GetDateTime("Date");
+                                invoice.Items = new List<Product>();
+                            }
+                        }
+                    }
+
+                    if (invoice == null) return null;
+
+                    string itemsQuery = @"SELECT Article, Name, Category, Unit, Quantity, Price 
+                                FROM InvoiceItems 
+                                WHERE ID_Invoice = @ID_Invoice";
+
+                    using (MySqlCommand command = new MySqlCommand(itemsQuery, conn))
+                    {
+                        command.Parameters.AddWithValue("@ID_Invoice", id);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Product product = new Product
+                                {
+                                    Article = reader.GetString("Article"),
+                                    Name = reader.GetString("Name"),
+                                    Category = reader.GetString("Category"),
+                                    Unit = reader.GetString("Unit"),
+                                    Stock = reader.GetInt32("Quantity"),
+                                    Price = reader.GetDecimal("Price")
+                                };
+
+                                invoice.Items.Add(product);
+                            }
+                        }
+                    }
+
+                    return invoice;
+                }
+                catch (MySqlException ex)
+                {
+                    throw new Exception($"Ошибка при загрузке накладной: {ex.Message}");
+                }
+            }
         }
     }
 }
