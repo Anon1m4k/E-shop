@@ -20,6 +20,55 @@ namespace E_shop
             InitializeComponent();
             InitializeForm();
         }
+        public InvoiceForm(int invoiceId)
+        {
+            InitializeComponent();
+            InitializeForm();
+            LoadInvoice(invoiceId);
+        }
+        private void LoadInvoice(int invoiceId)
+        {
+            try
+            {
+                var repository = new SQLInvoiceRepository();
+                currentInvoice = repository.GetInvoiceById(invoiceId);
+
+                if (currentInvoice != null)
+                {
+
+                    SerialNumberInvoice.Text = currentInvoice.SerialNumber;
+                    lblDate.Text = currentInvoice.Date.ToString("dd.MM.yyyy");
+
+                    invoiceItems.Clear();
+                    foreach (var product in currentInvoice.Items)
+                    {
+                        invoiceItems.Add(new InvoiceItem
+                        {
+                            Article = product.Article,
+                            Name = product.Name,
+                            Category = product.Category,
+                            Quantity = product.Stock,
+                            Unit = product.Unit,
+                            Price = product.Price
+                        });
+                    }
+
+                    UpdateTotalAmount();
+                }
+                else
+                {
+                    MessageBox.Show("Накладная не найдена", "Ошибка",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки накладной: {ex.Message}", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+            }
+        }
         private void InitializeForm()
         {
             invoiceManager = new InvoiceManager(new SQLInvoiceRepository());
