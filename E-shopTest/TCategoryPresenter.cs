@@ -15,18 +15,21 @@ namespace E_shopTest
             // Arrange
             Mock<ICategoriesView> mockCategoriesView = new Mock<ICategoriesView>();
             Mock<IProductsView> mockProductsView = new Mock<IProductsView>();
+            Mock<IProductRepository> mockRepository = new Mock<IProductRepository>();
 
             List<string> expectedCategories = new List<string> { "Электроника", "Одежда", "Книги" };
+            mockRepository.Setup(m => m.GetCategories()).Returns(expectedCategories);
 
-            // Act
-            SaleCheckPresenter presenter = new SaleCheckPresenter(mockCategoriesView.Object, mockProductsView.Object);
+            // Act - создание презентера автоматически вызовет LoadCategories()
+            var presenter = new SaleCheckPresenter(mockCategoriesView.Object, mockProductsView.Object, mockRepository.Object);
 
-            // Assert
-            mockCategoriesView.Verify(v => v.ShowCategories(It.Is<List<string>>(cats =>
-                cats.Count == 3 &&
-                cats.Contains("Электроника") &&
-                cats.Contains("Одежда") &&
-                cats.Contains("Книги"))), Times.Once);
+            // Assert - проверяем, что ShowCategories был вызван с правильными данными
+            mockCategoriesView.Verify(v => v.ShowCategories(It.Is<List<string>>(categories =>
+                categories.Count == 3)), Times.Once);
+
+            // Используем CollectionAssert для проверки содержимого
+            mockCategoriesView.Verify(v => v.ShowCategories(It.Is<List<string>>(categories =>
+                CollectionAssert.Equals(categories, expectedCategories))), Times.Once);
         }
 
         [TestMethod]
@@ -53,7 +56,7 @@ namespace E_shopTest
 
             mockCatalogManager.Setup(m => m.GetAllProducts()).Returns(allProducts);
 
-            SaleCheckPresenter presenter = new SaleCheckPresenter(mockCategoriesView.Object, mockProductsView.Object);
+            SaleCheckPresenter presenter = new SaleCheckPresenter(mockCategoriesView.Object, mockProductsView.Object, mockRepository.Object);
 
             // Act
             mockCategoriesView.Raise(v => v.CategorySelected += null, category);

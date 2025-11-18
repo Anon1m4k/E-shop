@@ -10,12 +10,12 @@ namespace E_shopLib
         private readonly ICategoriesView categoriesView_;
         private readonly IProductsView productsView_;
 
-        public SaleCheckPresenter(ICategoriesView categoriesView, IProductsView productsView)
+        public SaleCheckPresenter(ICategoriesView categoriesView, IProductsView productsView, IProductRepository repository)
         {
             categoriesView_ = categoriesView;
             productsView_ = productsView;
             // Создаем ProductCatalogManager внутри презентера
-            catalogManager_ = new ProductCatalogManager(new SQLProductManager());
+            catalogManager_ = new ProductCatalogManager(repository);
 
             // Подписка на событие выбора категории
             categoriesView_.CategorySelected += OnCategorySelected;
