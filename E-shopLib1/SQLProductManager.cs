@@ -234,10 +234,10 @@ namespace E_shopLib
         }
         public Dictionary<string, List<Product>> AllProductsByCategory()
         {
-            var productsByCategory = new Dictionary<string, List<Product>>();
-            var allProducts = GetAllProducts();
+            Dictionary<string, List<Product>> productsByCategory = new Dictionary<string, List<Product>>();
+            List<Product> allProducts = GetAllProducts();
 
-            foreach (var product in allProducts)
+            foreach (Product product in allProducts)
             {
                 if (!productsByCategory.ContainsKey(product.Category))
                 {
