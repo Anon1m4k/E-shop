@@ -12,6 +12,9 @@ namespace E_shop
             repository = repo;
         }
 
+        public Dictionary<string, List<Product>> ProductsByCategory =>
+            repository.AllProductsByCategory();
+
         public string AddProduct(Product product)
         {
             // Валидация артикула
@@ -95,6 +98,14 @@ namespace E_shop
                 return repository.GetCategories();
             }
             return new List<string>();
+        }
+        public List<Product> GetAllProducts()
+        {
+            if (repository != null)
+            {
+                return repository.GetAllProducts();
+            }
+            return new List<Product>();
         }
     }
 }
