@@ -13,17 +13,17 @@ namespace E_shopTest
         public void LoadCategories_WhenCalled_ShouldReturnThreeCategories()
         {
             // Arrange
-            var mockCategoriesView = new Mock<ICategoriesView>();
-            var mockProductsView = new Mock<IProductsView>();
-            var mockRepository = new Mock<IProductRepository>();
-            var mockCatalogManager = new Mock<ProductCatalogManager>(mockRepository.Object);
+            Mock<ICategoriesView> mockCategoriesView = new Mock<ICategoriesView>();
+            Mock<IProductsView> mockProductsView = new Mock<IProductsView>();
+            Mock<IProductRepository> mockRepository = new Mock<IProductRepository>();
+            Mock<ProductCatalogManager> mockCatalogManager = new Mock<ProductCatalogManager>(mockRepository.Object);
 
-            var expectedCategories = new List<string> { "Электроника", "Одежда", "Книги" };
+            List<string> expectedCategories = new List<string> { "Электроника", "Одежда", "Книги" };
             mockCatalogManager.Setup(m => m.GetCategories()).Returns(expectedCategories);
 
             // Act
-            var presenter = new SaleCheckPresenter(mockCategoriesView.Object, mockProductsView.Object, mockCatalogManager.Object);
-            var categories = presenter.Categories();
+            SaleCheckPresenter presenter = new SaleCheckPresenter(mockCategoriesView.Object, mockProductsView.Object, mockCatalogManager.Object);
+            List<string> categories = presenter.Categories();
 
             // Assert
             Assert.AreEqual(3, categories.Count);
@@ -39,12 +39,12 @@ namespace E_shopTest
         public void CategorySelected_WhenCategorySelected_ShouldDisplayCorrectProducts(string category, string[] expectedArticles, string[] expectedNames)
         {
             // Arrange
-            var mockCategoriesView = new Mock<ICategoriesView>();
-            var mockProductsView = new Mock<IProductsView>();
-            var mockRepository = new Mock<IProductRepository>();
-            var mockCatalogManager = new Mock<ProductCatalogManager>(mockRepository.Object);
+            Mock<ICategoriesView> mockCategoriesView = new Mock<ICategoriesView>();
+            Mock<IProductsView> mockProductsView = new Mock<IProductsView>();
+            Mock<IProductRepository> mockRepository = new Mock<IProductRepository>();
+            Mock<ProductCatalogManager> mockCatalogManager = new Mock<ProductCatalogManager>(mockRepository.Object);
 
-            var allProducts = new List<Product>
+            List<Product> allProducts = new List<Product>
             {
                 new Product { Article = "1", Name = "Смартфон", Category = "Электроника", Price = 15000, Stock = 10, Unit = "шт" },
                 new Product { Article = "2", Name = "Ноутбук", Category = "Электроника", Price = 45000, Stock = 5, Unit = "шт" },
@@ -56,7 +56,7 @@ namespace E_shopTest
 
             mockCatalogManager.Setup(m => m.GetAllProducts()).Returns(allProducts);
 
-            var presenter = new SaleCheckPresenter(mockCategoriesView.Object, mockProductsView.Object, mockCatalogManager.Object);
+            SaleCheckPresenter presenter = new SaleCheckPresenter(mockCategoriesView.Object, mockProductsView.Object, mockCatalogManager.Object);
 
             // Act
             mockCategoriesView.Raise(v => v.CategorySelected += null, category);

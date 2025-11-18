@@ -28,19 +28,19 @@ namespace E_shopLib
         public List<Product> ProductsByCategory(string category)
         {
             // Временная реализация - в реальном приложении нужно добавить соответствующий метод в ProductCatalogManager
-            var allProducts = catalogManager_.GetAllProducts();
+            List<Product> allProducts = catalogManager_.GetAllProducts();
             return allProducts.FindAll(p => p.Category == category);
         }
 
         private void LoadCategories()
         {
-            var categories = catalogManager_.GetCategories();
+            List<string> categories = catalogManager_.GetCategories();
             categoriesView_.ShowCategories(categories);
         }
 
         private void OnCategorySelected(string category)
         {
-            var products = ProductsByCategory(category);
+            List<Product> products = ProductsByCategory(category);
             productsView_.DisplayProducts(products);
         }
 

@@ -64,7 +64,7 @@ namespace E_shop
             if (repository == null)
                 return "Репозиторий недоступен";
 
-            var product = repository.GetProductByArticle(article);
+            Product product = repository.GetProductByArticle(article);
             if (product == null)
             {
                 return "Товар с указанным артикулом не найден";
