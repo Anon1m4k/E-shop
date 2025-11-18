@@ -6,42 +6,42 @@ namespace E_shopLib
 {
     public class SaleCheckPresenter
     {
-        private readonly ProductCatalogManager _catalogManager;
-        private readonly ICategoriesView _categoriesView;
-        private readonly IProductsView _productsView;
+        private readonly ProductCatalogManager catalogManager_;
+        private readonly ICategoriesView categoriesView_;
+        private readonly IProductsView productsView_;
 
         public SaleCheckPresenter(ICategoriesView categoriesView, IProductsView productsView, ProductCatalogManager catalogManager)
         {
-            _categoriesView = categoriesView;
-            _productsView = productsView;
-            _catalogManager = catalogManager;
+            categoriesView_ = categoriesView;
+            productsView_ = productsView;
+            catalogManager_ = catalogManager;
 
             // Подписка на событие выбора категории
-            _categoriesView.CategorySelected += OnCategorySelected;
+            categoriesView_.CategorySelected += OnCategorySelected;
 
             // Загрузка начальных данных
             LoadCategories();
         }
 
-        public List<string> Categories() => _catalogManager.GetCategories();
+        public List<string> Categories() => catalogManager_.GetCategories();
 
         public List<Product> ProductsByCategory(string category)
         {
             // Временная реализация - в реальном приложении нужно добавить соответствующий метод в ProductCatalogManager
-            var allProducts = _catalogManager.GetAllProducts();
+            var allProducts = catalogManager_.GetAllProducts();
             return allProducts.FindAll(p => p.Category == category);
         }
 
         private void LoadCategories()
         {
-            var categories = _catalogManager.GetCategories();
-            _categoriesView.ShowCategories(categories);
+            var categories = catalogManager_.GetCategories();
+            categoriesView_.ShowCategories(categories);
         }
 
         private void OnCategorySelected(string category)
         {
             var products = ProductsByCategory(category);
-            _productsView.DisplayProducts(products);
+            productsView_.DisplayProducts(products);
         }
 
         public string CreateSaleCheck(SaleCheck check)
