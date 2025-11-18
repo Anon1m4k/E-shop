@@ -110,11 +110,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppSettings.cs" />
+    <Compile Include="ICategoriesView.cs" />
     <Compile Include="IInvoiceRepository.cs" />
     <Compile Include="Invoice.cs" />
     <Compile Include="InvoiceItem.cs" />
     <Compile Include="InvoiceManager.cs" />
     <Compile Include="IProductRepository.cs" />
+    <Compile Include="IProductsView.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="ProductCatalogManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
