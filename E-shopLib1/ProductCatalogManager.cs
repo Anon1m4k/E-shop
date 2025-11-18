@@ -1,5 +1,6 @@
 ﻿using E_shopLib;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace E_shop
 {
@@ -104,6 +105,15 @@ namespace E_shop
             if (repository != null)
             {
                 return repository.GetAllProducts();
+            }
+            return new List<Product>();
+        }
+        public List<Product> GetProductsByCategory(string category)
+        {
+            if (repository != null)
+            {
+                var allProducts = repository.GetAllProducts();
+                return allProducts.Where(p => p.Category == category).ToList();
             }
             return new List<Product>();
         }

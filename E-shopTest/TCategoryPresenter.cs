@@ -15,21 +15,18 @@ namespace E_shopTest
             // Arrange
             Mock<ICategoriesView> mockCategoriesView = new Mock<ICategoriesView>();
             Mock<IProductsView> mockProductsView = new Mock<IProductsView>();
-            Mock<IProductRepository> mockRepository = new Mock<IProductRepository>();
-            Mock<ProductCatalogManager> mockCatalogManager = new Mock<ProductCatalogManager>(mockRepository.Object);
 
             List<string> expectedCategories = new List<string> { "Электроника", "Одежда", "Книги" };
-            mockCatalogManager.Setup(m => m.GetCategories()).Returns(expectedCategories);
 
             // Act
-            SaleCheckPresenter presenter = new SaleCheckPresenter(mockCategoriesView.Object, mockProductsView.Object, mockCatalogManager.Object);
-            List<string> categories = presenter.Categories();
+            SaleCheckPresenter presenter = new SaleCheckPresenter(mockCategoriesView.Object, mockProductsView.Object);
 
             // Assert
-            Assert.AreEqual(3, categories.Count);
-            CollectionAssert.Contains(categories, "Электроника");
-            CollectionAssert.Contains(categories, "Одежда");
-            CollectionAssert.Contains(categories, "Книги");
+            mockCategoriesView.Verify(v => v.ShowCategories(It.Is<List<string>>(cats =>
+                cats.Count == 3 &&
+                cats.Contains("Электроника") &&
+                cats.Contains("Одежда") &&
+                cats.Contains("Книги"))), Times.Once);
         }
 
         [TestMethod]
@@ -56,7 +53,7 @@ namespace E_shopTest
 
             mockCatalogManager.Setup(m => m.GetAllProducts()).Returns(allProducts);
 
-            SaleCheckPresenter presenter = new SaleCheckPresenter(mockCategoriesView.Object, mockProductsView.Object, mockCatalogManager.Object);
+            SaleCheckPresenter presenter = new SaleCheckPresenter(mockCategoriesView.Object, mockProductsView.Object);
 
             // Act
             mockCategoriesView.Raise(v => v.CategorySelected += null, category);
