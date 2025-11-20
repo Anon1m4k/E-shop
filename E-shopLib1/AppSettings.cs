@@ -33,7 +33,7 @@ namespace E_shopLib
         {
             string iniPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\config.ini"));
 
-            var parser = new FileIniDataParser();
+            FileIniDataParser parser = new FileIniDataParser();
             IniData data = parser.ReadFile(iniPath);
 
             Server = data["Database"]["Server"];
@@ -59,7 +59,7 @@ namespace E_shopLib
             // Проверка подключения к БД
             try
             {
-                using (var connection = new MySql.Data.MySqlClient.MySqlConnection(ConnectionString))
+                using (MySql.Data.MySqlClient.MySqlConnection connection = new MySql.Data.MySqlClient.MySqlConnection(ConnectionString))
                 {
                     connection.Open();
                     return (true, "Настройки корректны");

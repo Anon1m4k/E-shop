@@ -48,7 +48,7 @@ namespace E_shop
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            var product = new Product
+            Product product = new Product
             {
                 Article = txtArticle.Text.Trim(),
                 Name = txtName.Text.Trim(),

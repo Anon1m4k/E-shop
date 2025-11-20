@@ -22,7 +22,7 @@ namespace E_shopTest
             mockRepository.Setup(m => m.GetCategories()).Returns(expectedCategories);
 
             // Act - создание презентера автоматически вызовет LoadCategories()
-            var presenter = new SaleCheckPresenter(mockCategoriesView.Object, mockProductsView.Object, mockRepository.Object);
+            SaleCheckPresenter presenter = new SaleCheckPresenter(mockCategoriesView.Object, mockProductsView.Object, mockRepository.Object);
 
             // Assert - проверяем, что ShowCategories был вызван с правильными данными
             mockCategoriesView.Verify(v => v.ShowCategories(It.Is<List<string>>(categories =>
@@ -58,10 +58,10 @@ namespace E_shopTest
 
             mockRepository.Setup(m => m.GetAllProducts()).Returns(allProducts);
 
-            var presenter = new SaleCheckPresenter(mockCategoriesView.Object, mockProductsView.Object, mockRepository.Object);
+            SaleCheckPresenter presenter = new SaleCheckPresenter(mockCategoriesView.Object, mockProductsView.Object, mockRepository.Object);
 
             // Фильтруем товары по выбранной категории внутри теста
-            var expectedProducts = allProducts.Where(p => p.Category == category).ToList();
+            List<Product> expectedProducts = allProducts.Where(p => p.Category == category).ToList();
 
             // Act
             mockCategoriesView.Raise(v => v.CategorySelected += null, category);

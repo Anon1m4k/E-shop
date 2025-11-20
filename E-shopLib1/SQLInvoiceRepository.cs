@@ -15,7 +15,7 @@ namespace E_shopLib1
                 {
                     conn.Open();
 
-                    using (var transaction = conn.BeginTransaction())
+                    using (MySqlTransaction transaction = conn.BeginTransaction())
                     {
                         try
                         {

@@ -112,7 +112,7 @@ namespace E_shop
         {
             if (repository != null)
             {
-                var allProducts = repository.GetAllProducts();
+                List<Product> allProducts = repository.GetAllProducts();
                 return allProducts.Where(p => p.Category == category).ToList();
             }
             return new List<Product>();

@@ -14,10 +14,10 @@ namespace E_shopTest
         public void TestAddProductWithValidData()
         {
             // Arrange
-            var mockRepository = new Mock<IProductRepository>();
-            var catalog = new ProductCatalogManager(mockRepository.Object);
+            Mock<IProductRepository> mockRepository = new Mock<IProductRepository>();
+            ProductCatalogManager catalog = new ProductCatalogManager(mockRepository.Object);
 
-            var validProduct = new Product
+            Product validProduct = new Product
             {
                 Article = "12345",
                 Name = "Смартфон",
@@ -29,7 +29,7 @@ namespace E_shopTest
             mockRepository.Setup(r => r.ArticleExists("12345")).Returns(false);
 
             // Act
-            var result = catalog.AddProduct(validProduct);
+            string result = catalog.AddProduct(validProduct);
 
             // Assert
             Assert.AreEqual(string.Empty, result, "При успешном добавлении должна возвращаться пустая строка");
@@ -40,10 +40,10 @@ namespace E_shopTest
         public void TestAddProductWithInvalidName()
         {
             // Arrange
-            var mockRepository = new Mock<IProductRepository>();
-            var catalog = new ProductCatalogManager(mockRepository.Object);
+            Mock<IProductRepository> mockRepository = new Mock<IProductRepository>();
+            ProductCatalogManager catalog = new ProductCatalogManager(mockRepository.Object);
 
-            var invalidProduct = new Product
+            Product invalidProduct = new Product
             {
                 Article = "12345",
                 Name = "", // Пустое наименование
@@ -53,7 +53,7 @@ namespace E_shopTest
             };
 
             // Act
-            var result = catalog.AddProduct(invalidProduct);
+            string result = catalog.AddProduct(invalidProduct);
 
             // Assert
             Assert.AreEqual("Наименование товара не может быть пустым", result);
@@ -64,10 +64,10 @@ namespace E_shopTest
         public void TestAddProductWithInvalidPrice()
         {
             // Arrange
-            var mockRepository = new Mock<IProductRepository>();
-            var catalog = new ProductCatalogManager(mockRepository.Object);
+            Mock<IProductRepository> mockRepository = new Mock<IProductRepository>();
+            ProductCatalogManager catalog = new ProductCatalogManager(mockRepository.Object);
 
-            var invalidProduct = new Product
+            Product invalidProduct = new Product
             {
                 Article = "12345",
                 Name = "Смартфон",
@@ -77,7 +77,7 @@ namespace E_shopTest
             };
 
             // Act
-            var result = catalog.AddProduct(invalidProduct);
+            string result = catalog.AddProduct(invalidProduct);
 
             // Assert
             Assert.AreEqual("Цена товара должна быть положительной", result);
@@ -88,10 +88,10 @@ namespace E_shopTest
         public void TestAddProductWithDuplicateArticle()
         {
             // Arrange
-            var mockRepository = new Mock<IProductRepository>();
-            var catalog = new ProductCatalogManager(mockRepository.Object);
+            Mock<IProductRepository> mockRepository = new Mock<IProductRepository>();
+            ProductCatalogManager catalog = new ProductCatalogManager(mockRepository.Object);
 
-            var newProduct = new Product
+            Product newProduct = new Product
             {
                 Article = "12345",
                 Name = "Ноутбук",
@@ -103,7 +103,7 @@ namespace E_shopTest
             mockRepository.Setup(r => r.ArticleExists("12345")).Returns(true);
 
             // Act
-            var result = catalog.AddProduct(newProduct);
+            string result = catalog.AddProduct(newProduct);
 
             // Assert
             Assert.AreEqual("Товар с артикулом '12345' уже существует", result);
@@ -114,10 +114,10 @@ namespace E_shopTest
         public void TestAddProductWithEmptyArticle()
         {
             // Arrange
-            var mockRepository = new Mock<IProductRepository>();
-            var catalog = new ProductCatalogManager(mockRepository.Object);
+            Mock<IProductRepository> mockRepository = new Mock<IProductRepository>();
+            ProductCatalogManager catalog = new ProductCatalogManager(mockRepository.Object);
 
-            var invalidProduct = new Product
+            Product invalidProduct = new Product
             {
                 Article = "", // Пустой артикул
                 Name = "Смартфон",
@@ -127,7 +127,7 @@ namespace E_shopTest
             };
 
             // Act
-            var result = catalog.AddProduct(invalidProduct);
+            string result = catalog.AddProduct(invalidProduct);
 
             // Assert
             Assert.AreEqual("Артикул товара не может быть пустым", result);
@@ -138,10 +138,10 @@ namespace E_shopTest
         public void TestAddProductWithNegativeStock()
         {
             // Arrange
-            var mockRepository = new Mock<IProductRepository>();
-            var catalog = new ProductCatalogManager(mockRepository.Object);
+            Mock<IProductRepository> mockRepository = new Mock<IProductRepository>();
+            ProductCatalogManager catalog = new ProductCatalogManager(mockRepository.Object);
 
-            var invalidProduct = new Product
+            Product invalidProduct = new Product
             {
                 Article = "12345",
                 Name = "Смартфон",
@@ -151,7 +151,7 @@ namespace E_shopTest
             };
 
             // Act
-            var result = catalog.AddProduct(invalidProduct);
+            string result = catalog.AddProduct(invalidProduct);
 
             // Assert
             Assert.AreEqual("Количество товара не может быть отрицательным", result);
@@ -162,10 +162,10 @@ namespace E_shopTest
         public void TestAddProductWithEmptyUnit()
         {
             // Arrange
-            var mockRepository = new Mock<IProductRepository>();
-            var catalog = new ProductCatalogManager(mockRepository.Object);
+            Mock<IProductRepository> mockRepository = new Mock<IProductRepository>();
+            ProductCatalogManager catalog = new ProductCatalogManager(mockRepository.Object);
 
-            var invalidProduct = new Product
+            Product invalidProduct = new Product
             {
                 Article = "12345",
                 Name = "Смартфон",
@@ -175,7 +175,7 @@ namespace E_shopTest
             };
 
             // Act
-            var result = catalog.AddProduct(invalidProduct);
+            string result = catalog.AddProduct(invalidProduct);
 
             // Assert
             Assert.AreEqual("Единица измерения не может быть пустой", result);
@@ -186,11 +186,11 @@ namespace E_shopTest
         public void TestDeleteProductByArticle()
         {
             // Arrange
-            var _mockRepository = new Mock<IProductRepository>();
-            var _catalog = new ProductCatalogManager(_mockRepository.Object);
+            Mock<IProductRepository> _mockRepository = new Mock<IProductRepository>();
+            ProductCatalogManager _catalog = new ProductCatalogManager(_mockRepository.Object);
 
-            var articleToRemove = "12345";
-            var existingProduct = new Product { Article = articleToRemove, Name = "Test Product" };
+            string articleToRemove = "12345";
+            Product existingProduct = new Product { Article = articleToRemove, Name = "Test Product" };
 
             _mockRepository.Setup(r => r.GetProductByArticle(articleToRemove))
                           .Returns(existingProduct);
@@ -198,7 +198,7 @@ namespace E_shopTest
                           .Returns(string.Empty);
 
             // Act
-            var result = _catalog.DeleteProduct(articleToRemove);
+            string result = _catalog.DeleteProduct(articleToRemove);
 
             // Assert
             Assert.AreEqual(string.Empty, result, "Успешное удаление должно возвращать пустую строку");
@@ -210,18 +210,18 @@ namespace E_shopTest
         {
             // Arrange
 
-            var _mockRepository = new Mock<IProductRepository>();
-            var _catalog = new ProductCatalogManager(_mockRepository.Object);
+            Mock<IProductRepository> _mockRepository = new Mock<IProductRepository>();
+            ProductCatalogManager _catalog = new ProductCatalogManager(_mockRepository.Object);
 
-            var nonExistentArticle = "999";
+            string nonExistentArticle = "999";
 
-            var initialProducts = new List<Product>
+            List<Product> initialProducts = new List<Product>
             {
             new Product { Article = "123", Name = "Товар 1" },
             new Product { Article = "456", Name = "Товар 2" }
             };
 
-            var expectedProducts = new List<Product>
+            List<Product> expectedProducts = new List<Product>
             {
             new Product { Article = "123", Name = "Товар 1" },
             new Product { Article = "456", Name = "Товар 2" }
@@ -232,17 +232,17 @@ namespace E_shopTest
             _mockRepository.Setup(r => r.GetAllProducts())
                           .Returns(initialProducts);
             // Act
-            var result = _catalog.DeleteProduct(nonExistentArticle);
+            string result = _catalog.DeleteProduct(nonExistentArticle);
 
             // Assert
             Assert.AreEqual("Товар с указанным артикулом не найден", result,
             "Для несуществующего товара должно возвращаться информационное сообщение");
             _mockRepository.Verify(r => r.DeleteProduct(nonExistentArticle), Times.Never);
 
-            var productsCount = _mockRepository.Object.GetAllProducts().Count;
+            int productsCount = _mockRepository.Object.GetAllProducts().Count;
             Assert.AreEqual(2, productsCount, "Количество товаров не должно измениться");
 
-            var actualProducts = _mockRepository.Object.GetAllProducts().ToList();
+            List<Product> actualProducts = _mockRepository.Object.GetAllProducts().ToList();
 
             // Сравниваем с ожидаемым списком
             CollectionAssert.AreEqual(initialProducts, actualProducts, "Списки товаров должны полностью совпадать после попытки удаления несуществующего товара");
@@ -253,10 +253,10 @@ namespace E_shopTest
         public void TestRemoveProductByArticleWithEmptyCatalog()
         {
             // Arrange
-            var _mockRepository = new Mock<IProductRepository>();
-            var _catalog = new ProductCatalogManager(_mockRepository.Object);
+            Mock<IProductRepository> _mockRepository = new Mock<IProductRepository>();
+            ProductCatalogManager _catalog = new ProductCatalogManager(_mockRepository.Object);
 
-            var articleToRemove = "1";
+            string articleToRemove = "1";
 
             _mockRepository.Setup(r => r.GetProductByArticle(articleToRemove))
                           .Returns((Product)null);
@@ -264,7 +264,7 @@ namespace E_shopTest
                           .Returns(new List<Product>());
 
             // Act
-            var result = _catalog.DeleteProduct(articleToRemove);
+            string result = _catalog.DeleteProduct(articleToRemove);
 
             // Assert
             Assert.AreEqual("Товар с указанным артикулом не найден", result,
@@ -272,7 +272,7 @@ namespace E_shopTest
 
             _mockRepository.Verify(r => r.DeleteProduct(articleToRemove), Times.Never);
 
-            var products = _mockRepository.Object.GetAllProducts();
+            List<Product> products = _mockRepository.Object.GetAllProducts();
             Assert.AreEqual(0, products.Count, "Каталог должен оставаться пустым");
         }
         
@@ -280,8 +280,8 @@ namespace E_shopTest
         public void TestUpdateProductWithValidData()
         {
             // Arrange
-            var mockRepository = new Mock<IProductRepository>();
-            var catalog = new ProductCatalogManager(mockRepository.Object);
+            Mock<IProductRepository> mockRepository = new Mock<IProductRepository>();
+            ProductCatalogManager catalog = new ProductCatalogManager(mockRepository.Object);
 
             Product storedProduct = new Product
             {
@@ -300,7 +300,7 @@ namespace E_shopTest
                           .Returns(() => storedProduct);
 
             // Act
-            var updateRequest = new Product
+            Product updateRequest = new Product
             {
                 Article = "12345",
                 Name = "Обновленное название",
@@ -309,12 +309,12 @@ namespace E_shopTest
                 Unit = "коробка"
             };
 
-            var operationResult = catalog.UpdateProduct(updateRequest);
+            string operationResult = catalog.UpdateProduct(updateRequest);
 
             // Assert
             Assert.AreEqual(string.Empty, operationResult);
 
-            var actualProductInDb = mockRepository.Object.GetProductByArticle("12345");
+            Product actualProductInDb = mockRepository.Object.GetProductByArticle("12345");
 
             Assert.AreEqual(updateRequest.Name, actualProductInDb.Name);
             Assert.AreEqual(updateRequest.Price, actualProductInDb.Price);
@@ -330,10 +330,10 @@ namespace E_shopTest
         public void TestUpdateProduct_WithInvalidData(string article, string name, int price, int stock, string unit, string expectedError)
         {
             // Arrange
-            var mockRepository = new Mock<IProductRepository>();
-            var catalog = new ProductCatalogManager(mockRepository.Object);
+            Mock<IProductRepository> mockRepository = new Mock<IProductRepository>();
+            ProductCatalogManager catalog = new ProductCatalogManager(mockRepository.Object);
 
-            var invalidProduct = new Product
+            Product invalidProduct = new Product
             {
                 Article = article,
                 Name = name,
@@ -343,7 +343,7 @@ namespace E_shopTest
             };
 
             // Act
-            var result = catalog.UpdateProduct(invalidProduct);
+            string result = catalog.UpdateProduct(invalidProduct);
 
             // Assert
             Assert.AreEqual(expectedError, result);
