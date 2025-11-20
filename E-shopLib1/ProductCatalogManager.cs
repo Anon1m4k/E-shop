@@ -7,14 +7,20 @@ namespace E_shop
     public class ProductCatalogManager
     {
         private IProductRepository repository;
+        private Dictionary<string, List<Product>> productsByCategory_;
 
         public ProductCatalogManager(IProductRepository repo)
         {
             repository = repo;
+            RefreshProductsByCategory();
         }
 
-        public Dictionary<string, List<Product>> ProductsByCategory =>
-            repository.AllProductsByCategory();
+        public Dictionary<string, List<Product>> ProductsByCategory => productsByCategory_;
+
+        private void RefreshProductsByCategory()
+        {
+            productsByCategory_ = repository.AllProductsByCategory();
+        }
 
         public string AddProduct(Product product)
         {
@@ -110,10 +116,9 @@ namespace E_shop
         }
         public List<Product> GetProductsByCategory(string category)
         {
-            if (repository != null)
+            if (productsByCategory_.ContainsKey(category))
             {
-                List<Product> allProducts = repository.GetAllProducts();
-                return allProducts.Where(p => p.Category == category).ToList();
+                return productsByCategory_[category];
             }
             return new List<Product>();
         }
