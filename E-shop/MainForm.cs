@@ -51,7 +51,7 @@ namespace E_shop
                 string selectedArticle = dataGridView.SelectedRows[0].Cells["Article"].Value.ToString();
 
                 // Запрашиваем подтверждение удаления
-                var result = MessageBox.Show("Удалить выбранный товар?", "Подтверждение удаления",
+                DialogResult result = MessageBox.Show("Удалить выбранный товар?", "Подтверждение удаления",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)

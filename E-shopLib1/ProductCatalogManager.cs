@@ -1,15 +1,25 @@
 ﻿using E_shopLib;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace E_shop
 {
     public class ProductCatalogManager
     {
         private IProductRepository repository;
+        private Dictionary<string, List<Product>> productsByCategory_;
 
         public ProductCatalogManager(IProductRepository repo)
         {
             repository = repo;
+            RefreshProductsByCategory();
+        }
+
+        public Dictionary<string, List<Product>> ProductsByCategory => productsByCategory_;
+
+        private void RefreshProductsByCategory()
+        {
+            productsByCategory_ = repository.AllProductsByCategory();
         }
 
         public string AddProduct(Product product)
@@ -61,7 +71,7 @@ namespace E_shop
             if (repository == null)
                 return "Репозиторий недоступен";
 
-            var product = repository.GetProductByArticle(article);
+            Product product = repository.GetProductByArticle(article);
             if (product == null)
             {
                 return "Товар с указанным артикулом не найден";
@@ -95,6 +105,22 @@ namespace E_shop
                 return repository.GetCategories();
             }
             return new List<string>();
+        }
+        public List<Product> GetAllProducts()
+        {
+            if (repository != null)
+            {
+                return repository.GetAllProducts();
+            }
+            return new List<Product>();
+        }
+        public List<Product> GetProductsByCategory(string category)
+        {
+            if (productsByCategory_.ContainsKey(category))
+            {
+                return productsByCategory_[category];
+            }
+            return new List<Product>();
         }
     }
 }

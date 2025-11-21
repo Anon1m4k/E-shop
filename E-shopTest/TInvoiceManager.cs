@@ -21,10 +21,10 @@ namespace E_shopTest
         public void TestAddInvoiceWithValidData(string article1, string name1, string category1, double price1, int stock1, string unit1,
                                          string article2 = null, string name2 = null, string category2 = null, double price2 = 0, int stock2 = 0, string unit2 = null)
         {
-            var mockRepository = new Mock<IInvoiceRepository>();
-            var manager = new InvoiceManager(mockRepository.Object);
+            Mock<IInvoiceRepository> mockRepository = new Mock<IInvoiceRepository>();
+            InvoiceManager manager = new InvoiceManager(mockRepository.Object);
 
-            var validInvoice = new Invoice();
+            Invoice validInvoice = new Invoice();
             validInvoice.Date = DateTime.Now.Date;
             validInvoice.Items = new List<Product>
         {
@@ -57,7 +57,7 @@ namespace E_shopTest
             mockRepository.Setup(r => r.AddInvoice(It.IsAny<Invoice>()))
                          .Returns("Приходная накладная успешно добавлена");
 
-            var savedInvoice = new Invoice();
+            Invoice savedInvoice = new Invoice();
             savedInvoice.SetId(expectedId);
             savedInvoice.Date = validInvoice.Date;
             savedInvoice.Items = validInvoice.Items.ToList();
@@ -79,10 +79,10 @@ namespace E_shopTest
         [DataRow("657", "Ноутбук", "Техника", "", 1000.0, 10, "Единица измерения должна быть заполнена")] // отсутствие единицы измерения
         public void TestAddInvoiceWithInvalidData(string article, string name, string category, string unit, double price, int stock, string expectedErrorMessage)
         {
-            var mockRepository = new Mock<IInvoiceRepository>();
-            var manager = new InvoiceManager(mockRepository.Object);
+            Mock<IInvoiceRepository> mockRepository = new Mock<IInvoiceRepository>();
+            InvoiceManager manager = new InvoiceManager(mockRepository.Object);
 
-            var invalidInvoice = new Invoice();
+            Invoice invalidInvoice = new Invoice();
             invalidInvoice.Date = DateTime.Now.Date;
             invalidInvoice.Items = new List<Product>
             {

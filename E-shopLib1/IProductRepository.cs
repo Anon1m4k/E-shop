@@ -10,6 +10,7 @@ namespace E_shopLib
         Product GetProductByArticle(string article);
         List<Product> GetAllProducts();
         bool ArticleExists(string article);
-        List<string> GetCategories(); // Новый метод для получения категорий
+        List<string> GetCategories();
+        Dictionary<string, List<Product>> AllProductsByCategory();
     }
 }

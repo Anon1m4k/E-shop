@@ -232,5 +232,21 @@ namespace E_shopLib
 
             return categories;
         }
+        public Dictionary<string, List<Product>> AllProductsByCategory()
+        {
+            Dictionary<string, List<Product>> productsByCategory = new Dictionary<string, List<Product>>();
+            List<Product> allProducts = GetAllProducts();
+
+            foreach (Product product in allProducts)
+            {
+                if (!productsByCategory.ContainsKey(product.Category))
+                {
+                    productsByCategory[product.Category] = new List<Product>();
+                }
+                productsByCategory[product.Category].Add(product);
+            }
+
+            return productsByCategory;
+        }
     }
 }
