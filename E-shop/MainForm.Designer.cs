@@ -28,9 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.buttonAdd = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
@@ -42,19 +39,21 @@
             this.AddInvoice = new System.Windows.Forms.Button();
             this.tabPageSales = new System.Windows.Forms.TabPage();
             this.splitContainerSales = new System.Windows.Forms.SplitContainer();
+            this.panelCatalog = new System.Windows.Forms.Panel();
             this.flowLayoutPanelCategories = new System.Windows.Forms.FlowLayoutPanel();
             this.btnRefreshSales = new System.Windows.Forms.Button();
             this.lblSalesTitle = new System.Windows.Forms.Label();
             this.dataGridViewProductsSales = new System.Windows.Forms.DataGridView();
+            this.panelCartHeader = new System.Windows.Forms.Panel();
             this.lblCartTitle = new System.Windows.Forms.Label();
-            this.dataGridViewCart = new System.Windows.Forms.DataGridView();
-            this.btnRemoveFromCart = new System.Windows.Forms.Button();
-            this.lblTotal = new System.Windows.Forms.Label();
-            this.lblTotalValue = new System.Windows.Forms.Label();
             this.lblClient = new System.Windows.Forms.Label();
             this.txtClient = new System.Windows.Forms.TextBox();
             this.lblDate = new System.Windows.Forms.Label();
             this.lblDateValue = new System.Windows.Forms.Label();
+            this.dataGridViewCart = new System.Windows.Forms.DataGridView();
+            this.btnRemoveFromCart = new System.Windows.Forms.Button();
+            this.lblTotal = new System.Windows.Forms.Label();
+            this.lblTotalValue = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.tabControlMain.SuspendLayout();
             this.tabPageProducts.SuspendLayout();
@@ -65,59 +64,18 @@
             this.splitContainerSales.Panel1.SuspendLayout();
             this.splitContainerSales.Panel2.SuspendLayout();
             this.splitContainerSales.SuspendLayout();
+            this.panelCatalog.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProductsSales)).BeginInit();
+            this.panelCartHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCart)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView
             // 
-            this.dataGridView.AllowUserToAddRows = false;
-            this.dataGridView.AllowUserToDeleteRows = false;
-            this.dataGridView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.dataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle10;
-            this.dataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView.BackgroundColor = System.Drawing.Color.White;
-            this.dataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            this.dataGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(107)))), ((int)(((byte)(129)))));
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle11.Padding = new System.Windows.Forms.Padding(0, 8, 0, 8);
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
-            this.dataGridView.ColumnHeadersHeight = 40;
-            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle12.Padding = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(235)))), ((int)(((byte)(252)))));
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView.DefaultCellStyle = dataGridViewCellStyle12;
-            this.dataGridView.EnableHeadersVisualStyles = false;
-            this.dataGridView.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dataGridView.Location = new System.Drawing.Point(0, 61);
             this.dataGridView.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.dataGridView.MultiSelect = false;
             this.dataGridView.Name = "dataGridView";
-            this.dataGridView.ReadOnly = true;
-            this.dataGridView.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            this.dataGridView.RowHeadersVisible = false;
-            this.dataGridView.RowHeadersWidth = 51;
-            this.dataGridView.RowTemplate.Height = 32;
-            this.dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView.Size = new System.Drawing.Size(999, 302);
+            this.dataGridView.Size = new System.Drawing.Size(1441, 302);
             this.dataGridView.TabIndex = 0;
             // 
             // buttonAdd
@@ -159,8 +117,8 @@
             // 
             // tabControlMain
             // 
-            this.tabControlMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.tabControlMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControlMain.Controls.Add(this.tabPageProducts);
             this.tabControlMain.Controls.Add(this.tabPageInvoices);
@@ -170,7 +128,7 @@
             this.tabControlMain.Location = new System.Drawing.Point(12, 12);
             this.tabControlMain.Name = "tabControlMain";
             this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(1439, 401);
+            this.tabControlMain.Size = new System.Drawing.Size(1456, 401);
             this.tabControlMain.TabIndex = 5;
             // 
             // tabPageProducts
@@ -182,13 +140,13 @@
             this.tabPageProducts.Location = new System.Drawing.Point(4, 34);
             this.tabPageProducts.Name = "tabPageProducts";
             this.tabPageProducts.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageProducts.Size = new System.Drawing.Size(999, 363);
+            this.tabPageProducts.Size = new System.Drawing.Size(1448, 363);
             this.tabPageProducts.TabIndex = 0;
             this.tabPageProducts.Text = "📦 Товары";
             // 
             // panelProductsButtons
             // 
-            this.panelProductsButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.panelProductsButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelProductsButtons.BackColor = System.Drawing.Color.Transparent;
             this.panelProductsButtons.Controls.Add(this.buttonEdit);
@@ -196,7 +154,7 @@
             this.panelProductsButtons.Controls.Add(this.buttonDelete);
             this.panelProductsButtons.Location = new System.Drawing.Point(0, 5);
             this.panelProductsButtons.Name = "panelProductsButtons";
-            this.panelProductsButtons.Size = new System.Drawing.Size(999, 40);
+            this.panelProductsButtons.Size = new System.Drawing.Size(1441, 40);
             this.panelProductsButtons.TabIndex = 1;
             // 
             // buttonEdit
@@ -221,7 +179,7 @@
             this.tabPageInvoices.Location = new System.Drawing.Point(4, 34);
             this.tabPageInvoices.Name = "tabPageInvoices";
             this.tabPageInvoices.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageInvoices.Size = new System.Drawing.Size(999, 363);
+            this.tabPageInvoices.Size = new System.Drawing.Size(1448, 363);
             this.tabPageInvoices.TabIndex = 1;
             this.tabPageInvoices.Text = "📋 Накладные";
             // 
@@ -252,7 +210,7 @@
             this.tabPageSales.Location = new System.Drawing.Point(4, 34);
             this.tabPageSales.Name = "tabPageSales";
             this.tabPageSales.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSales.Size = new System.Drawing.Size(1431, 363);
+            this.tabPageSales.Size = new System.Drawing.Size(1448, 363);
             this.tabPageSales.TabIndex = 2;
             this.tabPageSales.Text = "💰 Продажи";
             // 
@@ -264,44 +222,57 @@
             // 
             // splitContainerSales.Panel1
             // 
-            this.splitContainerSales.Panel1.Controls.Add(this.flowLayoutPanelCategories);
+            this.splitContainerSales.Panel1.Controls.Add(this.panelCatalog);
             this.splitContainerSales.Panel1.Controls.Add(this.btnRefreshSales);
-            this.splitContainerSales.Panel1.Controls.Add(this.lblSalesTitle);
             this.splitContainerSales.Panel1.Controls.Add(this.dataGridViewProductsSales);
+            this.splitContainerSales.Panel1MinSize = 400;
             // 
             // splitContainerSales.Panel2
             // 
-            this.splitContainerSales.Panel2.Controls.Add(this.lblCartTitle);
+            this.splitContainerSales.Panel2.Controls.Add(this.panelCartHeader);
             this.splitContainerSales.Panel2.Controls.Add(this.dataGridViewCart);
-            this.splitContainerSales.Panel2.Controls.Add(this.btnRemoveFromCart);
             this.splitContainerSales.Panel2.Controls.Add(this.lblTotal);
             this.splitContainerSales.Panel2.Controls.Add(this.lblTotalValue);
-            this.splitContainerSales.Panel2.Controls.Add(this.lblClient);
-            this.splitContainerSales.Panel2.Controls.Add(this.txtClient);
-            this.splitContainerSales.Panel2.Controls.Add(this.lblDate);
-            this.splitContainerSales.Panel2.Controls.Add(this.lblDateValue);
-            this.splitContainerSales.Size = new System.Drawing.Size(1425, 357);
-            this.splitContainerSales.SplitterDistance = 711;
+            this.splitContainerSales.Panel2MinSize = 400;
+            this.splitContainerSales.Size = new System.Drawing.Size(1442, 357);
+            this.splitContainerSales.SplitterDistance = 720;
             this.splitContainerSales.TabIndex = 0;
+            // 
+            // panelCatalog
+            // 
+            this.panelCatalog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.panelCatalog.BackColor = System.Drawing.Color.White;
+            this.panelCatalog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelCatalog.Controls.Add(this.flowLayoutPanelCategories);
+            this.panelCatalog.Controls.Add(this.lblSalesTitle);
+            this.panelCatalog.Location = new System.Drawing.Point(0, 0);
+            this.panelCatalog.Name = "panelCatalog";
+            this.panelCatalog.Size = new System.Drawing.Size(169, 354);
+            this.panelCatalog.TabIndex = 3;
             // 
             // flowLayoutPanelCategories
             // 
-            this.flowLayoutPanelCategories.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.flowLayoutPanelCategories.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.flowLayoutPanelCategories.AutoScroll = true;
             this.flowLayoutPanelCategories.Location = new System.Drawing.Point(6, 25);
             this.flowLayoutPanelCategories.Name = "flowLayoutPanelCategories";
-            this.flowLayoutPanelCategories.Size = new System.Drawing.Size(162, 329);
+            this.flowLayoutPanelCategories.Size = new System.Drawing.Size(158, 324);
             this.flowLayoutPanelCategories.TabIndex = 0;
             // 
             // btnRefreshSales
             // 
-            this.btnRefreshSales.Location = new System.Drawing.Point(174, 8);
+            this.btnRefreshSales.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRefreshSales.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(152)))), ((int)(((byte)(219)))));
+            this.btnRefreshSales.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRefreshSales.ForeColor = System.Drawing.Color.White;
+            this.btnRefreshSales.Location = new System.Drawing.Point(184, 22);
             this.btnRefreshSales.Name = "btnRefreshSales";
-            this.btnRefreshSales.Size = new System.Drawing.Size(94, 44);
+            this.btnRefreshSales.Size = new System.Drawing.Size(132, 30);
             this.btnRefreshSales.TabIndex = 3;
-            this.btnRefreshSales.Text = "Обновить";
-            this.btnRefreshSales.UseVisualStyleBackColor = true;
+            this.btnRefreshSales.Text = "🔄 Обновить";
+            this.btnRefreshSales.UseVisualStyleBackColor = false;
             this.btnRefreshSales.Click += new System.EventHandler(this.btnRefreshSales_Click);
             // 
             // lblSalesTitle
@@ -316,79 +287,44 @@
             // 
             // dataGridViewProductsSales
             // 
-            this.dataGridViewProductsSales.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewProductsSales.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewProductsSales.Location = new System.Drawing.Point(174, 58);
+            this.dataGridViewProductsSales.Location = new System.Drawing.Point(184, 58);
             this.dataGridViewProductsSales.Name = "dataGridViewProductsSales";
-            this.dataGridViewProductsSales.Size = new System.Drawing.Size(534, 234);
+            this.dataGridViewProductsSales.Size = new System.Drawing.Size(536, 268);
             this.dataGridViewProductsSales.TabIndex = 1;
             this.dataGridViewProductsSales.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewProductsSales_CellDoubleClick);
+            // 
+            // panelCartHeader
+            // 
+            this.panelCartHeader.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelCartHeader.BackColor = System.Drawing.Color.White;
+            this.panelCartHeader.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelCartHeader.Controls.Add(this.lblCartTitle);
+            this.panelCartHeader.Controls.Add(this.lblClient);
+            this.panelCartHeader.Controls.Add(this.btnRemoveFromCart);
+            this.panelCartHeader.Controls.Add(this.txtClient);
+            this.panelCartHeader.Controls.Add(this.lblDate);
+            this.panelCartHeader.Controls.Add(this.lblDateValue);
+            this.panelCartHeader.Location = new System.Drawing.Point(0, 0);
+            this.panelCartHeader.Name = "panelCartHeader";
+            this.panelCartHeader.Size = new System.Drawing.Size(718, 59);
+            this.panelCartHeader.TabIndex = 10;
             // 
             // lblCartTitle
             // 
             this.lblCartTitle.AutoSize = true;
             this.lblCartTitle.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblCartTitle.Location = new System.Drawing.Point(3, 40);
+            this.lblCartTitle.Location = new System.Drawing.Point(3, 7);
             this.lblCartTitle.Name = "lblCartTitle";
             this.lblCartTitle.Size = new System.Drawing.Size(56, 15);
             this.lblCartTitle.TabIndex = 9;
             this.lblCartTitle.Text = "Корзина";
             // 
-            // dataGridViewCart
-            // 
-            this.dataGridViewCart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewCart.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewCart.Location = new System.Drawing.Point(6, 58);
-            this.dataGridViewCart.Name = "dataGridViewCart";
-            this.dataGridViewCart.Size = new System.Drawing.Size(701, 230);
-            this.dataGridViewCart.TabIndex = 8;
-            this.dataGridViewCart.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCart_CellEndEdit);
-            this.dataGridViewCart.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCart_CellValueChanged);
-            // 
-            // btnRemoveFromCart
-            // 
-            this.btnRemoveFromCart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnRemoveFromCart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-            this.btnRemoveFromCart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRemoveFromCart.ForeColor = System.Drawing.Color.White;
-            this.btnRemoveFromCart.Location = new System.Drawing.Point(6, 294);
-            this.btnRemoveFromCart.Name = "btnRemoveFromCart";
-            this.btnRemoveFromCart.Size = new System.Drawing.Size(120, 30);
-            this.btnRemoveFromCart.TabIndex = 7;
-            this.btnRemoveFromCart.Text = "Удалить из корзины";
-            this.btnRemoveFromCart.UseVisualStyleBackColor = false;
-            this.btnRemoveFromCart.Click += new System.EventHandler(this.btnRemoveFromCart_Click);
-            // 
-            // lblTotal
-            // 
-            this.lblTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTotal.AutoSize = true;
-            this.lblTotal.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblTotal.Location = new System.Drawing.Point(3, 330);
-            this.lblTotal.Name = "lblTotal";
-            this.lblTotal.Size = new System.Drawing.Size(89, 15);
-            this.lblTotal.TabIndex = 5;
-            this.lblTotal.Text = "Общая сумма:";
-            // 
-            // lblTotalValue
-            // 
-            this.lblTotalValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTotalValue.AutoSize = true;
-            this.lblTotalValue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblTotalValue.Location = new System.Drawing.Point(100, 330);
-            this.lblTotalValue.Name = "lblTotalValue";
-            this.lblTotalValue.Size = new System.Drawing.Size(31, 15);
-            this.lblTotalValue.TabIndex = 6;
-            this.lblTotalValue.Text = "0.00";
-            // 
             // lblClient
             // 
+            this.lblClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblClient.AutoSize = true;
-            this.lblClient.Location = new System.Drawing.Point(3, 10);
+            this.lblClient.Location = new System.Drawing.Point(314, 7);
             this.lblClient.Name = "lblClient";
             this.lblClient.Size = new System.Drawing.Size(49, 15);
             this.lblClient.TabIndex = 3;
@@ -396,7 +332,8 @@
             // 
             // txtClient
             // 
-            this.txtClient.Location = new System.Drawing.Point(58, 7);
+            this.txtClient.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtClient.Location = new System.Drawing.Point(369, 4);
             this.txtClient.Name = "txtClient";
             this.txtClient.Size = new System.Drawing.Size(200, 23);
             this.txtClient.TabIndex = 4;
@@ -405,7 +342,7 @@
             // 
             this.lblDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblDate.AutoSize = true;
-            this.lblDate.Location = new System.Drawing.Point(567, 10);
+            this.lblDate.Location = new System.Drawing.Point(575, 7);
             this.lblDate.Name = "lblDate";
             this.lblDate.Size = new System.Drawing.Size(35, 15);
             this.lblDate.TabIndex = 1;
@@ -416,17 +353,61 @@
             this.lblDateValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblDateValue.AutoSize = true;
             this.lblDateValue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblDateValue.Location = new System.Drawing.Point(608, 10);
+            this.lblDateValue.Location = new System.Drawing.Point(616, 7);
             this.lblDateValue.Name = "lblDateValue";
             this.lblDateValue.Size = new System.Drawing.Size(0, 15);
             this.lblDateValue.TabIndex = 2;
+            // 
+            // dataGridViewCart
+            // 
+            this.dataGridViewCart.Location = new System.Drawing.Point(0, 56);
+            this.dataGridViewCart.Name = "dataGridViewCart";
+            this.dataGridViewCart.Size = new System.Drawing.Size(718, 270);
+            this.dataGridViewCart.TabIndex = 8;
+            this.dataGridViewCart.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCart_CellEndEdit);
+            this.dataGridViewCart.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCart_CellValueChanged);
+            // 
+            // btnRemoveFromCart
+            // 
+            this.btnRemoveFromCart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
+            this.btnRemoveFromCart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnRemoveFromCart.ForeColor = System.Drawing.Color.White;
+            this.btnRemoveFromCart.Location = new System.Drawing.Point(6, 24);
+            this.btnRemoveFromCart.Name = "btnRemoveFromCart";
+            this.btnRemoveFromCart.Size = new System.Drawing.Size(132, 30);
+            this.btnRemoveFromCart.TabIndex = 7;
+            this.btnRemoveFromCart.Text = "Удалить из корзины";
+            this.btnRemoveFromCart.UseVisualStyleBackColor = false;
+            this.btnRemoveFromCart.Click += new System.EventHandler(this.btnRemoveFromCart_Click);
+            // 
+            // lblTotal
+            // 
+            this.lblTotal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTotal.AutoSize = true;
+            this.lblTotal.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblTotal.Location = new System.Drawing.Point(5, 335);
+            this.lblTotal.Name = "lblTotal";
+            this.lblTotal.Size = new System.Drawing.Size(89, 15);
+            this.lblTotal.TabIndex = 5;
+            this.lblTotal.Text = "Общая сумма:";
+            // 
+            // lblTotalValue
+            // 
+            this.lblTotalValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblTotalValue.AutoSize = true;
+            this.lblTotalValue.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblTotalValue.Location = new System.Drawing.Point(100, 335);
+            this.lblTotalValue.Name = "lblTotalValue";
+            this.lblTotalValue.Size = new System.Drawing.Size(31, 15);
+            this.lblTotalValue.TabIndex = 6;
+            this.lblTotalValue.Text = "0.00";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1463, 425);
+            this.ClientSize = new System.Drawing.Size(1480, 425);
             this.Controls.Add(this.tabControlMain);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -441,12 +422,15 @@
             this.tabPageInvoices.ResumeLayout(false);
             this.tabPageSales.ResumeLayout(false);
             this.splitContainerSales.Panel1.ResumeLayout(false);
-            this.splitContainerSales.Panel1.PerformLayout();
             this.splitContainerSales.Panel2.ResumeLayout(false);
             this.splitContainerSales.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerSales)).EndInit();
             this.splitContainerSales.ResumeLayout(false);
+            this.panelCatalog.ResumeLayout(false);
+            this.panelCatalog.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProductsSales)).EndInit();
+            this.panelCartHeader.ResumeLayout(false);
+            this.panelCartHeader.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCart)).EndInit();
             this.ResumeLayout(false);
 
@@ -464,18 +448,20 @@
         private System.Windows.Forms.Button buttonEdit;
         private System.Windows.Forms.TabPage tabPageSales;
         private System.Windows.Forms.SplitContainer splitContainerSales;
+        private System.Windows.Forms.Panel panelCatalog;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelCategories;
         private System.Windows.Forms.Button btnRefreshSales;
         private System.Windows.Forms.Label lblSalesTitle;
         private System.Windows.Forms.DataGridView dataGridViewProductsSales;
+        private System.Windows.Forms.Panel panelCartHeader;
         private System.Windows.Forms.Label lblCartTitle;
-        private System.Windows.Forms.DataGridView dataGridViewCart;
-        private System.Windows.Forms.Button btnRemoveFromCart;
-        private System.Windows.Forms.Label lblTotal;
-        private System.Windows.Forms.Label lblTotalValue;
         private System.Windows.Forms.Label lblClient;
         private System.Windows.Forms.TextBox txtClient;
         private System.Windows.Forms.Label lblDate;
         private System.Windows.Forms.Label lblDateValue;
+        private System.Windows.Forms.DataGridView dataGridViewCart;
+        private System.Windows.Forms.Button btnRemoveFromCart;
+        private System.Windows.Forms.Label lblTotal;
+        private System.Windows.Forms.Label lblTotalValue;
     }
 }

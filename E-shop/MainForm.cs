@@ -29,10 +29,76 @@ namespace E_shop
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Применяет стандартные стили к DataGridView
+        /// </summary>
+        /// <param name="dataGridView">Таблица для стилизации</param>
+        /// <param name="readOnly">Только для чтения (true) или редактируемая (false)</param>
+        private void ApplyDataGridViewStyle(DataGridView dataGridView, bool readOnly = true)
+        {
+            // Базовые настройки
+            dataGridView.AllowUserToAddRows = false;
+            dataGridView.AllowUserToDeleteRows = false;
+            dataGridView.AllowUserToResizeRows = false;
+            dataGridView.ReadOnly = readOnly;
+            dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView.BackgroundColor = Color.White;
+            dataGridView.BorderStyle = BorderStyle.None;
+            dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dataGridView.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dataGridView.RowHeadersVisible = false;
+            dataGridView.RowHeadersWidth = 51;
+            dataGridView.RowTemplate.Height = 32;
+            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView.MultiSelect = false;
+            dataGridView.EnableHeadersVisualStyles = false;
+            dataGridView.GridColor = Color.FromArgb(224, 224, 224);
+
+            // Стиль для чередующихся строк
+            dataGridView.AlternatingRowsDefaultCellStyle = new DataGridViewCellStyle
+            {
+                BackColor = Color.FromArgb(248, 250, 252),
+                Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 204),
+                Padding = new Padding(4, 2, 4, 2)
+            };
+
+            // Стиль заголовков столбцов
+            dataGridView.ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
+            {
+                Alignment = DataGridViewContentAlignment.MiddleLeft,
+                BackColor = Color.FromArgb(74, 107, 129),
+                Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 204),
+                ForeColor = Color.White,
+                Padding = new Padding(0, 8, 0, 8),
+                SelectionBackColor = SystemColors.Highlight,
+                SelectionForeColor = SystemColors.HighlightText,
+                WrapMode = DataGridViewTriState.True
+            };
+
+            // Стандартный стиль ячеек
+            dataGridView.DefaultCellStyle = new DataGridViewCellStyle
+            {
+                Alignment = DataGridViewContentAlignment.MiddleLeft,
+                BackColor = SystemColors.Window,
+                Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 204),
+                ForeColor = SystemColors.ControlText,
+                Padding = new Padding(4, 2, 4, 2),
+                SelectionBackColor = Color.FromArgb(220, 235, 252),
+                SelectionForeColor = Color.Black,
+                WrapMode = DataGridViewTriState.False
+            };
+
+            // Высота заголовков
+            dataGridView.ColumnHeadersHeight = 40;
+            dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+        }
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             try
             {
+                ApplyDataGridViewStyle(dataGridView, true);
                 dataGridView.DataSource = productManager.GetAllProducts();
                 InitializeSalesTab(); // Инициализация вкладки продаж
             }
@@ -42,6 +108,7 @@ namespace E_shop
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         #region Вкладка "Товары"
 
         private void buttonAdd_Click(object sender, EventArgs e)
@@ -176,20 +243,13 @@ namespace E_shop
 
         private void ConfigureProductsGrid()
         {
-            dataGridViewProductsSales.ReadOnly = true;
-            dataGridViewProductsSales.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewProductsSales.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewProductsSales.RowHeadersVisible = false;
-
-            // Настройка внешнего вида
-            dataGridViewProductsSales.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            ApplyDataGridViewStyle(dataGridViewProductsSales, true);
+            dataGridViewProductsSales.CellDoubleClick += dataGridViewProductsSales_CellDoubleClick;
         }
 
         private void ConfigureCartGrid()
         {
-            dataGridViewCart.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewCart.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCart.RowHeadersVisible = false;
+            ApplyDataGridViewStyle(dataGridViewCart, false); // Корзина редактируемая
 
             // Делаем колонку Stock редактируемой
             if (dataGridViewCart.Columns["Stock"] != null)
@@ -197,6 +257,9 @@ namespace E_shop
                 dataGridViewCart.Columns["Stock"].ReadOnly = false;
                 dataGridViewCart.Columns["Stock"].HeaderText = "Количество";
             }
+
+            dataGridViewCart.CellValueChanged += dataGridViewCart_CellValueChanged;
+            dataGridViewCart.CellEndEdit += dataGridViewCart_CellEndEdit;
         }
 
         private void LoadSalesData()
