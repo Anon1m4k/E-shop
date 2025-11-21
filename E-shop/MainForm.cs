@@ -1,5 +1,8 @@
 ﻿using E_shopLib;
 using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace E_shop
@@ -7,6 +10,12 @@ namespace E_shop
     public partial class MainForm : Form
     {
         SQLProductManager productManager = new SQLProductManager();
+
+        // Поля для вкладки продаж
+        private ProductCatalogManager salesCatalogManager;
+        private List<Product> cartItems;
+        private string selectedCategory;
+
         public MainForm()
         {
             (bool isValid, string errorMessage) = AppSettings.AreSettingsValidWithDetails();
@@ -19,11 +28,79 @@ namespace E_shop
             }
             InitializeComponent();
         }
+
+        /// <summary>
+        /// Применяет стандартные стили к DataGridView
+        /// </summary>
+        /// <param name="dataGridView">Таблица для стилизации</param>
+        /// <param name="readOnly">Только для чтения (true) или редактируемая (false)</param>
+        private void ApplyDataGridViewStyle(DataGridView dataGridView, bool readOnly = true)
+        {
+            // Базовые настройки
+            dataGridView.AllowUserToAddRows = false;
+            dataGridView.AllowUserToDeleteRows = false;
+            dataGridView.AllowUserToResizeRows = false;
+            dataGridView.ReadOnly = readOnly;
+            dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView.BackgroundColor = Color.White;
+            dataGridView.BorderStyle = BorderStyle.None;
+            dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dataGridView.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dataGridView.RowHeadersVisible = false;
+            dataGridView.RowHeadersWidth = 51;
+            dataGridView.RowTemplate.Height = 32;
+            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView.MultiSelect = false;
+            dataGridView.EnableHeadersVisualStyles = false;
+            dataGridView.GridColor = Color.FromArgb(224, 224, 224);
+
+            // Стиль для чередующихся строк
+            dataGridView.AlternatingRowsDefaultCellStyle = new DataGridViewCellStyle
+            {
+                BackColor = Color.FromArgb(248, 250, 252),
+                Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 204),
+                Padding = new Padding(4, 2, 4, 2)
+            };
+
+            // Стиль заголовков столбцов
+            dataGridView.ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
+            {
+                Alignment = DataGridViewContentAlignment.MiddleLeft,
+                BackColor = Color.FromArgb(74, 107, 129),
+                Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 204),
+                ForeColor = Color.White,
+                Padding = new Padding(0, 8, 0, 8),
+                SelectionBackColor = SystemColors.Highlight,
+                SelectionForeColor = SystemColors.HighlightText,
+                WrapMode = DataGridViewTriState.True
+            };
+
+            // Стандартный стиль ячеек
+            dataGridView.DefaultCellStyle = new DataGridViewCellStyle
+            {
+                Alignment = DataGridViewContentAlignment.MiddleLeft,
+                BackColor = SystemColors.Window,
+                Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 204),
+                ForeColor = SystemColors.ControlText,
+                Padding = new Padding(4, 2, 4, 2),
+                SelectionBackColor = Color.FromArgb(220, 235, 252),
+                SelectionForeColor = Color.Black,
+                WrapMode = DataGridViewTriState.False
+            };
+
+            // Высота заголовков
+            dataGridView.ColumnHeadersHeight = 40;
+            dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+        }
+
         private void MainForm_Load(object sender, EventArgs e)
-        {   
+        {
             try
             {
+                ApplyDataGridViewStyle(dataGridView, true);
                 dataGridView.DataSource = productManager.GetAllProducts();
+                InitializeSalesTab(); // Инициализация вкладки продаж
             }
             catch (Exception ex)
             {
@@ -31,6 +108,8 @@ namespace E_shop
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        #region Вкладка "Товары"
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
@@ -79,6 +158,7 @@ namespace E_shop
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
         private void buttonEdit_Click(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count > 0)
@@ -121,7 +201,7 @@ namespace E_shop
 
         private void buttonEdit_Click_1(object sender, EventArgs e)
         {
-
+            // Обработчик для кнопки редактирования
         }
 
         private void AddInvoice_Click(object sender, EventArgs e)
@@ -131,7 +211,6 @@ namespace E_shop
                 InvoiceForm invoiceForm = new InvoiceForm();
                 invoiceForm.ShowDialog();
 
-
                 dataGridView.DataSource = productManager.GetAllProducts();
             }
             catch (Exception ex)
@@ -140,5 +219,254 @@ namespace E_shop
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        #endregion
+
+        #region Вкладка "Продажи"
+
+        private void InitializeSalesTab()
+        {
+            salesCatalogManager = new ProductCatalogManager(productManager);
+            cartItems = new List<Product>();
+            selectedCategory = "Все";
+
+            // Настройка DataGridView
+            ConfigureProductsGrid();
+            ConfigureCartGrid();
+
+            // Загрузка начальных данных
+            LoadSalesData();
+
+            // Установка даты
+            lblDateValue.Text = DateTime.Now.ToString("dd.MM.yyyy");
+        }
+
+        private void ConfigureProductsGrid()
+        {
+            ApplyDataGridViewStyle(dataGridViewProductsSales, true);
+            dataGridViewProductsSales.CellDoubleClick += dataGridViewProductsSales_CellDoubleClick;
+        }
+
+        private void ConfigureCartGrid()
+        {
+            ApplyDataGridViewStyle(dataGridViewCart, false); // Корзина редактируемая
+
+            // Делаем колонку Stock редактируемой
+            if (dataGridViewCart.Columns["Stock"] != null)
+            {
+                dataGridViewCart.Columns["Stock"].ReadOnly = false;
+                dataGridViewCart.Columns["Stock"].HeaderText = "Количество";
+            }
+
+            dataGridViewCart.CellValueChanged += dataGridViewCart_CellValueChanged;
+            dataGridViewCart.CellEndEdit += dataGridViewCart_CellEndEdit;
+        }
+
+        private void LoadSalesData()
+        {
+            try
+            {
+                // Загрузка категорий
+                var categories = salesCatalogManager.GetCategories();
+                UpdateCategoriesButtons(categories);
+
+                // Загрузка всех товаров
+                var allProducts = salesCatalogManager.GetAllProducts();
+                dataGridViewProductsSales.DataSource = allProducts;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки данных: {ex.Message}", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void UpdateCategoriesButtons(List<string> categories)
+        {
+            flowLayoutPanelCategories.Controls.Clear();
+
+            // Добавляем кнопку "Все"
+            var allButton = CreateCategoryButton("Все");
+            flowLayoutPanelCategories.Controls.Add(allButton);
+
+            // Добавляем кнопки для каждой категории
+            foreach (var category in categories)
+            {
+                var button = CreateCategoryButton(category);
+                flowLayoutPanelCategories.Controls.Add(button);
+            }
+        }
+
+        private Button CreateCategoryButton(string categoryName)
+        {
+            var button = new Button
+            {
+                Text = categoryName,
+                Size = new Size(100, 35),
+                Margin = new Padding(3),
+                BackColor = categoryName == selectedCategory ?
+                    SystemColors.Highlight : SystemColors.Control,
+                ForeColor = categoryName == selectedCategory ?
+                    Color.White : SystemColors.ControlText,
+                FlatStyle = FlatStyle.Flat
+            };
+
+            button.FlatAppearance.BorderSize = 0;
+
+            button.Click += (s, e) =>
+            {
+                selectedCategory = categoryName;
+                UpdateCategoriesButtons(salesCatalogManager.GetCategories());
+                LoadProductsByCategory(categoryName);
+            };
+
+            return button;
+        }
+
+        private void LoadProductsByCategory(string category)
+        {
+            try
+            {
+                List<Product> products;
+                if (category == "Все")
+                {
+                    products = salesCatalogManager.GetAllProducts();
+                }
+                else
+                {
+                    products = salesCatalogManager.GetProductsByCategory(category);
+                }
+                dataGridViewProductsSales.DataSource = products;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки товаров: {ex.Message}", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void dataGridViewProductsSales_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.RowIndex < dataGridViewProductsSales.RowCount)
+            {
+                var product = dataGridViewProductsSales.Rows[e.RowIndex].DataBoundItem as Product;
+                if (product != null && product.Stock > 0)
+                {
+                    AddToCart(product);
+                }
+                else
+                {
+                    MessageBox.Show("Товара нет в наличии", "Внимание",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+        }
+
+        private void AddToCart(Product product)
+        {
+            // Создаем копию товара для корзины
+            var cartProduct = product.Clone();
+            cartProduct.Stock = 1; // Начальное количество в корзине
+
+            // Проверяем, есть ли уже такой товар в корзине
+            var existingItem = cartItems.FirstOrDefault(p => p.Article == cartProduct.Article);
+            if (existingItem != null)
+            {
+                var originalProduct = salesCatalogManager.GetAllProducts()
+                    .FirstOrDefault(p => p.Article == cartProduct.Article);
+
+                if (originalProduct != null && existingItem.Stock < originalProduct.Stock)
+                {
+                    existingItem.Stock++;
+                }
+                else
+                {
+                    MessageBox.Show("Недостаточно товара на складе", "Внимание",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+            else
+            {
+                cartItems.Add(cartProduct);
+            }
+
+            UpdateCartGrid();
+            UpdateTotalAmount();
+        }
+
+        private void UpdateCartGrid()
+        {
+            dataGridViewCart.DataSource = null;
+            dataGridViewCart.DataSource = cartItems;
+        }
+
+        private void dataGridViewCart_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex == dataGridViewCart.Columns["Stock"].Index)
+            {
+                var product = dataGridViewCart.Rows[e.RowIndex].DataBoundItem as Product;
+                var allProducts = salesCatalogManager.GetAllProducts();
+                var originalProduct = allProducts.FirstOrDefault(p => p.Article == product.Article);
+
+                if (originalProduct != null && product.Stock > originalProduct.Stock)
+                {
+                    MessageBox.Show($"Недостаточно товара на складе. Доступно: {originalProduct.Stock}",
+                        "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    product.Stock = originalProduct.Stock;
+                    dataGridViewCart.Refresh();
+                }
+
+                UpdateTotalAmount();
+            }
+        }
+
+        private void dataGridViewCart_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex == dataGridViewCart.Columns["Stock"].Index)
+            {
+                var product = dataGridViewCart.Rows[e.RowIndex].DataBoundItem as Product;
+                if (product.Stock <= 0)
+                {
+                    // Удаляем товар при нулевом количестве
+                    cartItems.Remove(product);
+                    UpdateCartGrid();
+                }
+                UpdateTotalAmount();
+            }
+        }
+
+        private void UpdateTotalAmount()
+        {
+            decimal total = cartItems.Sum(item => item.Price * item.Stock);
+            lblTotalValue.Text = total.ToString("N2");
+        }
+
+        private void btnRemoveFromCart_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewCart.SelectedRows.Count > 0)
+            {
+                var selectedProduct = dataGridViewCart.SelectedRows[0].DataBoundItem as Product;
+                if (selectedProduct != null)
+                {
+                    cartItems.Remove(selectedProduct);
+                    UpdateCartGrid();
+                    UpdateTotalAmount();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Выберите товар для удаления из корзины", "Внимание",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void btnRefreshSales_Click(object sender, EventArgs e)
+        {
+            LoadSalesData();
+            UpdateTotalAmount();
+        }
+
+        #endregion
     }
 }
