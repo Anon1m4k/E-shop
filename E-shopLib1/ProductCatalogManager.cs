@@ -139,12 +139,6 @@ namespace E_shop
                 return productsByCategory_[category];
             }
             return new List<Product>();
-        }
-
-        // Метод для принудительного обновления данных
-        public void RefreshData()
-        {
-            RefreshProductsByCategory();
-        }
+        }        
     }
 }
