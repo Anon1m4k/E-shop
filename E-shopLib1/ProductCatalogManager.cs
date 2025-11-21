@@ -61,9 +61,14 @@ namespace E_shop
                     return $"Товар с артикулом '{product.Article}' уже существует";
                 }
 
-                repository.AddProduct(product);
+                string result = repository.AddProduct(product);
+                if (string.IsNullOrEmpty(result))
+                {
+                    RefreshProductsByCategory(); // Обновляем кэш после добавления
+                }
+                return result;
             }
-            return string.Empty; // Успешное добавление
+            return "Репозиторий недоступен";
         }
 
         public string DeleteProduct(string article)
@@ -76,8 +81,15 @@ namespace E_shop
             {
                 return "Товар с указанным артикулом не найден";
             }
-            return repository.DeleteProduct(article);
+
+            string result = repository.DeleteProduct(article);
+            if (string.IsNullOrEmpty(result))
+            {
+                RefreshProductsByCategory(); // Обновляем кэш после удаления
+            }
+            return result;
         }
+
         public string UpdateProduct(Product product)
         {
             if (string.IsNullOrEmpty(product.Name))
@@ -96,8 +108,15 @@ namespace E_shop
             {
                 return "Единица измерения не может быть пустой";
             }
-            return repository.UpdateProduct(product);
+
+            string result = repository.UpdateProduct(product);
+            if (string.IsNullOrEmpty(result))
+            {
+                RefreshProductsByCategory(); // Обновляем кэш после обновления
+            }
+            return result;
         }
+
         public List<string> GetCategories()
         {
             if (repository != null)
@@ -108,19 +127,24 @@ namespace E_shop
         }
         public List<Product> GetAllProducts()
         {
-            if (repository != null)
-            {
-                return repository.GetAllProducts();
-            }
-            return new List<Product>();
+            RefreshProductsByCategory();
+            return productsByCategory_.Values.SelectMany(x => x).ToList();
         }
         public List<Product> GetProductsByCategory(string category)
         {
+            RefreshProductsByCategory(); // Обновляем данные перед возвратом
+
             if (productsByCategory_.ContainsKey(category))
             {
                 return productsByCategory_[category];
             }
             return new List<Product>();
+        }
+
+        // Метод для принудительного обновления данных
+        public void RefreshData()
+        {
+            RefreshProductsByCategory();
         }
     }
 }
