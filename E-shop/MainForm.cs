@@ -1,12 +1,14 @@
-﻿using E_shopLib;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using E_shopLib;
+using E_shopLib1;
 
 namespace E_shop
 {
     public partial class MainForm : Form
     {
         SQLProductManager productManager = new SQLProductManager();
+        SQLInvoiceRepository invoiceRepository = new SQLInvoiceRepository();
         public MainForm()
         {
             (bool isValid, string errorMessage) = AppSettings.AreSettingsValidWithDetails();
@@ -24,6 +26,7 @@ namespace E_shop
             try
             {
                 dataGridView.DataSource = productManager.GetAllProducts();
+                LoadInvoices();
             }
             catch (Exception ex)
             {
@@ -129,15 +132,42 @@ namespace E_shop
             try
             {
                 InvoiceForm invoiceForm = new InvoiceForm();
-                invoiceForm.ShowDialog();
+                if (invoiceForm.ShowDialog() == DialogResult.OK)
+                {
+                    LoadInvoices();
 
-
-                dataGridView.DataSource = productManager.GetAllProducts();
+                    dataGridView.DataSource = productManager.GetAllProducts();
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Ошибка при открытии формы накладной: {ex.Message}", "Ошибка",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void LoadInvoices()
+        {
+            try
+            {
+                System.Collections.Generic.List<E_shopLib1.Invoice> invoices = invoiceRepository.GetAllInvoices();
+                dataGridViewInvoices.DataSource = invoices;
+
+                dataGridViewInvoices.Refresh();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки накладных: {ex.Message}", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void dataGridViewInvoices_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.RowIndex < dataGridViewInvoices.Rows.Count)
+            {
+                int invoiceId = (int)dataGridViewInvoices.Rows[e.RowIndex].Cells["ID_Invoice"].Value;
+
+                InvoiceForm invoiceForm = new InvoiceForm(invoiceId);
+                invoiceForm.ShowDialog();
             }
         }
     }

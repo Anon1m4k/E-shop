@@ -61,6 +61,44 @@ namespace E_shopLib1
             }
 
         }
+        public string UpdateInvoice(Invoice invoice) //это добавила
+        {
+            if (invoice == null)
+                return "Накладная не может быть null";
+
+            if (invoice.Items == null || invoice.Items.Count == 0)
+                return "Накладная должна содержать хотя бы одну позицию";
+
+            foreach (Product product in invoice.Items)
+            {
+                if (string.IsNullOrWhiteSpace(product.Article))
+                    return "Артикул товара не может быть пустым";
+
+                if (string.IsNullOrWhiteSpace(product.Name))
+                    return $"Наименование товара с артикулом '{product.Article}' не может быть пустым";
+
+                if (string.IsNullOrWhiteSpace(product.Category))
+                    return "Категория не может быть пустой";
+
+                if (string.IsNullOrWhiteSpace(product.Unit))
+                    return "Единица измерения не может быть пустой";
+
+                if (product.Stock <= 0)
+                    return $"Количество товара '{product.Article}' должно быть больше 0";
+
+                if (product.Price <= 0)
+                    return $"Цена товара '{product.Article}' должна быть больше 0";
+            }
+
+            try
+            {
+                return repository_.UpdateInvoice(invoice);
+            }
+            catch (Exception ex)
+            {
+                return $"Ошибка при обновлении накладной: {ex.Message}";
+            }
+        }
 
     }
 }
