@@ -136,18 +136,19 @@ namespace E_shop
             }).ToList();
 
             string result;
-            if (currentInvoice.ID_Invoice == 0) 
+
+            if (IsNewInvoice())
             {
                 result = invoiceManager.AddInvoice(currentInvoice);
             }
-            else 
+            else
             {
                 result = invoiceManager.UpdateInvoice(currentInvoice);
             }
 
             if (string.IsNullOrEmpty(result))
             {
-                MessageBox.Show(currentInvoice.ID_Invoice == 0 ?
+                MessageBox.Show(IsNewInvoice() ?
                     "Накладная успешно добавлена" : "Накладная успешно обновлена",
                     "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DialogResult = DialogResult.OK;
@@ -157,6 +158,13 @@ namespace E_shop
             {
                 MessageBox.Show(result, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private bool IsNewInvoice()
+        {
+
+            return string.IsNullOrEmpty(SerialNumberInvoice.Text) ||
+                   SerialNumberInvoice.ReadOnly == false;
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
