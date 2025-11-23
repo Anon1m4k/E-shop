@@ -38,6 +38,7 @@ namespace E_shop
 
                     SerialNumberInvoice.Text = currentInvoice.SerialNumber;
                     lblDate.Text = currentInvoice.Date.ToString("dd.MM.yyyy");
+                    SerialNumberInvoice.ReadOnly = true;
 
                     invoiceItems.Clear();
                     foreach (var product in currentInvoice.Items)
@@ -83,9 +84,27 @@ namespace E_shop
             invoiceItems = new BindingList<InvoiceItem>();
             invoiceItems.ListChanged += InvoiceItems_ListChanged;
             dataGridViewItems.DataSource = invoiceItems;
+            dataGridViewItems.DataError += dataGridViewItems_DataError;
 
         }
-        
+        private void dataGridViewItems_DataError(object sender, DataGridViewDataErrorEventArgs e) 
+        {
+            if (e.Exception is ArgumentException && e.Context == DataGridViewDataErrorContexts.Commit)
+            {
+                if (dataGridViewItems.Columns[e.ColumnIndex] is DataGridViewComboBoxColumn)
+                {
+                    e.ThrowException = false;
+                }
+            }
+            if (dataGridViewItems.Columns[e.ColumnIndex] == quantityColumn || dataGridViewItems.Columns[e.ColumnIndex] == priceColumn)
+            {
+                MessageBox.Show($"Некорректное значение в поле '{dataGridViewItems.Columns[e.ColumnIndex].HeaderText}'. " +
+                               $"Введите числовое значение.", "Ошибка ввода",
+                               MessageBoxButtons.OK, MessageBoxIcon.Error);
+                e.ThrowException = false;
+            }
+        }
+
         private void InvoiceItems_ListChanged(object sender, ListChangedEventArgs e)
         {
             UpdateTotalAmount();
@@ -105,23 +124,32 @@ namespace E_shop
                 return;
             }
 
-            currentInvoice.SerialNumber = SerialNumberInvoice.Text?.Trim(); 
+            currentInvoice.SerialNumber = SerialNumberInvoice.Text?.Trim();
             currentInvoice.Items = invoiceItems.Select(item => new Product
             {
                 Article = item.Article?.Trim() ?? "",
                 Name = item.Name?.Trim() ?? "",
-                Category = item.Category?.Trim() ?? "", 
+                Category = item.Category?.Trim() ?? "",
                 Price = item.Price,
                 Stock = item.Quantity,
-                Unit = item.Unit?.Trim() ?? "" 
+                Unit = item.Unit?.Trim() ?? ""
             }).ToList();
 
-            string result = invoiceManager.AddInvoice(currentInvoice);
+            string result;
+            if (currentInvoice.ID_Invoice == 0) 
+            {
+                result = invoiceManager.AddInvoice(currentInvoice);
+            }
+            else 
+            {
+                result = invoiceManager.UpdateInvoice(currentInvoice);
+            }
 
             if (string.IsNullOrEmpty(result))
             {
-                MessageBox.Show("Накладная успешно добавлена", "Успех",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(currentInvoice.ID_Invoice == 0 ?
+                    "Накладная успешно добавлена" : "Накладная успешно обновлена",
+                    "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DialogResult = DialogResult.OK;
                 Close();
             }

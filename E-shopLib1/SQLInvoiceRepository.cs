@@ -63,7 +63,7 @@ namespace E_shopLib1
                             }
 
                             transaction.Commit();
-                            return string.Empty; 
+                            return string.Empty;
                         }
                         catch (Exception ex)
                         {
@@ -99,10 +99,10 @@ namespace E_shopLib1
                 createCommand.Parameters.AddWithValue("@Article", product.Article);
                 createCommand.Parameters.AddWithValue("@Name", product.Name);
 
-                createCommand.Parameters.AddWithValue("@Category", product.Category); 
-                createCommand.Parameters.AddWithValue("@Price", product.Price); 
-                createCommand.Parameters.AddWithValue("@Stock", 0); 
-                createCommand.Parameters.AddWithValue("@Unit", product.Unit); 
+                createCommand.Parameters.AddWithValue("@Category", product.Category);
+                createCommand.Parameters.AddWithValue("@Price", product.Price);
+                createCommand.Parameters.AddWithValue("@Stock", 0);
+                createCommand.Parameters.AddWithValue("@Unit", product.Unit);
 
                 createCommand.ExecuteNonQuery();
             }
@@ -230,6 +230,78 @@ namespace E_shopLib1
             }
 
             return invoices;
+        }
+        public string UpdateInvoice(Invoice invoice) // добавила
+        {
+            using (MySqlConnection conn = new MySqlConnection(E_shopLib.AppSettings.ConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    using (var transaction = conn.BeginTransaction())
+                    {
+                        try
+                        {
+                            // 1. Обновляем основную информацию о накладной
+                            string invoiceQuery = @"UPDATE Invoice SET SerialNumber = @SerialNumber, Date = @Date 
+                                          WHERE ID_Invoice = @ID_Invoice";
+
+                            using (MySqlCommand invoiceCommand = new MySqlCommand(invoiceQuery, conn, transaction))
+                            {
+                                invoiceCommand.Parameters.AddWithValue("@SerialNumber", invoice.SerialNumber);
+                                invoiceCommand.Parameters.AddWithValue("@Date", invoice.Date);
+                                invoiceCommand.Parameters.AddWithValue("@ID_Invoice", invoice.ID_Invoice);
+                                invoiceCommand.ExecuteNonQuery();
+                            }
+
+                            // 2. Удаляем старые позиции накладной
+                            string deleteItemsQuery = "DELETE FROM InvoiceItems WHERE ID_Invoice = @ID_Invoice";
+                            using (MySqlCommand deleteCommand = new MySqlCommand(deleteItemsQuery, conn, transaction))
+                            {
+                                deleteCommand.Parameters.AddWithValue("@ID_Invoice", invoice.ID_Invoice);
+                                deleteCommand.ExecuteNonQuery();
+                            }
+
+                            // 3. Добавляем новые позиции накладной
+                            foreach (Product product in invoice.Items)
+                            {
+                                if (!ProductExists(conn, transaction, product.Article))
+                                {
+                                    CreateProductFromInvoice(conn, transaction, product);
+                                }
+
+                                string itemQuery = @"INSERT INTO InvoiceItems (ID_Invoice, Article, Name, Category, Unit, Quantity, Price) 
+                                           VALUES (@ID_Invoice, @Article, @Name, @Category, @Unit, @Quantity, @Price)";
+
+                                using (MySqlCommand itemCommand = new MySqlCommand(itemQuery, conn, transaction))
+                                {
+                                    itemCommand.Parameters.AddWithValue("@ID_Invoice", invoice.ID_Invoice);
+                                    itemCommand.Parameters.AddWithValue("@Article", product.Article);
+                                    itemCommand.Parameters.AddWithValue("@Name", product.Name);
+                                    itemCommand.Parameters.AddWithValue("@Category", product.Category);
+                                    itemCommand.Parameters.AddWithValue("@Unit", product.Unit);
+                                    itemCommand.Parameters.AddWithValue("@Quantity", product.Stock);
+                                    itemCommand.Parameters.AddWithValue("@Price", product.Price);
+                                    itemCommand.ExecuteNonQuery();
+                                }
+                            }
+
+                            transaction.Commit();
+                            return string.Empty;
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                            return $"Ошибка при обновлении накладной: {ex.Message}";
+                        }
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    return $"Ошибка подключения к БД: {ex.Message}";
+                }
+            }
         }
     }
 }
