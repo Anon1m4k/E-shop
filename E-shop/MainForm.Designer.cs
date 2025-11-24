@@ -28,6 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.buttonAdd = new System.Windows.Forms.Button();
             this.buttonDelete = new System.Windows.Forms.Button();
@@ -36,6 +42,11 @@
             this.panelProductsButtons = new System.Windows.Forms.Panel();
             this.buttonEdit = new System.Windows.Forms.Button();
             this.tabPageInvoices = new System.Windows.Forms.TabPage();
+            this.dataGridViewInvoices = new System.Windows.Forms.DataGridView();
+            this.ID_Invoice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SerialNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panelInvoicesButtons = new System.Windows.Forms.Panel();
             this.AddInvoice = new System.Windows.Forms.Button();
             this.tabPageSales = new System.Windows.Forms.TabPage();
             this.splitContainerSales = new System.Windows.Forms.SplitContainer();
@@ -68,10 +79,48 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewProductsSales)).BeginInit();
             this.panelCartHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCart)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewInvoices)).BeginInit();
+            this.panelInvoicesButtons.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView
             // 
+            this.dataGridView.AllowUserToAddRows = false;
+            this.dataGridView.AllowUserToDeleteRows = false;
+            this.dataGridView.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.dataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView.BackgroundColor = System.Drawing.Color.White;
+            this.dataGridView.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dataGridView.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dataGridView.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(107)))), ((int)(((byte)(129)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(0, 8, 0, 8);
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGridView.ColumnHeadersHeight = 40;
+            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.Padding = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(235)))), ((int)(((byte)(252)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView.DefaultCellStyle = dataGridViewCellStyle3;
+            this.dataGridView.EnableHeadersVisualStyles = false;
+            this.dataGridView.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.dataGridView.Location = new System.Drawing.Point(0, 61);
             this.dataGridView.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.dataGridView.Name = "dataGridView";
@@ -174,7 +223,8 @@
             // tabPageInvoices
             // 
             this.tabPageInvoices.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.tabPageInvoices.Controls.Add(this.AddInvoice);
+            this.tabPageInvoices.Controls.Add(this.dataGridViewInvoices);
+            this.tabPageInvoices.Controls.Add(this.panelInvoicesButtons);
             this.tabPageInvoices.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.tabPageInvoices.Location = new System.Drawing.Point(4, 34);
             this.tabPageInvoices.Name = "tabPageInvoices";
@@ -182,6 +232,98 @@
             this.tabPageInvoices.Size = new System.Drawing.Size(1448, 363);
             this.tabPageInvoices.TabIndex = 1;
             this.tabPageInvoices.Text = "📋 Накладные";
+            // 
+            // dataGridViewInvoices
+            // 
+            this.dataGridViewInvoices.AllowUserToAddRows = false;
+            this.dataGridViewInvoices.AllowUserToDeleteRows = false;
+            this.dataGridViewInvoices.AllowUserToResizeRows = false;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.dataGridViewInvoices.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            this.dataGridViewInvoices.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewInvoices.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewInvoices.BackgroundColor = System.Drawing.Color.White;
+            this.dataGridViewInvoices.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dataGridViewInvoices.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dataGridViewInvoices.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(107)))), ((int)(((byte)(129)))));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.Padding = new System.Windows.Forms.Padding(0, 8, 0, 8);
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewInvoices.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            this.dataGridViewInvoices.ColumnHeadersHeight = 40;
+            this.dataGridViewInvoices.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            this.dataGridViewInvoices.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ID_Invoice,
+            this.SerialNumber,
+            this.Date});
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.Padding = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(235)))), ((int)(((byte)(252)))));
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewInvoices.DefaultCellStyle = dataGridViewCellStyle6;
+            this.dataGridViewInvoices.EnableHeadersVisualStyles = false;
+            this.dataGridViewInvoices.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.dataGridViewInvoices.Location = new System.Drawing.Point(0, 61);
+            this.dataGridViewInvoices.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.dataGridViewInvoices.MultiSelect = false;
+            this.dataGridViewInvoices.Name = "dataGridViewInvoices";
+            this.dataGridViewInvoices.ReadOnly = true;
+            this.dataGridViewInvoices.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.dataGridViewInvoices.RowHeadersVisible = false;
+            this.dataGridViewInvoices.RowHeadersWidth = 51;
+            this.dataGridViewInvoices.RowTemplate.Height = 32;
+            this.dataGridViewInvoices.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewInvoices.Size = new System.Drawing.Size(999, 302);
+            this.dataGridViewInvoices.TabIndex = 4;
+            this.dataGridViewInvoices.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewInvoices_CellDoubleClick);
+            // 
+            // ID_Invoice
+            // 
+            this.ID_Invoice.DataPropertyName = "ID_Invoice";
+            this.ID_Invoice.HeaderText = "ID";
+            this.ID_Invoice.MinimumWidth = 6;
+            this.ID_Invoice.Name = "ID_Invoice";
+            this.ID_Invoice.ReadOnly = true;
+            this.ID_Invoice.Visible = false;
+            // 
+            // SerialNumber
+            // 
+            this.SerialNumber.DataPropertyName = "SerialNumber";
+            this.SerialNumber.HeaderText = "Серийный номер";
+            this.SerialNumber.MinimumWidth = 6;
+            this.SerialNumber.Name = "SerialNumber";
+            this.SerialNumber.ReadOnly = true;
+            // 
+            // Date
+            // 
+            this.Date.DataPropertyName = "Date";
+            this.Date.HeaderText = "Дата";
+            this.Date.MinimumWidth = 6;
+            this.Date.Name = "Date";
+            this.Date.ReadOnly = true;
+            // 
+            // panelInvoicesButtons
+            // 
+            this.panelInvoicesButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelInvoicesButtons.BackColor = System.Drawing.Color.Transparent;
+            this.panelInvoicesButtons.Controls.Add(this.AddInvoice);
+            this.panelInvoicesButtons.Location = new System.Drawing.Point(0, 5);
+            this.panelInvoicesButtons.Name = "panelInvoicesButtons";
+            this.panelInvoicesButtons.Size = new System.Drawing.Size(999, 40);
+            this.panelInvoicesButtons.TabIndex = 2;
             // 
             // AddInvoice
             // 
@@ -193,12 +335,12 @@
             this.AddInvoice.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.AddInvoice.ForeColor = System.Drawing.Color.White;
             this.AddInvoice.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.AddInvoice.Location = new System.Drawing.Point(7, 6);
+            this.AddInvoice.Location = new System.Drawing.Point(7, 5);
             this.AddInvoice.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.AddInvoice.Name = "AddInvoice";
-            this.AddInvoice.Size = new System.Drawing.Size(140, 35);
+            this.AddInvoice.Size = new System.Drawing.Size(181, 35);
             this.AddInvoice.TabIndex = 2;
-            this.AddInvoice.Text = "➕ Добавить ";
+            this.AddInvoice.Text = "➕ Добавить накладную";
             this.AddInvoice.UseVisualStyleBackColor = false;
             this.AddInvoice.Click += new System.EventHandler(this.AddInvoice_Click);
             // 
@@ -432,8 +574,9 @@
             this.panelCartHeader.ResumeLayout(false);
             this.panelCartHeader.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCart)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewInvoices)).EndInit();
+            this.panelInvoicesButtons.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
 
         #endregion
@@ -463,5 +606,10 @@
         private System.Windows.Forms.Button btnRemoveFromCart;
         private System.Windows.Forms.Label lblTotal;
         private System.Windows.Forms.Label lblTotalValue;
+        private System.Windows.Forms.DataGridView dataGridViewInvoices;
+        private System.Windows.Forms.Panel panelInvoicesButtons;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ID_Invoice;
+        private System.Windows.Forms.DataGridViewTextBoxColumn SerialNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Date;
     }
 }
