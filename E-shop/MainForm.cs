@@ -92,7 +92,7 @@ namespace E_shop
             };
 
             // Высота заголовков
-            dataGridView.ColumnHeadersHeight = 40;
+            dataGridView.ColumnHeadersHeight = 48;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
         }
 
@@ -162,7 +162,7 @@ namespace E_shop
             }
         }
 
-        private void buttonEdit_Click(object sender, EventArgs e)
+        private void buttonEdit_Click_1(object sender, EventArgs e)
         {
             if (dataGridView.SelectedRows.Count > 0)
             {
@@ -200,11 +200,6 @@ namespace E_shop
                 MessageBox.Show("Пожалуйста, выберите товар для редактирования.", "Внимание",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-        }
-
-        private void buttonEdit_Click_1(object sender, EventArgs e)
-        {
-            // Обработчик для кнопки редактирования
         }
 
         private void AddInvoice_Click(object sender, EventArgs e)
@@ -475,8 +470,6 @@ namespace E_shop
             UpdateTotalAmount();
         }
 
-        #endregion
-
         private void LoadInvoices()
         {
             try
@@ -502,5 +495,8 @@ namespace E_shop
                 invoiceForm.ShowDialog();
             }
         }
+
+        #endregion
+
     }
 }
