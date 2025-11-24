@@ -73,6 +73,7 @@ namespace E_shopTest
                 string expectedHtml = File.ReadAllText(@"C:\Смирнова\2.html", Encoding.UTF8);
                 Assert.AreEqual(NormalizeHtml(expectedHtml), NormalizeHtml(actualHtml));
             }
+            [TestMethod]
             public void Test_EmptyInvoice_ShouldReturnErrorMessage()
             {
                 var invoice = new Invoice
@@ -85,6 +86,15 @@ namespace E_shopTest
                 string result = _creator.GenerateInvoiceHtml(invoice);
 
                 Assert.AreEqual("Накладная пустая, добавьте позиции в накладную!", result);
+            }
+            private string NormalizeHtml(string html)
+            {
+                return html?
+                    .Replace("\r", "")
+                    .Replace("\n", "")
+                    .Replace("  ", " ")
+                    .Replace("> <", "><")
+                    .Trim() ?? string.Empty;
             }
         }
     }
