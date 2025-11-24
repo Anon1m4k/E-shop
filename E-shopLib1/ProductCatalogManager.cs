@@ -17,7 +17,7 @@ namespace E_shop
 
         public Dictionary<string, List<Product>> ProductsByCategory => productsByCategory_;
 
-        private void RefreshProductsByCategory()
+        public void RefreshProductsByCategory()
         {
             productsByCategory_ = repository.AllProductsByCategory();
         }

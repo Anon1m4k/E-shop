@@ -22,7 +22,7 @@ namespace E_shopLib
 
         public List<string> Categories => catalogManager_.GetCategories();
 
-        private void LoadCategories()
+        public void LoadCategories()
         {
             List<string> categories = catalogManager_.GetCategories();
             categoriesView_.ShowCategories(categories);
@@ -53,7 +53,7 @@ namespace E_shopLib
         // Метод для обновления данных
         public void RefreshData()
         {
-            catalogManager_.RefreshData();
+            catalogManager_.RefreshProductsByCategory();
             LoadCategories();
         }
     }
