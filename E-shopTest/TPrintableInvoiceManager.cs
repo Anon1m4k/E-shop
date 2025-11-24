@@ -73,6 +73,19 @@ namespace E_shopTest
                 string expectedHtml = File.ReadAllText(@"C:\Смирнова\2.html", Encoding.UTF8);
                 Assert.AreEqual(NormalizeHtml(expectedHtml), NormalizeHtml(actualHtml));
             }
+            public void Test_EmptyInvoice_ShouldReturnErrorMessage()
+            {
+                var invoice = new Invoice
+                {
+                    SerialNumber = "-",
+                    Date = DateTime.MinValue,
+                    Items = new List<Product>()
+                };
+
+                string result = _creator.GenerateInvoiceHtml(invoice);
+
+                Assert.AreEqual("Накладная пустая, добавьте позиции в накладную!", result);
+            }
         }
     }
 }
