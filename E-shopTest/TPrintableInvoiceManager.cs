@@ -59,5 +59,16 @@ namespace E_shopTest
 
                 Assert.AreEqual("Накладная пустая, добавьте позиции в накладную!", result);
             }
+           [TestMethod]
+           [DataRow("TestData/single_item.html", "test_single.pdf")]
+           [DataRow("TestData/multiple_items.html", "test_multiple.pdf")]
+           public void Test_CreatePdfFromHtml_ShouldCreatePdfFile(string FilePath, string outputPath)
+           {
+            string htmlContent = File.ReadAllText(FilePath, Encoding.UTF8);
+
+            string result = _creator.CreatePdfFromHtml(htmlContent, outputPath);
+
+            Assert.IsTrue(File.Exists(outputPath)); 
+           }
     }
 }
