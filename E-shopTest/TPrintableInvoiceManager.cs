@@ -87,14 +87,5 @@ namespace E_shopTest
 
                 Assert.AreEqual("Накладная пустая, добавьте позиции в накладную!", result);
             }
-            private string NormalizeHtml(string html)
-            {
-                return html?
-                    .Replace("\r", "")
-                    .Replace("\n", "")
-                    .Replace("  ", " ")
-                    .Replace("> <", "><")
-                    .Trim() ?? string.Empty;
-            }
     }
 }
