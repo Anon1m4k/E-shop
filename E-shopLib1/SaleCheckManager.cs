@@ -13,11 +13,6 @@ namespace E_shopLib1
         private readonly IProductRepository _productRepository;
         private readonly List<Product> _cartItems = new List<Product>();
 
-        public bool HasUnsavedChanges { get; private set; }
-        public bool IsCheckSaved { get; private set; }
-
-        public bool IsSaved { get; set; }
-
         public SaleCheckManager(ISaleCheckRepository repository, IProductRepository productRepository)
         {
             _repository = repository;
@@ -58,16 +53,6 @@ namespace E_shopLib1
         public void AddItemToCart(Product product)
         {
             _cartItems.Add(product);
-        }
-
-        public (bool Allowed, bool ShowedWarning, string StatusMessage, string StatusColor) TryCloseForm()
-        {
-            if (!IsSaved && _cartItems.Any())
-            {
-                return (false, true, "Чек не сохранён", "Red");
-            }
-
-            return (true, false, string.Empty, "Black");
         }
     }
 }
