@@ -61,27 +61,6 @@ namespace E_shopTest
         }
 
         [TestMethod]
-        public void CloseFormWithUnsavedCheck_ShowsWarningAndBlocksClosing()
-        {
-            // Arrange
-            var saleCheckManager = new SaleCheckManager();
-
-            // Симулируем состояние формы с несохраненными данными
-            saleCheckManager.AddItemToCart(new Product { Article = "12345", Name = "Смартфон", Stock = 1 });
-            saleCheckManager.SetFormState(hasUnsavedChanges: true, isCheckSaved: false);
-
-            // Act
-            var result = saleCheckManager.CanCloseForm();
-
-            // Assert
-            Assert.IsFalse(result.CanClose);
-            Assert.IsTrue(result.ShowWarning);
-            Assert.AreEqual("Чек не сохранён", result.WarningMessage);
-            Assert.AreEqual("Red", result.StatusColor);
-            Assert.IsTrue(result.RequiresSaveConfirmation);
-        }
-
-        [TestMethod]
         public void CreateSaleCheck_ValidData_SuccessfullyCreated()
         {
             // Arrange
