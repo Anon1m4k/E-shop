@@ -112,6 +112,7 @@
     <Compile Include="AppSettings.cs" />
     <Compile Include="ISaleCheckRepository.cs" />
     <Compile Include="Presenters\SaleCheckPresenter.cs" />
+    <Compile Include="SaleCheckHtmlGenerator.cs" />
     <Compile Include="SaleCheckManager.cs" />
     <Compile Include="Views\ICategoriesView.cs" />
     <Compile Include="IInvoiceRepository.cs" />
