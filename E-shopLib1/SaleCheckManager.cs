@@ -24,23 +24,23 @@ namespace E_shopLib1
             if (string.IsNullOrWhiteSpace(check.Client))
                 return "Клиент не может быть пустым";
 
-            foreach (var item in check.Items)
+            foreach (InvoiceItem item in check.Items)
             {
                 if (item.Quantity <= 0)
                     return "Количество товара не может быть отрицательным";
 
-                var product = _productRepository.GetProductByArticle(item.Article);
+                Product product = _productRepository.GetProductByArticle(item.Article);
                 if (product == null || product.Stock < item.Quantity)
                     return $"Количество товара '{item.Name}' превышает остаток на складе. Доступно: {product?.Stock ?? 0}";
             }
 
             // Сохранение и обновление остатков
-            var result = _repository.AddSaleCheck(check);
+            string result = _repository.AddSaleCheck(check);
             if (result == "Продажа успешно сформирована")
             {
-                foreach (var item in check.Items)
+                foreach (InvoiceItem item in check.Items)
                 {
-                    var product = _productRepository.GetProductByArticle(item.Article);
+                    Product product = _productRepository.GetProductByArticle(item.Article);
                     product.Stock -= item.Quantity;
                     _productRepository.UpdateProduct(product);
                 }

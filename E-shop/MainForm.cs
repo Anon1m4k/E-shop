@@ -270,11 +270,11 @@ namespace E_shop
             try
             {
                 // Загрузка категорий
-                var categories = salesCatalogManager.GetCategories();
+                List<string> categories = salesCatalogManager.GetCategories();
                 UpdateCategoriesButtons(categories);
 
                 // Загрузка всех товаров
-                var allProducts = salesCatalogManager.GetAllProducts();
+                List<Product> allProducts = salesCatalogManager.GetAllProducts();
                 dataGridViewProductsSales.DataSource = allProducts;
             }
             catch (Exception ex)
@@ -289,20 +289,20 @@ namespace E_shop
             flowLayoutPanelCategories.Controls.Clear();
 
             // Добавляем кнопку "Все"
-            var allButton = CreateCategoryButton("Все");
+            Button allButton = CreateCategoryButton("Все");
             flowLayoutPanelCategories.Controls.Add(allButton);
 
             // Добавляем кнопки для каждой категории
-            foreach (var category in categories)
+            foreach (string category in categories)
             {
-                var button = CreateCategoryButton(category);
+                Button button = CreateCategoryButton(category);
                 flowLayoutPanelCategories.Controls.Add(button);
             }
         }
 
         private Button CreateCategoryButton(string categoryName)
         {
-            var button = new Button
+            Button button = new Button
             {
                 Text = categoryName,
                 Size = new Size(100, 35),
@@ -352,7 +352,7 @@ namespace E_shop
         {
             if (e.RowIndex >= 0 && e.RowIndex < dataGridViewProductsSales.RowCount)
             {
-                var product = dataGridViewProductsSales.Rows[e.RowIndex].DataBoundItem as Product;
+                Product product = dataGridViewProductsSales.Rows[e.RowIndex].DataBoundItem as Product;
                 if (product != null && product.Stock > 0)
                 {
                     AddToCart(product);
@@ -368,14 +368,14 @@ namespace E_shop
         private void AddToCart(Product product)
         {
             // Создаем копию товара для корзины
-            var cartProduct = product.Clone();
+            Product cartProduct = product.Clone();
             cartProduct.Stock = 1; // Начальное количество в корзине
 
             // Проверяем, есть ли уже такой товар в корзине
-            var existingItem = cartItems.FirstOrDefault(p => p.Article == cartProduct.Article);
+            Product existingItem = cartItems.FirstOrDefault(p => p.Article == cartProduct.Article);
             if (existingItem != null)
             {
-                var originalProduct = salesCatalogManager.GetAllProducts()
+                Product originalProduct = salesCatalogManager.GetAllProducts()
                     .FirstOrDefault(p => p.Article == cartProduct.Article);
 
                 if (originalProduct != null && existingItem.Stock < originalProduct.Stock)
@@ -408,9 +408,9 @@ namespace E_shop
         {
             if (e.RowIndex >= 0 && e.ColumnIndex == dataGridViewCart.Columns["Stock"].Index)
             {
-                var product = dataGridViewCart.Rows[e.RowIndex].DataBoundItem as Product;
-                var allProducts = salesCatalogManager.GetAllProducts();
-                var originalProduct = allProducts.FirstOrDefault(p => p.Article == product.Article);
+                Product product = dataGridViewCart.Rows[e.RowIndex].DataBoundItem as Product;
+                List<Product> allProducts = salesCatalogManager.GetAllProducts();
+                Product originalProduct = allProducts.FirstOrDefault(p => p.Article == product.Article);
 
                 if (originalProduct != null && product.Stock > originalProduct.Stock)
                 {
@@ -428,7 +428,7 @@ namespace E_shop
         {
             if (e.RowIndex >= 0 && e.ColumnIndex == dataGridViewCart.Columns["Stock"].Index)
             {
-                var product = dataGridViewCart.Rows[e.RowIndex].DataBoundItem as Product;
+                Product product = dataGridViewCart.Rows[e.RowIndex].DataBoundItem as Product;
                 if (product.Stock <= 0)
                 {
                     // Удаляем товар при нулевом количестве
@@ -449,7 +449,7 @@ namespace E_shop
         {
             if (dataGridViewCart.SelectedRows.Count > 0)
             {
-                var selectedProduct = dataGridViewCart.SelectedRows[0].DataBoundItem as Product;
+                Product selectedProduct = dataGridViewCart.SelectedRows[0].DataBoundItem as Product;
                 if (selectedProduct != null)
                 {
                     cartItems.Remove(selectedProduct);

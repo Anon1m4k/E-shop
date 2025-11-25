@@ -16,9 +16,9 @@ namespace E_shopTest
         public void GenerateHtmlForSaleCheck_ValidData_CreatesCorrectHtml()
         {
             // Arrange
-            var htmlGenerator = new SaleCheckHtmlGenerator();
+            SaleCheckHtmlGenerator htmlGenerator = new SaleCheckHtmlGenerator();
 
-            var saleCheck = new SaleCheck
+            SaleCheck saleCheck = new SaleCheck
             {
                 IdCheck = 1,
                 Date = new DateTime(2025, 10, 26, 14, 30, 25),
@@ -223,11 +223,11 @@ namespace E_shopTest
         public void CreateSaleCheck_ValidData_SuccessfullyCreated()
         {
             // Arrange
-            var mockRepository = new Mock<ISaleCheckRepository>();
-            var mockProductRepo = new Mock<IProductRepository>();
-            var saleManager = new SaleCheckManager(mockRepository.Object, mockProductRepo.Object);
+            Mock<ISaleCheckRepository> mockRepository = new Mock<ISaleCheckRepository>();
+            Mock<IProductRepository> mockProductRepo = new Mock<IProductRepository>();
+            SaleCheckManager saleManager = new SaleCheckManager(mockRepository.Object, mockProductRepo.Object);
 
-            var saleCheck = new SaleCheck
+            SaleCheck saleCheck = new SaleCheck
             {
                 IdCheck = 1,
                 Date = new DateTime(2025, 10, 26),
@@ -265,11 +265,11 @@ namespace E_shopTest
         public void CreateSaleCheck_MultipleItems_SuccessfullyCreated()
         {
             // Arrange
-            var mockRepository = new Mock<ISaleCheckRepository>();
-            var mockProductRepo = new Mock<IProductRepository>();
-            var saleManager = new SaleCheckManager(mockRepository.Object, mockProductRepo.Object);
+            Mock<ISaleCheckRepository> mockRepository = new Mock<ISaleCheckRepository>();
+            Mock<IProductRepository> mockProductRepo = new Mock<IProductRepository>();
+            SaleCheckManager saleManager = new SaleCheckManager(mockRepository.Object, mockProductRepo.Object);
 
-            var saleCheck = new SaleCheck
+            SaleCheck saleCheck = new SaleCheck
             {
                 IdCheck = 5,
                 Date = new DateTime(2025, 10, 26),
@@ -324,11 +324,11 @@ namespace E_shopTest
         public void CreateSaleCheck_InvalidData_ReturnsError(string client, int quantity, string article, int productStock, string productName, string expectedError)
         {
             // Arrange
-            var mockRepository = new Mock<ISaleCheckRepository>();
-            var mockProductRepo = new Mock<IProductRepository>();
-            var saleManager = new SaleCheckManager(mockRepository.Object, mockProductRepo.Object);
+            Mock<ISaleCheckRepository> mockRepository = new Mock<ISaleCheckRepository>();
+            Mock<IProductRepository> mockProductRepo = new Mock<IProductRepository>();
+            SaleCheckManager saleManager = new SaleCheckManager(mockRepository.Object, mockProductRepo.Object);
 
-            var saleCheck = new SaleCheck
+            SaleCheck saleCheck = new SaleCheck
             {
                 IdCheck = 1,
                 Date = new DateTime(2025, 10, 26),
