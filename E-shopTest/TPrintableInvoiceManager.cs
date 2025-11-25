@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using E_shopLib1;
 
 namespace E_shopTest
 {
@@ -10,11 +11,10 @@ namespace E_shopTest
 
     public class TPrintableInvoiceManager
     {
-        public class InvoicePrintTests
-        {
-            private readonly E_shopLib1.PrintableInvoiceCreator _creator = new E_shopLib1.PrintableInvoiceCreator();
 
-            [TestMethod]
+           private readonly PrintableInvoiceCreator _creator = new PrintableInvoiceCreator();
+
+           [TestMethod]
             public void Test_SingleItemInvoice_ShouldMatchExpectedHtml()
             {
                 var invoice = new Invoice
@@ -96,6 +96,5 @@ namespace E_shopTest
                     .Replace("> <", "><")
                     .Trim() ?? string.Empty;
             }
-        }
     }
 }
