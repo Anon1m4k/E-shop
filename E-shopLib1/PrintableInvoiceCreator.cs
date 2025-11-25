@@ -12,5 +12,9 @@ namespace E_shopLib1
         {
             return "";
         }
+        public string CreatePdfFromHtml(string htmlContent, string outputPath)
+        {
+            return "";
+        }
     }
 }
