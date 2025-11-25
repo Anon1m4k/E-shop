@@ -22,26 +22,7 @@ namespace E_shopLib1
         {
             _repository = repository;
             _productRepository = productRepository;
-        }
-
-        // Конструктор для тестирования логики закрытия формы
-        public SaleCheckManager()
-        {
-        }
-        public void SetFormState(bool hasUnsavedChanges, bool isCheckSaved)
-        {
-            HasUnsavedChanges = hasUnsavedChanges;
-            IsCheckSaved = isCheckSaved;
-        }
-        public (bool CanClose, bool ShowWarning, string WarningMessage, string StatusColor, bool RequiresSaveConfirmation) CanCloseForm()
-        {
-            if (HasUnsavedChanges && !IsCheckSaved && _cartItems.Any())
-            {
-                return (false, true, "Чек не сохранён", "Red", true);
-            }
-
-            return (true, false, string.Empty, "Black", false);
-        }
+        }    
 
         public string CreateSaleCheck(SaleCheck check)
         {
