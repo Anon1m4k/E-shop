@@ -260,85 +260,7 @@ namespace E_shopTest
             mockRepository.Verify(r => r.AddSaleCheck(It.IsAny<SaleCheck>()), Times.Once);
             mockProductRepo.Verify(r => r.UpdateProduct(It.Is<Product>(p => p.Stock == 5)), Times.Once);
         }
-
-        [TestMethod]
-        public void CreateSaleCheck_NegativeQuantity_ReturnsError()
-        {
-            // Arrange
-            var mockRepository = new Mock<ISaleCheckRepository>();
-            var mockProductRepo = new Mock<IProductRepository>();
-            var saleManager = new SaleCheckManager(mockRepository.Object, mockProductRepo.Object);
-
-            var saleCheck = new SaleCheck
-            {
-                IdCheck = 3,
-                Date = new DateTime(2025, 10, 26),
-                Client = "Александр И.",
-                Items = new List<InvoiceItem>
-                {
-                    new InvoiceItem
-                    {
-                        Article = "12",
-                        Name = "Монитор",
-                        Category = "Техника",
-                        Price = 1000,
-                        Quantity = -10,
-                        Unit = "шт"
-                    }
-                }
-            };
-
-            mockProductRepo.Setup(r => r.GetProductByArticle("12"))
-                .Returns(new Product { Article = "12", Stock = 8, Name = "Монитор" });
-
-            // Act
-            string result = saleManager.CreateSaleCheck(saleCheck);
-
-            // Assert
-            Assert.AreEqual("Количество товара не может быть отрицательным", result);
-            mockRepository.Verify(r => r.AddSaleCheck(It.IsAny<SaleCheck>()), Times.Never);
-            mockProductRepo.Verify(r => r.UpdateProduct(It.IsAny<Product>()), Times.Never);
-        }
-
-        [TestMethod]
-        public void CreateSaleCheck_EmptyClient_ReturnsError()
-        {
-            // Arrange
-            var mockRepository = new Mock<ISaleCheckRepository>();
-            var mockProductRepo = new Mock<IProductRepository>();
-            var saleManager = new SaleCheckManager(mockRepository.Object, mockProductRepo.Object);
-
-            var saleCheck = new SaleCheck
-            {
-                IdCheck = 1,
-                Date = new DateTime(2025, 10, 26),
-                Client = "",
-                Items = new List<InvoiceItem>
-                {
-                    new InvoiceItem
-                    {
-                        Article = "12345",
-                        Name = "Смартфон",
-                        Category = "Техника",
-                        Price = 1000,
-                        Quantity = 5,
-                        Unit = "шт"
-                    }
-                }
-            };
-
-            mockProductRepo.Setup(r => r.GetProductByArticle("12345"))
-                .Returns(new Product { Article = "12345", Stock = 10, Name = "Смартфон" });
-
-            // Act
-            string result = saleManager.CreateSaleCheck(saleCheck);
-
-            // Assert
-            Assert.AreEqual("Клиент не может быть пустым", result);
-            mockRepository.Verify(r => r.AddSaleCheck(It.IsAny<SaleCheck>()), Times.Never);
-            mockProductRepo.Verify(r => r.UpdateProduct(It.IsAny<Product>()), Times.Never);
-        }
-
+       
         [TestMethod]
         public void CreateSaleCheck_MultipleItems_SuccessfullyCreated()
         {
@@ -396,7 +318,10 @@ namespace E_shopTest
         }
 
         [TestMethod]
-        public void CreateSaleCheck_QuantityExceedsStock_ReturnsError()
+        [DataRow("", 5, "12345", 10, "Смартфон", "Клиент не может быть пустым")] // Пустой клиент
+        [DataRow("Александр И.", -10, "12", 8, "Монитор", "Количество товара не может быть отрицательным")] // Отрицательное количество
+        [DataRow("Александр И.", 15, "999", 8, "Планшет", "Количество товара 'Планшет' превышает остаток на складе. Доступно: 8")] // Превышение остатка
+        public void CreateSaleCheck_InvalidData_ReturnsError(string client, int quantity, string article, int productStock, string productName, string expectedError)
         {
             // Arrange
             var mockRepository = new Mock<ISaleCheckRepository>();
@@ -405,31 +330,35 @@ namespace E_shopTest
 
             var saleCheck = new SaleCheck
             {
-                IdCheck = 9,
+                IdCheck = 1,
                 Date = new DateTime(2025, 10, 26),
-                Client = "Александр И.",
+                Client = client,
                 Items = new List<InvoiceItem>
-                {
-                    new InvoiceItem
-                    {
-                        Article = "999",
-                        Name = "Планшет",
-                        Category = "Техника",
-                        Price = 1500,
-                        Quantity = 15,
-                        Unit = "шт"
-                    }
-                }
+        {
+            new InvoiceItem
+            {
+                Article = article,
+                Name = productName,
+                Category = "Техника",
+                Price = 1000,
+                Quantity = quantity,
+                Unit = "шт"
+            }
+        }
             };
 
-            mockProductRepo.Setup(r => r.GetProductByArticle("999"))
-                .Returns(new Product { Article = "999", Stock = 8, Name = "Планшет" });
+            // Настройка мока для продукта (если количество положительное - проверяем остаток)
+            if (quantity > 0)
+            {
+                mockProductRepo.Setup(r => r.GetProductByArticle(article))
+                    .Returns(new Product { Article = article, Stock = productStock, Name = productName });
+            }
 
             // Act
             string result = saleManager.CreateSaleCheck(saleCheck);
 
             // Assert
-            Assert.AreEqual("Количество товара 'Планшет' превышает остаток на складе. Доступно: 8", result);
+            Assert.AreEqual(expectedError, result);
             mockRepository.Verify(r => r.AddSaleCheck(It.IsAny<SaleCheck>()), Times.Never);
             mockProductRepo.Verify(r => r.UpdateProduct(It.IsAny<Product>()), Times.Never);
         }
