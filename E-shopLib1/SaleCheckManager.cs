@@ -13,13 +13,35 @@ namespace E_shopLib1
         private readonly IProductRepository _productRepository;
         private readonly List<Product> _cartItems = new List<Product>();
 
+        public bool HasUnsavedChanges { get; private set; }
+        public bool IsCheckSaved { get; private set; }
+
         public bool IsSaved { get; set; }
 
         public SaleCheckManager(ISaleCheckRepository repository, IProductRepository productRepository)
         {
             _repository = repository;
             _productRepository = productRepository;
-        }       
+        }
+
+        // Конструктор для тестирования логики закрытия формы
+        public SaleCheckManager()
+        {
+        }
+        public void SetFormState(bool hasUnsavedChanges, bool isCheckSaved)
+        {
+            HasUnsavedChanges = hasUnsavedChanges;
+            IsCheckSaved = isCheckSaved;
+        }
+        public (bool CanClose, bool ShowWarning, string WarningMessage, string StatusColor, bool RequiresSaveConfirmation) CanCloseForm()
+        {
+            if (HasUnsavedChanges && !IsCheckSaved && _cartItems.Any())
+            {
+                return (false, true, "Чек не сохранён", "Red", true);
+            }
+
+            return (true, false, string.Empty, "Black", false);
+        }
 
         public string CreateSaleCheck(SaleCheck check)
         {
