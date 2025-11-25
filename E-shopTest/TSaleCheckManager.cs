@@ -250,13 +250,13 @@ namespace E_shopTest
             mockProductRepo.Setup(r => r.GetProductByArticle("12345"))
                 .Returns(new Product { Article = "12345", Stock = 10, Name = "Смартфон" });
             mockRepository.Setup(r => r.AddSaleCheck(It.IsAny<SaleCheck>()))
-                .Returns("Продажа успешно сформирована");
+                .Returns("");
 
             // Act
             string result = saleManager.AddSaleCheck(saleCheck);
 
             // Assert
-            Assert.AreEqual("Продажа успешно сформирована", result);
+            Assert.AreEqual("", result);
             mockRepository.Verify(r => r.AddSaleCheck(It.IsAny<SaleCheck>()), Times.Once);
             mockProductRepo.Verify(r => r.UpdateProduct(It.Is<Product>(p => p.Stock == 5)), Times.Once);
         }
@@ -303,13 +303,13 @@ namespace E_shopTest
             mockProductRepo.Setup(r => r.GetProductByArticle("33"))
                 .Returns(new Product { Article = "33", Stock = 7, Name = "Коврик для мышки" });
             mockRepository.Setup(r => r.AddSaleCheck(It.IsAny<SaleCheck>()))
-                .Returns("Продажа успешно сформирована");
+                .Returns("");
 
             // Act
             string result = saleManager.AddSaleCheck(saleCheck);
 
             // Assert
-            Assert.AreEqual("Продажа успешно сформирована", result);
+            Assert.AreEqual("", result);
             mockRepository.Verify(r => r.AddSaleCheck(It.IsAny<SaleCheck>()), Times.Once);
 
             // Проверяем, что остатки обновлены правильно

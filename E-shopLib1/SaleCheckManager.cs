@@ -36,16 +36,15 @@ namespace E_shopLib1
 
             // Сохранение и обновление остатков
             string result = _repository.AddSaleCheck(check);
-            if (result == "Продажа успешно сформирована")
-            {
+            
                 foreach (InvoiceItem item in check.Items)
                 {
                     Product product = _productRepository.GetProductByArticle(item.Article);
                     product.Stock -= item.Quantity;
                     _productRepository.UpdateProduct(product);
-                }
-            }
-            return result;
+                }          
+
+            return string.Empty;
         }
     }
 }
