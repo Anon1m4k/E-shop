@@ -12,7 +12,7 @@ namespace E_shopTest
     public class TPrintableInvoiceManager
     {
 
-           private readonly PrintableInvoiceCreator _creator = new PrintableInvoiceCreator();
+          private readonly PrintableInvoiceCreator _creator = new PrintableInvoiceCreator();
 
            [TestMethod]
             public void Test_SingleItemInvoice_ShouldMatchExpectedHtml()
