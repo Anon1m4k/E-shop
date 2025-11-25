@@ -253,7 +253,7 @@ namespace E_shopTest
                 .Returns("Продажа успешно сформирована");
 
             // Act
-            string result = saleManager.CreateSaleCheck(saleCheck);
+            string result = saleManager.AddSaleCheck(saleCheck);
 
             // Assert
             Assert.AreEqual("Продажа успешно сформирована", result);
@@ -306,7 +306,7 @@ namespace E_shopTest
                 .Returns("Продажа успешно сформирована");
 
             // Act
-            string result = saleManager.CreateSaleCheck(saleCheck);
+            string result = saleManager.AddSaleCheck(saleCheck);
 
             // Assert
             Assert.AreEqual("Продажа успешно сформирована", result);
@@ -355,7 +355,7 @@ namespace E_shopTest
             }
 
             // Act
-            string result = saleManager.CreateSaleCheck(saleCheck);
+            string result = saleManager.AddSaleCheck(saleCheck);
 
             // Assert
             Assert.AreEqual(expectedError, result);

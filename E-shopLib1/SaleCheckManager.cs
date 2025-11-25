@@ -11,7 +11,6 @@ namespace E_shopLib1
     {
         private readonly ISaleCheckRepository _repository;
         private readonly IProductRepository _productRepository;
-        private readonly List<Product> _cartItems = new List<Product>();
 
         public SaleCheckManager(ISaleCheckRepository repository, IProductRepository productRepository)
         {
@@ -19,7 +18,7 @@ namespace E_shopLib1
             _productRepository = productRepository;
         }    
 
-        public string CreateSaleCheck(SaleCheck check)
+        public string AddSaleCheck(SaleCheck check)
         {
             // Валидация
             if (string.IsNullOrWhiteSpace(check.Client))
@@ -46,13 +45,7 @@ namespace E_shopLib1
                     _productRepository.UpdateProduct(product);
                 }
             }
-
             return result;
-        }
-
-        public void AddItemToCart(Product product)
-        {
-            _cartItems.Add(product);
         }
     }
 }
