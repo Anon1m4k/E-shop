@@ -15,64 +15,36 @@ namespace E_shopTest
           private readonly PrintableInvoiceCreator _creator = new PrintableInvoiceCreator();
 
            [TestMethod]
-            public void Test_SingleItemInvoice_ShouldMatchExpectedHtml()
-            {
-                var invoice = new Invoice
+           [DataRow("GIM33", "2025-11-18", "12345", "Смартфон", "Техника", 10, 1000, "шт", "TestData/single_item.html")]
+           [DataRow("ABCD425_123*", "2025-11-11", "123", "Молоток отечественный", "Молотки", 10, 100, "шт.",
+            "ABCD425_123*", "2025-11-11", "BE425 0", "Топор лесной", "Топоры", 2000, 500, "шт.", "TestData/multiple_items.html")]
+           public void Test_Invoice_ShouldMatchExpectedHtml(string serialNumber, string Date, string article, string name,
+                  string category, int stock, decimal price, string unit, string FilePath)
+           {
+              var invoice = new Invoice
+              {
+                SerialNumber = serialNumber,
+                Date = DateTime.Parse(Date),
+                Items = new List<Product>
                 {
-                    SerialNumber = "GIM33",
-                    Date = new DateTime(2025, 11, 18),
-                    Items = new List<Product>
-            {
-                new Product
-                {
-                    Article = "12345",
-                    Name = "Смартфон",
-                    Category = "Техника",
-                    Stock = 10,
-                    Price = 1000m,
-                    Unit = "шт"
+                    new Product
+                    {
+                        Article = article,
+                        Name = name,
+                        Category = category,
+                        Stock = stock,
+                        Price = price,
+                        Unit = unit
+                    }
                 }
-            }
-                };
-
+              };
+                decimal actualTotal = invoice.Items.Sum(item => item.Stock * item.Price);
+                Assert.AreEqual(expectedTotal, actualTotal);
+            
                 string actualHtml = _creator.GenerateInvoiceHtml(invoice);
-                string expectedHtml = File.ReadAllText(@"C:\Смирнова\1.html", Encoding.UTF8);
-                Assert.AreEqual(NormalizeHtml(expectedHtml), NormalizeHtml(actualHtml));
-            }
-            [TestMethod]
-            public void Test_MultipleItemsInvoice_ShouldMatchExpectedHtml()
-            {
-                var invoice = new Invoice
-                {
-                    SerialNumber = "ABCD425_123*",
-                    Date = new DateTime(2025, 11, 11),
-                    Items = new List<Product>
-            {
-                new Product
-                {
-                    Article = "123",
-                    Name = "Молоток отечественный",
-                    Category = "Молотки",
-                    Stock = 10,
-                    Price = 100m,
-                    Unit = "шт."
-                },
-                new Product
-                {
-                    Article = "BE425 0",
-                    Name = "Топор лесной",
-                    Category = "Топоры",
-                    Stock = 2000,
-                    Price = 500m,
-                    Unit = "шт."
-                }
-            }
-                };
-
-                string actualHtml = _creator.GenerateInvoiceHtml(invoice);
-                string expectedHtml = File.ReadAllText(@"C:\Смирнова\2.html", Encoding.UTF8);
-                Assert.AreEqual(NormalizeHtml(expectedHtml), NormalizeHtml(actualHtml));
-            }
+                string expectedHtml = File.ReadAllText(FilePath, Encoding.UTF8);
+                Assert.AreEqual(expectedHtml, actualHtml);
+           } 
             [TestMethod]
             public void Test_EmptyInvoice_ShouldReturnErrorMessage()
             {
