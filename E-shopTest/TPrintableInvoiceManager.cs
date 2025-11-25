@@ -14,38 +14,53 @@ namespace E_shopTest
 
           private readonly PrintableInvoiceCreator _creator = new PrintableInvoiceCreator();
 
-           [TestMethod]
-           [DataRow("GIM33", "2025-11-18", "12345", "Смартфон", "Техника", 10, 1000, "шт", "TestData/single_item.html")]
-           [DataRow("ABCD425_123*", "2025-11-11", "123", "Молоток отечественный", "Молотки", 10, 100, "шт.",
-            "ABCD425_123*", "2025-11-11", "BE425 0", "Топор лесной", "Топоры", 2000, 500, "шт.", "TestData/multiple_items.html")]
-           public void Test_Invoice_ShouldMatchExpectedHtml(string serialNumber, string Date, string article, string name,
-                  string category, int stock, decimal price, string unit, string FilePath)
-           {
-              var invoice = new Invoice
-              {
+        [TestMethod]
+        [DataRow("GIM33", "2025-11-18", "12345", "Смартфон", "Техника", 10, 1000, "шт", "TestData/single_item.html", 10000)]
+        [DataRow("ABCD425_123*", "2025-11-11", "123", "Молоток отечественный", "Молотки", 10, 100, "шт.",
+         "BE425 0", "Топор лесной", "Топоры", 2000, 500, "шт.", "TestData/multiple_items.html", 1001000)]
+        public void Test_Invoice_ShouldMatchExpectedHtml(string serialNumber, string Date,string article1, string name1, string category1, int stock1, decimal price1, string unit1,
+         string FilePath, decimal expectedTotal,
+         string article2 = null, string name2 = null, string category2 = null, int stock2 = 0, decimal price2 = 0, string unit2 = null)
+        {
+            var invoice = new Invoice
+            {
                 SerialNumber = serialNumber,
                 Date = DateTime.Parse(Date),
                 Items = new List<Product>
+        {
+            new Product
+            {
+                Article = article1,
+                Name = name1,
+                Category = category1,
+                Stock = stock1,
+                Price = price1,
+                Unit = unit1
+            }
+        }
+            };
+
+            if (article2 != null)
+            {
+                invoice.Items.Add(new Product
                 {
-                    new Product
-                    {
-                        Article = article,
-                        Name = name,
-                        Category = category,
-                        Stock = stock,
-                        Price = price,
-                        Unit = unit
-                    }
-                }
-              };
-                decimal actualTotal = invoice.Items.Sum(item => item.Stock * item.Price);
-                Assert.AreEqual(expectedTotal, actualTotal);
-            
-                string actualHtml = _creator.GenerateInvoiceHtml(invoice);
-                string expectedHtml = File.ReadAllText(FilePath, Encoding.UTF8);
-                Assert.AreEqual(expectedHtml, actualHtml);
-           } 
-            [TestMethod]
+                    Article = article2,
+                    Name = name2,
+                    Category = category2,
+                    Stock = stock2,
+                    Price = price2,
+                    Unit = unit2
+                });
+            }
+
+            decimal actualTotal = invoice.Items.Sum(item => item.Stock * item.Price);
+            Assert.AreEqual(expectedTotal, actualTotal);
+
+            string actualHtml = _creator.GenerateInvoiceHtml(invoice);
+            string expectedHtml = File.ReadAllText(FilePath, Encoding.UTF8);
+            Assert.AreEqual(expectedHtml, actualHtml);
+        }
+        [TestMethod]
             public void Test_EmptyInvoice_ShouldReturnErrorMessage()
             {
                 var invoice = new Invoice
