@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -243,7 +245,49 @@ namespace E_shopLib1
         }
         public string CreatePdfFromHtml(string htmlContent, string outputPath)
         {
-            return "";
+            try
+            {
+                string tempHtmlFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".html");
+                File.WriteAllText(tempHtmlFile, htmlContent, Encoding.UTF8);
+                string wkhtmltopdfPath = GetWkhtmltopdfPath();
+
+                if (!File.Exists(wkhtmltopdfPath))
+                {
+                    return "wkhtmltopdf не установлен";
+                }
+
+                string arguments = $"--encoding UTF-8 --page-size A4 --margin-top 10mm --margin-bottom 10mm --margin-left 10mm --margin-right 10mm \"{tempHtmlFile}\" \"{outputPath}\"";
+
+                Process process = new Process();
+                process.StartInfo.FileName = wkhtmltopdfPath;
+                process.StartInfo.Arguments = arguments;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.RedirectStandardError = true;
+
+                process.Start();
+                process.WaitForExit(30000);
+
+                if (File.Exists(tempHtmlFile))
+                {
+                    File.Delete(tempHtmlFile);
+                }
+
+                if (process.ExitCode == 0 && File.Exists(outputPath))
+                {
+                    return "";
+                }
+                else
+                {
+                    string error = process.StandardError.ReadToEnd();
+                    return $"Ошибка создания PDF: {error}";
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Ошибка при создании PDF: {ex.Message}";
+            }
         }
     }
 }
