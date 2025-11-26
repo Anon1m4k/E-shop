@@ -75,7 +75,7 @@ namespace E_shopTest
             // Настройка мока для продукта
             mockProductRepo.Setup(r => r.GetProductByArticle("12345"))
                 .Returns(new Product { Article = "12345", Stock = 10, Name = "Смартфон" });
-            mockRepository.Setup(r => r.AddSaleCheck(It.IsAny<SaleCheck>()))
+            mockProductRepo.Setup(r => r.UpdateStock("12345", 5))
                 .Returns("");
 
             // Act
@@ -84,7 +84,7 @@ namespace E_shopTest
             // Assert
             Assert.AreEqual("", result);
             mockRepository.Verify(r => r.AddSaleCheck(It.IsAny<SaleCheck>()), Times.Once);
-            mockProductRepo.Verify(r => r.UpdateProduct(It.Is<Product>(p => p.Stock == 5)), Times.Once);
+            mockProductRepo.Verify(r => r.UpdateStock("12345", 5), Times.Once);
         }
        
         [TestMethod]
@@ -128,7 +128,9 @@ namespace E_shopTest
                 .Returns(new Product { Article = "22", Stock = 10, Name = "Мышка компьютерная" });
             mockProductRepo.Setup(r => r.GetProductByArticle("33"))
                 .Returns(new Product { Article = "33", Stock = 7, Name = "Коврик для мышки" });
-            mockRepository.Setup(r => r.AddSaleCheck(It.IsAny<SaleCheck>()))
+            mockProductRepo.Setup(r => r.UpdateStock("22", 7))
+                .Returns("");
+            mockProductRepo.Setup(r => r.UpdateStock("33", 5))
                 .Returns("");
 
             // Act
@@ -139,8 +141,8 @@ namespace E_shopTest
             mockRepository.Verify(r => r.AddSaleCheck(It.IsAny<SaleCheck>()), Times.Once);
 
             // Проверяем, что остатки обновлены правильно
-            mockProductRepo.Verify(r => r.UpdateProduct(It.Is<Product>(p => p.Article == "22" && p.Stock == 7)), Times.Once);
-            mockProductRepo.Verify(r => r.UpdateProduct(It.Is<Product>(p => p.Article == "33" && p.Stock == 5)), Times.Once);
+            mockProductRepo.Verify(r => r.UpdateStock("22", 7), Times.Once);
+            mockProductRepo.Verify(r => r.UpdateStock("33", 5), Times.Once);
         }
 
         [TestMethod]
