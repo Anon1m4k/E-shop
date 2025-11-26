@@ -293,21 +293,20 @@ namespace E_shopLib1
         {
             string architecture = Environment.Is64BitProcess ? "x64" : "x86";
 
-            string wkhtmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"wkhtmltopdf_{architecture}.exe");
+            string repoRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\.."));
+            string wkhtmlPath = Path.Combine(repoRoot, "wkhtmltopdf", architecture, "wkhtmltopdf.exe");
 
             if (File.Exists(wkhtmlPath))
             {
                 return wkhtmlPath;
             }
-
-            string wkhtmlPathGeneral = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wkhtmltopdf.exe");
-
-            if (File.Exists(wkhtmlPathGeneral))
+            string localPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"wkhtmltopdf_{architecture}.exe");
+            if (File.Exists(localPath))
             {
-                return wkhtmlPathGeneral;
+                return localPath;
             }
 
-            throw new FileNotFoundException($"wkhtmltopdf не найден. Положите файлы:\n- wkhtmltopdf_x64.exe (для 64-bit)\n- wkhtmltopdf_x86.exe (для 32-bit)\nв папку: {AppDomain.CurrentDomain.BaseDirectory}");
+            throw new FileNotFoundException($"wkhtmltopdf не найден. Положите файлы в папку: {Path.Combine(repoRoot, "wkhtmltopdf", architecture)}");
         }
     }
 }
