@@ -289,5 +289,25 @@ namespace E_shopLib1
                 return $"Ошибка при создании PDF: {ex.Message}";
             }
         }
+        private string GetWkhtmltopdfPath()
+        {
+            string architecture = Environment.Is64BitProcess ? "x64" : "x86";
+
+            string wkhtmlPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"wkhtmltopdf_{architecture}.exe");
+
+            if (File.Exists(wkhtmlPath))
+            {
+                return wkhtmlPath;
+            }
+
+            string wkhtmlPathGeneral = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "wkhtmltopdf.exe");
+
+            if (File.Exists(wkhtmlPathGeneral))
+            {
+                return wkhtmlPathGeneral;
+            }
+
+            throw new FileNotFoundException($"wkhtmltopdf не найден. Положите файлы:\n- wkhtmltopdf_x64.exe (для 64-bit)\n- wkhtmltopdf_x86.exe (для 32-bit)\nв папку: {AppDomain.CurrentDomain.BaseDirectory}");
+        }
     }
 }
