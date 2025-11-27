@@ -112,6 +112,11 @@
     <Compile Include="AppSettings.cs" />
     <Compile Include="Presenters\SaleCheckPresenter.cs" />
     <Compile Include="PrintableInvoiceCreator.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Views\ICategoriesView.cs" />
     <Compile Include="IInvoiceRepository.cs" />
     <Compile Include="Invoice.cs" />
@@ -129,6 +134,15 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\wkhtmltopdf_x64.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

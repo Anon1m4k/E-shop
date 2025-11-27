@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -231,22 +232,33 @@ namespace E_shopLib1
         }
         private string GetWkhtmltopdfPath()
         {
-            string architecture = Environment.Is64BitProcess ? "x64" : "x86";
+            string resourceName = "E_shopLib1.Resources.wkhtmltopdf_x64.exe";
+            string tempPath = Path.Combine(Path.GetTempPath(), "wkhtmltopdf.exe");
 
-            string repoRoot = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\.."));
-            string wkhtmlPath = Path.Combine(repoRoot, "wkhtmltopdf", architecture, "wkhtmltopdf.exe");
-
-            if (File.Exists(wkhtmlPath))
+            try
             {
-                return wkhtmlPath;
-            }
-            string localPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"wkhtmltopdf_{architecture}.exe");
-            if (File.Exists(localPath))
-            {
-                return localPath;
-            }
+                if (File.Exists(tempPath))
+                    return tempPath;
 
-            throw new FileNotFoundException($"wkhtmltopdf не найден. Положите файлы в папку: {Path.Combine(repoRoot, "wkhtmltopdf", architecture)}");
+                var assembly = Assembly.GetExecutingAssembly();
+
+                using (var resourceStream = assembly.GetManifestResourceStream(resourceName))
+                {
+                    if (resourceStream == null)
+                        return null;
+
+                    using (var fileStream = File.Create(tempPath))
+                    {
+                        resourceStream.CopyTo(fileStream);
+                    }
+                }
+
+                return tempPath;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }
