@@ -10,7 +10,7 @@ namespace E_shopLib1
     {
         public string GenerateInvoiceHtml(Invoice invoice)
         {
-            return "";
+            return "Накладная пустая, добавьте позиции в накладную!";
         }
         public string CreatePdfFromHtml(string htmlContent, string outputPath)
         {
