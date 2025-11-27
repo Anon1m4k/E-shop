@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using E_shopLib;
 using E_shopLib1;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace E_shopTest
 {
