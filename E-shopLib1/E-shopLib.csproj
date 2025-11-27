@@ -144,5 +144,8 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\wkhtmltopdf_x64.exe" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\invoice_template.html" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
