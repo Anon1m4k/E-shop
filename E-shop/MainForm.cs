@@ -156,41 +156,41 @@ namespace E_shop
 
         private void buttonEdit_Click_1(object sender, EventArgs e)
         {
-            if (dataGridView.SelectedRows.Count > 0)
+            if (dataGridView.SelectedRows.Count > 0) // Получаем объект товара из выбранной строки
             {
-                // Получаем объект товара из выбранной строки
                 Product selectedProduct = dataGridView.SelectedRows[0].DataBoundItem as Product;
-
-                if (selectedProduct != null)
-                {
-                    // Создаем копию товара для редактирования
-                    Product productToEdit = selectedProduct.Clone();
-
-                    ProductCatalogManager catalogManager = new ProductCatalogManager(productManager);
-                    EditProductForm editForm = new EditProductForm(catalogManager, productToEdit);
-                    if (editForm.ShowDialog() == DialogResult.OK)
-                    {
-                        // Обновляем оригинальный товар в списке свойствами из копии
-                        selectedProduct.Name = productToEdit.Name;
-                        selectedProduct.Category = productToEdit.Category;
-                        selectedProduct.Price = productToEdit.Price;
-                        selectedProduct.Stock = productToEdit.Stock;
-                        selectedProduct.Unit = productToEdit.Unit;
-
-                        // Теперь selectedProduct изменился, и так как он в BindingList, то DataGridView обновится
-                        // НЕ перезагружаем всю таблицу из базы!
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Товар не найден", "Ошибка",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Пожалуйста, выберите товар для редактирования.", "Внимание",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (selectedProduct != null)       
+                {                  
+                    Product productToEdit = selectedProduct.Clone(); // Создаем копию товара для редактирования
+                    ProductCatalogManager catalogManager = new ProductCatalogManager(productManager);     
+                    EditProductForm editForm = new EditProductForm(catalogManager, productToEdit);      
+                    if (editForm.ShowDialog() == DialogResult.OK)         
+                    {  
+                        string result = catalogManager.UpdateProduct(productToEdit);                             
+                        if (string.IsNullOrEmpty(result)) // Обновляем оригинальный товар в списке свойствами из копии  
+                        {                     
+                            selectedProduct.Name = productToEdit.Name;  
+                            selectedProduct.Category = productToEdit.Category;        
+                            selectedProduct.Price = productToEdit.Price;      
+                            selectedProduct.Stock = productToEdit.Stock;           
+                            selectedProduct.Unit = productToEdit.Unit;                                               
+                            dataGridView.Refresh(); // Принудительно обновляем DataGridView              
+                            MessageBox.Show("Товар успешно обновлен", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information); // Показываем сообщение об успехе    
+                        }     
+                        else              
+                        {              
+                            MessageBox.Show(result, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);           
+                        }      
+                    }     
+                }    
+                else    
+                {     
+                    MessageBox.Show("Товар не найден", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);      
+                }   
+            } 
+            else 
+            {      
+                MessageBox.Show("Пожалуйста, выберите товар для редактирования.", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
