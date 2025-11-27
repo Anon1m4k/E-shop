@@ -51,19 +51,11 @@ namespace E_shop
             dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridView.RowHeadersVisible = false;
             dataGridView.RowHeadersWidth = 51;
-            dataGridView.RowTemplate.Height = 32;
-            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView.RowTemplate.Height = 32;           
             dataGridView.MultiSelect = false;
             dataGridView.EnableHeadersVisualStyles = false;
             dataGridView.GridColor = Color.FromArgb(224, 224, 224);
-
-            // Стиль для чередующихся строк
-            dataGridView.AlternatingRowsDefaultCellStyle = new DataGridViewCellStyle
-            {
-                BackColor = Color.FromArgb(248, 250, 252),
-                Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 204),
-                Padding = new Padding(4, 2, 4, 2)
-            };
+          
 
             // Стиль заголовков столбцов
             dataGridView.ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
@@ -207,9 +199,6 @@ namespace E_shop
             try
             {
                 InvoiceForm invoiceForm = new InvoiceForm();
-                invoiceForm.ShowDialog();
-                dataGridView.DataSource = productManager.GetAllProducts();
-                
                 if (invoiceForm.ShowDialog() == DialogResult.OK)
                 {
                     LoadInvoices();
@@ -218,8 +207,7 @@ namespace E_shop
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при открытии формы накладной: {ex.Message}", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ошибка при открытии формы накладной: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -234,7 +222,7 @@ namespace E_shop
             selectedCategory = "Все";
 
             // Настройка DataGridView
-            ConfigureProductsGrid();
+            ApplyDataGridViewStyle(dataGridViewProductsSales, true);
             ConfigureCartGrid();
 
             // Загрузка начальных данных
@@ -244,22 +232,32 @@ namespace E_shop
             lblDateValue.Text = DateTime.Now.ToString("dd.MM.yyyy");
         }
 
-        private void ConfigureProductsGrid()
-        {
-            ApplyDataGridViewStyle(dataGridViewProductsSales, true);
-            dataGridViewProductsSales.CellDoubleClick += dataGridViewProductsSales_CellDoubleClick;
-        }
-
         private void ConfigureCartGrid()
         {
-            ApplyDataGridViewStyle(dataGridViewCart, false); // Корзина редактируемая
+            ApplyDataGridViewStyle(dataGridViewCart, false);
 
-            // Делаем колонку Stock редактируемой
-            if (dataGridViewCart.Columns["Stock"] != null)
+            // После привязки данных настраиваем столбцы
+            dataGridViewCart.DataBindingComplete += (s, e) =>
             {
-                dataGridViewCart.Columns["Stock"].ReadOnly = false;
-                dataGridViewCart.Columns["Stock"].HeaderText = "Количество";
-            }
+                // Разрешаем редактирование только столбца "Stock" (Количество)
+                if (dataGridViewCart.Columns["Stock"] != null)
+                {
+                    dataGridViewCart.Columns["Stock"].ReadOnly = false;
+                    dataGridViewCart.Columns["Stock"].HeaderText = "Количество";
+
+                    // Визуальное выделение редактируемого столбца
+                    dataGridViewCart.Columns["Stock"].DefaultCellStyle.BackColor = Color.LightYellow;
+                }
+
+                // Делаем все остальные столбцы только для чтения
+                foreach (DataGridViewColumn column in dataGridViewCart.Columns)
+                {
+                    if (column.Name != "Stock")
+                    {
+                        column.ReadOnly = true;
+                    }
+                }
+            };
 
             dataGridViewCart.CellValueChanged += dataGridViewCart_CellValueChanged;
             dataGridViewCart.CellEndEdit += dataGridViewCart_CellEndEdit;
