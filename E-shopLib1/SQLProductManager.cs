@@ -246,7 +246,29 @@ namespace E_shopLib
 
         public string UpdateStock(string article, int newStock)
         {
-            return string.Empty; // Успешное обновление
+            using (MySqlConnection conn = new MySqlConnection(AppSettings.ConnectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string query = "UPDATE Product SET Stock = @Stock WHERE Article = @Article";
+                    using (MySqlCommand command = new MySqlCommand(query, conn))
+                    {
+                        command.Parameters.AddWithValue("@Stock", newStock);
+                        command.Parameters.AddWithValue("@Article", article);
+                        int rowsAffected = command.ExecuteNonQuery();
+                        if (rowsAffected == 0)
+                        {
+                            return "Товар с указанным артикулом не найден";
+                        }
+                    }
+                    return string.Empty;
+                }
+                catch (MySqlException ex)
+                {
+                    return "Ошибка при обновлении остатка: " + ex.Message;
+                }
+            }
         }
     }
 }
