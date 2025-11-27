@@ -424,16 +424,36 @@ namespace E_shop
 
         private void dataGridViewCart_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && e.ColumnIndex == dataGridViewCart.Columns["Stock"].Index)
+            // Проверяем, что редактирование произошло в столбце "Stock" и индекс строки валиден
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0 &&
+                dataGridViewCart.Columns[e.ColumnIndex].Name == "Stock")
             {
-                Product product = dataGridViewCart.Rows[e.RowIndex].DataBoundItem as Product;
-                if (product.Stock <= 0)
+                // Проверяем, что строка еще существует в DataGridView
+                if (e.RowIndex < dataGridViewCart.Rows.Count)
                 {
-                    // Удаляем товар при нулевом количестве
-                    cartItems.Remove(product);
-                    UpdateCartGrid();
+                    Product product = dataGridViewCart.Rows[e.RowIndex].DataBoundItem as Product;
+                    if (product != null)
+                    {
+                        if (product.Stock <= 0)
+                        {
+                            // Используем BeginInvoke для отложенного удаления после завершения редактирования
+                            BeginInvoke(new Action(() =>
+                            {
+                                // Проверяем, что товар все еще существует в корзине
+                                if (cartItems.Contains(product))
+                                {
+                                    cartItems.Remove(product);
+                                    UpdateCartGrid();
+                                    UpdateTotalAmount();
+                                }
+                            }));
+                        }
+                        else
+                        {
+                            UpdateTotalAmount();
+                        }
+                    }
                 }
-                UpdateTotalAmount();
             }
         }
 
