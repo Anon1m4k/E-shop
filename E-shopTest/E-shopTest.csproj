@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="TCategoryPresenter.cs" />
     <Compile Include="TInvoiceManager.cs" />
+    <Compile Include="TPrintableInvoiceManager.cs" />
     <Compile Include="TProductCatalogManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TSaleCheckManager.cs" />
