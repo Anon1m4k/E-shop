@@ -1,6 +1,7 @@
 ﻿using E_shopLib1;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace E_shopLib
 {
@@ -10,6 +11,7 @@ namespace E_shopLib
         public DateTime Date { get; set; }
         public string Client { get; set; }
         public List<InvoiceItem> Items { get; set; }
+        public decimal Total => Items.Sum(item => item.Total);
 
         public SaleCheck()
         {

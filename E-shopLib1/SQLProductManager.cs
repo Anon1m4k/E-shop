@@ -248,5 +248,10 @@ namespace E_shopLib
 
             return productsByCategory;
         }
+
+        public string UpdateStock(string article, int newStock)
+        {
+            return string.Empty; // Успешное обновление
+        }
     }
 }
