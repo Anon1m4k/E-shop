@@ -66,7 +66,7 @@ namespace E_shop
                 {
                     RefreshProductsByCategory(); // Обновляем кэш после добавления
                 }
-                return result;
+                return string.Empty;
             }
             return "Репозиторий недоступен";
         }
