@@ -9,12 +9,13 @@ using E_shopLib1;
 
 namespace E_shop
 {
-    public partial class InvoiceForm: Form
+    public partial class InvoiceForm : Form
     {
         private InvoiceManager invoiceManager;
         private Invoice currentInvoice;
         private BindingList<InvoiceItem> invoiceItems;
         private List<string> availableUnits;
+        private PrintableInvoiceCreator printableInvoiceCreator;
         public InvoiceForm()
         {
             InitializeComponent();
@@ -30,7 +31,7 @@ namespace E_shop
         {
             try
             {
-                SQLInvoiceRepository repository = new SQLInvoiceRepository();
+                var repository = new SQLInvoiceRepository();
                 currentInvoice = repository.GetInvoiceById(invoiceId);
 
                 if (currentInvoice != null)
@@ -41,7 +42,7 @@ namespace E_shop
                     SerialNumberInvoice.ReadOnly = true;
 
                     invoiceItems.Clear();
-                    foreach (Product product in currentInvoice.Items)
+                    foreach (var product in currentInvoice.Items)
                     {
                         invoiceItems.Add(new InvoiceItem
                         {
@@ -74,6 +75,7 @@ namespace E_shop
         {
             invoiceManager = new InvoiceManager(new SQLInvoiceRepository());
             currentInvoice = invoiceManager.CreateNewInvoice();
+            printableInvoiceCreator = new PrintableInvoiceCreator();
 
             lblDate.Text = currentInvoice.Date.ToString("dd.MM.yyyy");
 
@@ -87,7 +89,7 @@ namespace E_shop
             dataGridViewItems.DataError += dataGridViewItems_DataError;
 
         }
-        private void dataGridViewItems_DataError(object sender, DataGridViewDataErrorEventArgs e) 
+        private void dataGridViewItems_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             if (e.Exception is ArgumentException && e.Context == DataGridViewDataErrorContexts.Commit)
             {
@@ -111,7 +113,7 @@ namespace E_shop
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
-        {            
+        {
             Close();
         }
 
@@ -192,5 +194,91 @@ namespace E_shop
             decimal total = invoiceItems.Sum(item => item.Price * item.Quantity);
             lblTotalValue.Text = total.ToString("N2");
         }
+
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            webBrowser1.ShowPrintDialog();
+        }
+
+        private void btnSavePdf_Click(object sender, EventArgs e)
+        {
+            if (invoiceItems.Count == 0)
+            {
+                MessageBox.Show("Добавьте товары в накладную", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            currentInvoice.SerialNumber = SerialNumberInvoice.Text?.Trim();
+
+            using (SaveFileDialog dialog = new SaveFileDialog())
+            {
+                dialog.Filter = "PDF files (*.pdf)|*.pdf";
+                dialog.FileName = $"Накладная_{currentInvoice.SerialNumber}.pdf";
+                dialog.Title = "Сохранить PDF файл";
+
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    string html = printableInvoiceCreator.GenerateInvoiceHtml(currentInvoice, invoiceItems.ToList());
+                    string result = printableInvoiceCreator.CreatePdfFromHtml(html, dialog.FileName);
+
+                    if (string.IsNullOrEmpty(result))
+                    {
+                        MessageBox.Show($"PDF успешно сохранен:\n{dialog.FileName}", "Успех",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show(result, "Ошибка сохранения PDF",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private void btnPreview_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (invoiceItems.Count == 0)
+                {
+                    MessageBox.Show("Накладная пустая, добавьте позиции в накладную!", "Ошибка",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                currentInvoice.SerialNumber = SerialNumberInvoice.Text?.Trim();
+
+                string htmlContent = printableInvoiceCreator.GenerateInvoiceHtml(currentInvoice, invoiceItems.ToList());
+
+
+                webBrowser1.Visible = true;
+                panelPreviewHeader.Visible = true;
+
+                webBrowser1.DocumentText = htmlContent;
+                panelPreviewHeader.BringToFront();
+                webBrowser1.BringToFront();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при предпросмотре: {ex.Message}", "Ошибка",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void BtnClosePreview_Click(object sender, EventArgs e)
+        {
+            // Скрываем элементы предпросмотра
+            webBrowser1.Visible = false;
+            panelPreviewHeader.Visible = false;
+
+            // Показываем основные элементы формы
+            dataGridViewItems.Visible = true;
+            panel1.Visible = true;
+            panel2.Visible = true;
+            btnDelete.Visible = true;
+            btnPrint.Visible = true;
+            btnSavePdf.Visible = true;
+            btnPreview.Visible = true;
+        }
     }
+
 }
