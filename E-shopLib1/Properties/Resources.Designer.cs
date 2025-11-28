@@ -84,6 +84,39 @@ namespace E_shopLib1.Properties {
         internal static string SaleCheckTemplate {
             get {
                 return ResourceManager.GetString("SaleCheckTemplate", resourceCulture);
+                }
+        }
+        ///    &lt;title&gt;Приходная накладная&lt;/title&gt;
+        ///    &lt;style&gt;
+        ///        body {
+        ///            font-family: &apos;Times New Roman&apos;, serif;
+        ///            margin: 0;
+        ///            padding: 20px;
+        ///            background: white;
+        ///            font-size: 14pt;
+        ///            line-height: 1.3;
+        ///        }
+        ///        
+        ///        .invoice-container {
+        ///            width: 100%;
+        ///            max-width: 210mm;
+        ///            margin: 0 auto;
+        ///            padding: 20px;
+        ///           [остаток строки не уместился]&quot;;.
+        /// </summary>
+        internal static string invoice_template {
+            get {
+                return ResourceManager.GetString("invoice_template", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] wkhtmltopdf_x64 {
+            get {
+                object obj = ResourceManager.GetObject("wkhtmltopdf_x64", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

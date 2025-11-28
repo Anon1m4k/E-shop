@@ -120,6 +120,11 @@
     <Compile Include="SaleCheckHtmlGenerator.cs" />
     <Compile Include="SaleCheckManager.cs" />
     <Compile Include="PrintableInvoiceCreator.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Views\ICategoriesView.cs" />
     <Compile Include="IInvoiceRepository.cs" />
     <Compile Include="Invoice.cs" />
@@ -138,7 +143,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -147,6 +151,10 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\SaleCheckTemplate.html" />
+    <EmbeddedResource Include="Resources\wkhtmltopdf_x64.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\invoice_template.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
