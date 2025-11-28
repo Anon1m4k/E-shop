@@ -67,6 +67,7 @@
     <Compile Include="TPrintableInvoiceManager.cs" />
     <Compile Include="TProductCatalogManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TSaleCheckManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -81,6 +82,9 @@
       <Project>{e080598e-9b9b-43e5-8e01-7f255a0b5b64}</Project>
       <Name>E-shop</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="TestData\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

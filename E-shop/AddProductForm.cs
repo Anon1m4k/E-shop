@@ -59,9 +59,9 @@ namespace E_shop
             };
 
             string result = catalogManager.AddProduct(product);
-
             if (string.IsNullOrEmpty(result))
             {
+                MessageBox.Show("Товар успешно добавлен", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 NewProduct = product;
                 DialogResult = DialogResult.OK;
                 Close();

@@ -30,7 +30,7 @@ namespace E_shop
         {
             try
             {
-                var repository = new SQLInvoiceRepository();
+                SQLInvoiceRepository repository = new SQLInvoiceRepository();
                 currentInvoice = repository.GetInvoiceById(invoiceId);
 
                 if (currentInvoice != null)
@@ -41,7 +41,7 @@ namespace E_shop
                     SerialNumberInvoice.ReadOnly = true;
 
                     invoiceItems.Clear();
-                    foreach (var product in currentInvoice.Items)
+                    foreach (Product product in currentInvoice.Items)
                     {
                         invoiceItems.Add(new InvoiceItem
                         {

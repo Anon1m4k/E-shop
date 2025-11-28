@@ -51,19 +51,11 @@ namespace E_shop
             dataGridView.RowHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridView.RowHeadersVisible = false;
             dataGridView.RowHeadersWidth = 51;
-            dataGridView.RowTemplate.Height = 32;
-            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView.RowTemplate.Height = 32;           
             dataGridView.MultiSelect = false;
             dataGridView.EnableHeadersVisualStyles = false;
             dataGridView.GridColor = Color.FromArgb(224, 224, 224);
-
-            // Стиль для чередующихся строк
-            dataGridView.AlternatingRowsDefaultCellStyle = new DataGridViewCellStyle
-            {
-                BackColor = Color.FromArgb(248, 250, 252),
-                Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 204),
-                Padding = new Padding(4, 2, 4, 2)
-            };
+          
 
             // Стиль заголовков столбцов
             dataGridView.ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
@@ -164,41 +156,41 @@ namespace E_shop
 
         private void buttonEdit_Click_1(object sender, EventArgs e)
         {
-            if (dataGridView.SelectedRows.Count > 0)
+            if (dataGridView.SelectedRows.Count > 0) // Получаем объект товара из выбранной строки
             {
-                // Получаем объект товара из выбранной строки
                 Product selectedProduct = dataGridView.SelectedRows[0].DataBoundItem as Product;
-
-                if (selectedProduct != null)
-                {
-                    // Создаем копию товара для редактирования
-                    Product productToEdit = selectedProduct.Clone();
-
-                    ProductCatalogManager catalogManager = new ProductCatalogManager(productManager);
-                    EditProductForm editForm = new EditProductForm(catalogManager, productToEdit);
-                    if (editForm.ShowDialog() == DialogResult.OK)
-                    {
-                        // Обновляем оригинальный товар в списке свойствами из копии
-                        selectedProduct.Name = productToEdit.Name;
-                        selectedProduct.Category = productToEdit.Category;
-                        selectedProduct.Price = productToEdit.Price;
-                        selectedProduct.Stock = productToEdit.Stock;
-                        selectedProduct.Unit = productToEdit.Unit;
-
-                        // Теперь selectedProduct изменился, и так как он в BindingList, то DataGridView обновится
-                        // НЕ перезагружаем всю таблицу из базы!
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Товар не найден", "Ошибка",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Пожалуйста, выберите товар для редактирования.", "Внимание",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (selectedProduct != null)       
+                {                  
+                    Product productToEdit = selectedProduct.Clone(); // Создаем копию товара для редактирования
+                    ProductCatalogManager catalogManager = new ProductCatalogManager(productManager);     
+                    EditProductForm editForm = new EditProductForm(catalogManager, productToEdit);      
+                    if (editForm.ShowDialog() == DialogResult.OK)         
+                    {  
+                        string result = catalogManager.UpdateProduct(productToEdit);                             
+                        if (string.IsNullOrEmpty(result)) // Обновляем оригинальный товар в списке свойствами из копии  
+                        {                     
+                            selectedProduct.Name = productToEdit.Name;  
+                            selectedProduct.Category = productToEdit.Category;        
+                            selectedProduct.Price = productToEdit.Price;      
+                            selectedProduct.Stock = productToEdit.Stock;           
+                            selectedProduct.Unit = productToEdit.Unit;                                               
+                            dataGridView.Refresh(); // Принудительно обновляем DataGridView              
+                            MessageBox.Show("Товар успешно обновлен", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information); // Показываем сообщение об успехе    
+                        }     
+                        else              
+                        {              
+                            MessageBox.Show(result, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);           
+                        }      
+                    }     
+                }    
+                else    
+                {     
+                    MessageBox.Show("Товар не найден", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);      
+                }   
+            } 
+            else 
+            {      
+                MessageBox.Show("Пожалуйста, выберите товар для редактирования.", "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -207,9 +199,6 @@ namespace E_shop
             try
             {
                 InvoiceForm invoiceForm = new InvoiceForm();
-                invoiceForm.ShowDialog();
-                dataGridView.DataSource = productManager.GetAllProducts();
-                
                 if (invoiceForm.ShowDialog() == DialogResult.OK)
                 {
                     LoadInvoices();
@@ -218,8 +207,7 @@ namespace E_shop
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при открытии формы накладной: {ex.Message}", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Ошибка при открытии формы накладной: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -234,7 +222,7 @@ namespace E_shop
             selectedCategory = "Все";
 
             // Настройка DataGridView
-            ConfigureProductsGrid();
+            ApplyDataGridViewStyle(dataGridViewProductsSales, true);
             ConfigureCartGrid();
 
             // Загрузка начальных данных
@@ -244,22 +232,32 @@ namespace E_shop
             lblDateValue.Text = DateTime.Now.ToString("dd.MM.yyyy");
         }
 
-        private void ConfigureProductsGrid()
-        {
-            ApplyDataGridViewStyle(dataGridViewProductsSales, true);
-            dataGridViewProductsSales.CellDoubleClick += dataGridViewProductsSales_CellDoubleClick;
-        }
-
         private void ConfigureCartGrid()
         {
-            ApplyDataGridViewStyle(dataGridViewCart, false); // Корзина редактируемая
+            ApplyDataGridViewStyle(dataGridViewCart, false);
 
-            // Делаем колонку Stock редактируемой
-            if (dataGridViewCart.Columns["Stock"] != null)
+            // После привязки данных настраиваем столбцы
+            dataGridViewCart.DataBindingComplete += (s, e) =>
             {
-                dataGridViewCart.Columns["Stock"].ReadOnly = false;
-                dataGridViewCart.Columns["Stock"].HeaderText = "Количество";
-            }
+                // Разрешаем редактирование только столбца "Stock" (Количество)
+                if (dataGridViewCart.Columns["Stock"] != null)
+                {
+                    dataGridViewCart.Columns["Stock"].ReadOnly = false;
+                    dataGridViewCart.Columns["Stock"].HeaderText = "Количество";
+
+                    // Визуальное выделение редактируемого столбца
+                    dataGridViewCart.Columns["Stock"].DefaultCellStyle.BackColor = Color.LightYellow;
+                }
+
+                // Делаем все остальные столбцы только для чтения
+                foreach (DataGridViewColumn column in dataGridViewCart.Columns)
+                {
+                    if (column.Name != "Stock")
+                    {
+                        column.ReadOnly = true;
+                    }
+                }
+            };
 
             dataGridViewCart.CellValueChanged += dataGridViewCart_CellValueChanged;
             dataGridViewCart.CellEndEdit += dataGridViewCart_CellEndEdit;
@@ -270,11 +268,11 @@ namespace E_shop
             try
             {
                 // Загрузка категорий
-                var categories = salesCatalogManager.GetCategories();
+                List<string> categories = salesCatalogManager.GetCategories();
                 UpdateCategoriesButtons(categories);
 
                 // Загрузка всех товаров
-                var allProducts = salesCatalogManager.GetAllProducts();
+                List<Product> allProducts = salesCatalogManager.GetAllProducts();
                 dataGridViewProductsSales.DataSource = allProducts;
             }
             catch (Exception ex)
@@ -289,20 +287,20 @@ namespace E_shop
             flowLayoutPanelCategories.Controls.Clear();
 
             // Добавляем кнопку "Все"
-            var allButton = CreateCategoryButton("Все");
+            Button allButton = CreateCategoryButton("Все");
             flowLayoutPanelCategories.Controls.Add(allButton);
 
             // Добавляем кнопки для каждой категории
-            foreach (var category in categories)
+            foreach (string category in categories)
             {
-                var button = CreateCategoryButton(category);
+                Button button = CreateCategoryButton(category);
                 flowLayoutPanelCategories.Controls.Add(button);
             }
         }
 
         private Button CreateCategoryButton(string categoryName)
         {
-            var button = new Button
+            Button button = new Button
             {
                 Text = categoryName,
                 Size = new Size(100, 35),
@@ -352,7 +350,7 @@ namespace E_shop
         {
             if (e.RowIndex >= 0 && e.RowIndex < dataGridViewProductsSales.RowCount)
             {
-                var product = dataGridViewProductsSales.Rows[e.RowIndex].DataBoundItem as Product;
+                Product product = dataGridViewProductsSales.Rows[e.RowIndex].DataBoundItem as Product;
                 if (product != null && product.Stock > 0)
                 {
                     AddToCart(product);
@@ -368,14 +366,14 @@ namespace E_shop
         private void AddToCart(Product product)
         {
             // Создаем копию товара для корзины
-            var cartProduct = product.Clone();
+            Product cartProduct = product.Clone();
             cartProduct.Stock = 1; // Начальное количество в корзине
 
             // Проверяем, есть ли уже такой товар в корзине
-            var existingItem = cartItems.FirstOrDefault(p => p.Article == cartProduct.Article);
+            Product existingItem = cartItems.FirstOrDefault(p => p.Article == cartProduct.Article);
             if (existingItem != null)
             {
-                var originalProduct = salesCatalogManager.GetAllProducts()
+                Product originalProduct = salesCatalogManager.GetAllProducts()
                     .FirstOrDefault(p => p.Article == cartProduct.Article);
 
                 if (originalProduct != null && existingItem.Stock < originalProduct.Stock)
@@ -408,9 +406,9 @@ namespace E_shop
         {
             if (e.RowIndex >= 0 && e.ColumnIndex == dataGridViewCart.Columns["Stock"].Index)
             {
-                var product = dataGridViewCart.Rows[e.RowIndex].DataBoundItem as Product;
-                var allProducts = salesCatalogManager.GetAllProducts();
-                var originalProduct = allProducts.FirstOrDefault(p => p.Article == product.Article);
+                Product product = dataGridViewCart.Rows[e.RowIndex].DataBoundItem as Product;
+                List<Product> allProducts = salesCatalogManager.GetAllProducts();
+                Product originalProduct = allProducts.FirstOrDefault(p => p.Article == product.Article);
 
                 if (originalProduct != null && product.Stock > originalProduct.Stock)
                 {
@@ -426,16 +424,36 @@ namespace E_shop
 
         private void dataGridViewCart_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && e.ColumnIndex == dataGridViewCart.Columns["Stock"].Index)
+            // Проверяем, что редактирование произошло в столбце "Stock" и индекс строки валиден
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0 &&
+                dataGridViewCart.Columns[e.ColumnIndex].Name == "Stock")
             {
-                var product = dataGridViewCart.Rows[e.RowIndex].DataBoundItem as Product;
-                if (product.Stock <= 0)
+                // Проверяем, что строка еще существует в DataGridView
+                if (e.RowIndex < dataGridViewCart.Rows.Count)
                 {
-                    // Удаляем товар при нулевом количестве
-                    cartItems.Remove(product);
-                    UpdateCartGrid();
+                    Product product = dataGridViewCart.Rows[e.RowIndex].DataBoundItem as Product;
+                    if (product != null)
+                    {
+                        if (product.Stock <= 0)
+                        {
+                            // Используем BeginInvoke для отложенного удаления после завершения редактирования
+                            BeginInvoke(new Action(() =>
+                            {
+                                // Проверяем, что товар все еще существует в корзине
+                                if (cartItems.Contains(product))
+                                {
+                                    cartItems.Remove(product);
+                                    UpdateCartGrid();
+                                    UpdateTotalAmount();
+                                }
+                            }));
+                        }
+                        else
+                        {
+                            UpdateTotalAmount();
+                        }
+                    }
                 }
-                UpdateTotalAmount();
             }
         }
 
@@ -449,7 +467,7 @@ namespace E_shop
         {
             if (dataGridViewCart.SelectedRows.Count > 0)
             {
-                var selectedProduct = dataGridViewCart.SelectedRows[0].DataBoundItem as Product;
+                Product selectedProduct = dataGridViewCart.SelectedRows[0].DataBoundItem as Product;
                 if (selectedProduct != null)
                 {
                     cartItems.Remove(selectedProduct);

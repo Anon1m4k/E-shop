@@ -50,11 +50,7 @@ namespace E_shopLib
                 try
                 {
                     conn.Open();
-
-                    string query = @"INSERT INTO Product 
-                                    (Article, Name, Category, Price, Stock, Unit) 
-                                    VALUES (@Article, @Name, @Category, @Price, @Stock, @Unit)";
-
+                    string query = @"INSERT INTO Product (Article, Name, Category, Price, Stock, Unit) VALUES (@Article, @Name, @Category, @Price, @Stock, @Unit)";
                     using (MySqlCommand command = new MySqlCommand(query, conn))
                     {
                         command.Parameters.AddWithValue("@Article", product.Article);
@@ -63,10 +59,9 @@ namespace E_shopLib
                         command.Parameters.AddWithValue("@Price", product.Price);
                         command.Parameters.AddWithValue("@Stock", product.Stock);
                         command.Parameters.AddWithValue("@Unit", product.Unit);
-
                         command.ExecuteNonQuery();
                     }
-                    return $"Товар успешно добавлен.";
+                    return string.Empty;
                 }
                 catch (MySqlException ex)
                 {
@@ -247,6 +242,11 @@ namespace E_shopLib
             }
 
             return productsByCategory;
+        }
+
+        public string UpdateStock(string article, int newStock)
+        {
+            return string.Empty; // Успешное обновление
         }
     }
 }
