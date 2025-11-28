@@ -11,55 +11,55 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace E_shopTest
 {
     [TestClass]
-
     public class TPrintableInvoiceManager
     {
-
-         private readonly PrintableInvoiceCreator _creator = new PrintableInvoiceCreator();
+        private readonly PrintableInvoiceCreator _creator = new PrintableInvoiceCreator();
 
         [TestMethod]
         [DataRow("GIM33", "2025-11-18", "12345", "Смартфон", "Техника", 10, 1000, "шт", "TestData/single_item.html", 10000)]
         [DataRow("ABCD425_123*", "2025-11-11", "123", "Молоток отечественный", "Молотки", 10, 100, "шт.",
          "BE425 0", "Топор лесной", "Топоры", 2000, 500, "шт.", "TestData/multiple_items.html", 1001000)]
-        public void Test_Invoice_ShouldMatchExpectedHtml(string serialNumber, string Date,string article1, string name1, string category1, int stock1, decimal price1, string unit1,
+        public void Test_Invoice_ShouldMatchExpectedHtml(string serialNumber, string Date, string article1, string name1, string category1, int stock1, decimal price1, string unit1,
         string FilePath, decimal expectedTotal,
         string article2 = null, string name2 = null, string category2 = null, int stock2 = 0, decimal price2 = 0, string unit2 = null)
         {
             var invoice = new Invoice
             {
                 SerialNumber = serialNumber,
-                Date = DateTime.Parse(Date),
-                Items = new List<Product>
+                Date = DateTime.Parse(Date)
+            };
+
+            var invoiceItems = new List<InvoiceItem>
+            {
+                new InvoiceItem
                 {
-                    new Product
-                    {
-                        Article = article1,
-                        Name = name1,
-                        Category = category1,
-                        Stock = stock1,
-                        Price = price1,
-                        Unit = unit1
-                    }
+                    Article = article1,
+                    Name = name1,
+                    Category = category1,
+                    Quantity = stock1,
+                    Price = price1,
+                    Unit = unit1
                 }
             };
 
             if (article2 != null)
             {
-                invoice.Items.Add(new Product
+                invoiceItems.Add(new InvoiceItem
                 {
                     Article = article2,
                     Name = name2,
                     Category = category2,
-                    Stock = stock2,
+                    Quantity = stock2,
                     Price = price2,
                     Unit = unit2
                 });
             }
 
-            decimal actualTotal = invoice.Items.Sum(item => item.Stock * item.Price);
+            decimal actualTotal = invoiceItems.Sum(item => item.Price * item.Quantity);
             Assert.AreEqual(expectedTotal, actualTotal);
 
-            string actualHtml = _creator.GenerateInvoiceHtml(invoice);
+            // Исправленный вызов метода с двумя параметрами
+            string actualHtml = _creator.GenerateInvoiceHtml(invoice, invoiceItems);
             string expectedHtml = File.ReadAllText(FilePath, Encoding.UTF8);
             Assert.AreEqual(expectedHtml, actualHtml);
         }
@@ -70,11 +70,13 @@ namespace E_shopTest
             var invoice = new Invoice
             {
                 SerialNumber = "-",
-                Date = DateTime.MinValue,
-                Items = new List<Product>()
+                Date = DateTime.MinValue
             };
 
-            string result = _creator.GenerateInvoiceHtml(invoice);
+            var emptyItems = new List<InvoiceItem>();
+
+            // Исправленный вызов метода с двумя параметрами
+            string result = _creator.GenerateInvoiceHtml(invoice, emptyItems);
 
             Assert.AreEqual("Накладная пустая, добавьте позиции в накладную!", result);
         }
