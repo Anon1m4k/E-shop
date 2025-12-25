@@ -65,6 +65,27 @@ namespace E_shopLib1.Properties {
         ///&lt;html lang=&quot;ru&quot;&gt;
         ///&lt;head&gt;
         ///    &lt;meta charset=&quot;UTF-8&quot;&gt;
+        ///    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+        ///    &lt;title&gt;Чек продажи №{{RECEIPT_NUMBER}}&lt;/title&gt;
+        ///    &lt;style&gt;
+        ///        * {
+        ///            margin: 0;
+        ///            padding: 0;
+        ///            box-sizing: border-box;
+        ///            font-family: &apos;Courier New&apos;, monospace;
+        ///        }
+        ///        
+        ///        body {
+        ///            background-color: #f5f5f5;
+        ///            padding: 20px;
+        ///            display: flex;
+        ///            just [остаток строки не уместился]&quot;;.
+        /// </summary>
+        internal static string SaleCheckTemplate {
+            get {
+                return ResourceManager.GetString("SaleCheckTemplate", resourceCulture);
+                }
+        }
         ///    &lt;title&gt;Приходная накладная&lt;/title&gt;
         ///    &lt;style&gt;
         ///        body {

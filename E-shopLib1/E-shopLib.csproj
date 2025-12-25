@@ -112,6 +112,11 @@
     <Compile Include="AppSettings.cs" />
     <Compile Include="ISaleCheckRepository.cs" />
     <Compile Include="Presenters\SaleCheckPresenter.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SaleCheckHtmlGenerator.cs" />
     <Compile Include="SaleCheckManager.cs" />
     <Compile Include="PrintableInvoiceCreator.cs" />
@@ -145,6 +150,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\SaleCheckTemplate.html" />
     <EmbeddedResource Include="Resources\wkhtmltopdf_x64.exe" />
   </ItemGroup>
   <ItemGroup>
